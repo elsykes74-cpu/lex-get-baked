@@ -18,7 +18,8 @@
     "framer-motion": "11.3.19",
     "gsap": "3.12.5",
     "lottie-react": "2.4.0",
-    "clsx": "2.1.1"
+    "clsx": "2.1.1",
+    "@supabase/supabase-js": "2.44.4"
   },
   "devDependencies": {
     "@types/node": "20.14.12",
