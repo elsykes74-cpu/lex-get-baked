@@ -36,8 +36,31 @@ export default function HomePage() {
         <FloatingOrbs />
         <CookieScene />
 
+        {/* Real cookie photo — positioned right, large, tilted */}
+        <div
+          className="pointer-events-none absolute z-[5]"
+          style={{
+            right: '-8%',
+            top: '50%',
+            transform: 'translateY(-52%) rotate(-14deg)',
+            width: '72vw',
+            maxWidth: 360,
+          }}
+        >
+          <img
+            src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=700&q=90"
+            alt=""
+            aria-hidden
+            className="w-full h-auto rounded-[50%] object-cover animate-float-slow"
+            style={{
+              aspectRatio: '1/1',
+              filter: 'drop-shadow(0 24px 64px rgba(0,0,0,0.7)) drop-shadow(0 4px 24px rgba(201,116,143,0.25))',
+            }}
+          />
+        </div>
+
         {/* Gradient vignette at bottom */}
-        <div className="pointer-events-none absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-charcoal to-transparent" />
+        <div className="pointer-events-none absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-[#0f0e1a] to-transparent" />
 
         <motion.div
           className="relative z-10 max-w-sm"
@@ -126,7 +149,7 @@ function FeaturedSection() {
   ];
 
   return (
-    <section className="px-5 py-16 bg-charcoal">
+    <section className="px-5 py-16 bg-charcoal-dark">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

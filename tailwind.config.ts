@@ -19,7 +19,7 @@ const config: Config = {
       backgroundImage: {
         'brand-gradient': 'linear-gradient(135deg, #6B4E8C 0%, #C9748F 50%, #C4965A 100%)',
         'card-glass':     'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%)',
-        'hero-bg':        'radial-gradient(ellipse at 60% 30%, #6B4E8C 0%, #3D2260 40%, #1A1220 100%)',
+        'hero-bg':        'radial-gradient(ellipse at 55% 25%, #2a2245 0%, #1a1530 35%, #0f0e1a 100%)',
       },
       boxShadow: {
         glass: '0 8px 32px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.12)',
