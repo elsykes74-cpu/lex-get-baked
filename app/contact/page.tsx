@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { User, Phone, Mail, Calendar, MessageSquare, Send, CheckCircle } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 import FloatingOrbs from '@/components/FloatingOrbs';
 
@@ -8,6 +9,26 @@ const DESSERT_TYPES = [
   'Stuffed Cookies', 'Mini Cakes', 'Custom Dessert Box',
   'Celebration Tray', 'Corporate Order', 'Other',
 ];
+
+function InputRow({
+  icon: Icon,
+  label,
+  children,
+}: {
+  icon: React.ElementType;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold mb-1.5 text-plum/55">
+        <Icon size={10} strokeWidth={2.5} style={{ color: 'rgba(201,116,143,0.7)' }} />
+        {label}
+      </label>
+      {children}
+    </div>
+  );
+}
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -24,7 +45,7 @@ export default function ContactPage() {
     return (
       <>
         <NavBar />
-        <div className="min-h-screen bg-page-bg flex flex-col items-center justify-center px-6 text-center">
+        <div className="min-h-[100svh] bg-page-bg flex flex-col items-center justify-center px-6 text-center">
           <FloatingOrbs />
           <motion.div
             initial={{ scale: 0.7, opacity: 0 }}
@@ -32,10 +53,11 @@ export default function ContactPage() {
             transition={{ type: 'spring', damping: 16 }}
             className="relative z-10"
           >
-            <div className="text-7xl mb-6 animate-float-slow">💌</div>
+            <div className="text-7xl mb-6" style={{ animation: 'float 5s ease-in-out infinite' }}>💌</div>
             <div className="glass-card rounded-3xl p-8 max-w-sm mx-auto">
+              <CheckCircle size={28} className="mx-auto mb-3" style={{ color: '#6B8C7A' }} />
               <h1 className="font-display text-3xl italic font-bold text-plum mb-3">Message Sent!</h1>
-              <p className="text-sm font-medium text-plum/65 mb-5">
+              <p className="text-[13px] font-medium text-plum/65 mb-5">
                 We&apos;ll be in touch within 24 hours to talk all things dessert.
               </p>
               <div className="divider-rg mb-5" />
@@ -53,36 +75,33 @@ export default function ContactPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-screen bg-page-bg pt-20 pb-28 px-5 overflow-hidden">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[4.5rem] pb-28 sm:pb-14 px-4 overflow-hidden">
         <FloatingOrbs />
         <div className="relative z-10 max-w-md mx-auto">
 
           {/* Header */}
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-            <p className="text-[9px] tracking-[0.15em] uppercase font-bold mb-1 text-plum/50">
+          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="mb-7 mt-3">
+            <p className="text-[9px] tracking-[0.16em] uppercase font-bold mb-1 text-plum/50">
               Let&apos;s Connect
             </p>
             <h1 className="font-display text-3xl italic font-bold text-white mb-1" style={{ textShadow: '0 2px 12px rgba(10,4,36,0.3)' }}>
               Order Inquiry
             </h1>
-            <p className="text-sm font-medium text-plum/65">
+            <p className="text-[13px] font-medium text-plum/65">
               Custom orders, events, collaborations — we love it all.
             </p>
           </motion.div>
 
           <motion.form
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
+            transition={{ delay: 0.1, duration: 0.48 }}
             onSubmit={e => { e.preventDefault(); setSent(true); }}
             className="glass-card rounded-3xl p-6 space-y-4"
           >
             {/* Name + Phone row */}
             <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-[10px] uppercase tracking-widest font-bold mb-1 block text-plum/55">
-                  Name
-                </label>
+              <InputRow icon={User} label="Name">
                 <input
                   type="text"
                   required
@@ -91,11 +110,8 @@ export default function ContactPage() {
                   onChange={e => handleChange('name', e.target.value)}
                   className="w-full input-glass rounded-xl px-4 py-3 text-sm"
                 />
-              </div>
-              <div>
-                <label className="text-[10px] uppercase tracking-widest font-bold mb-1 block text-plum/55">
-                  Phone
-                </label>
+              </InputRow>
+              <InputRow icon={Phone} label="Phone">
                 <input
                   type="tel"
                   placeholder="(413) 000-0000"
@@ -103,14 +119,11 @@ export default function ContactPage() {
                   onChange={e => handleChange('phone', e.target.value)}
                   className="w-full input-glass rounded-xl px-4 py-3 text-sm"
                 />
-              </div>
+              </InputRow>
             </div>
 
             {/* Email */}
-            <div>
-              <label className="text-[10px] uppercase tracking-widest font-bold mb-1 block text-plum/55">
-                Email
-              </label>
+            <InputRow icon={Mail} label="Email">
               <input
                 type="email"
                 required
@@ -119,24 +132,22 @@ export default function ContactPage() {
                 onChange={e => handleChange('email', e.target.value)}
                 className="w-full input-glass rounded-xl px-4 py-3 text-sm"
               />
-            </div>
+            </InputRow>
 
             {/* Event date */}
-            <div>
-              <label className="text-[10px] uppercase tracking-widest font-bold mb-1 block text-plum/55">
-                Event Date (optional)
-              </label>
+            <InputRow icon={Calendar} label="Event Date (optional)">
               <input
                 type="date"
                 value={form.eventDate}
                 onChange={e => handleChange('eventDate', e.target.value)}
                 className="w-full input-glass rounded-xl px-4 py-3 text-sm"
               />
-            </div>
+            </InputRow>
 
             {/* Dessert type pills */}
             <div>
-              <label className="text-[10px] uppercase tracking-widest font-bold mb-2 block text-plum/55">
+              <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold mb-2 text-plum/55">
+                <MessageSquare size={10} strokeWidth={2.5} style={{ color: 'rgba(201,116,143,0.7)' }} />
                 Dessert Type
               </label>
               <div className="flex flex-wrap gap-2">
@@ -158,10 +169,7 @@ export default function ContactPage() {
             </div>
 
             {/* Message */}
-            <div>
-              <label className="text-[10px] uppercase tracking-widest font-bold mb-1 block text-plum/55">
-                Message
-              </label>
+            <InputRow icon={MessageSquare} label="Message">
               <textarea
                 required
                 placeholder="Tell us about your order, event, or dream dessert..."
@@ -170,14 +178,15 @@ export default function ContactPage() {
                 rows={4}
                 className="w-full input-glass rounded-xl px-4 py-3 text-sm resize-none"
               />
-            </div>
+            </InputRow>
 
             {/* Submit */}
             <button
               type="submit"
-              className="w-full btn-brand py-4 rounded-2xl text-sm font-bold shadow-glow"
+              className="w-full btn-brand py-4 rounded-2xl text-sm font-bold shadow-glow flex items-center justify-center gap-2"
             >
-              Send Message ✦
+              <Send size={15} strokeWidth={2.2} />
+              Send Message
             </button>
 
             <p className="text-center text-xs font-medium text-plum/45">

@@ -1,16 +1,17 @@
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Minus, ShoppingBag, Truck, Check, ArrowRight } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 import FloatingOrbs from '@/components/FloatingOrbs';
 
 type Step = 'cart' | 'delivery' | 'confirm';
 
 const DELIVERY_OPTIONS = [
-  { id: 'standard', label: 'Standard',  eta: '2–3 days',    price: 0,  icon: '📦' },
-  { id: 'express',  label: 'Express',   eta: 'Next day',    price: 8,  icon: '⚡' },
-  { id: 'quantum',  label: 'Quantum',   eta: '2 hours',     price: 18, icon: '🚀' },
-  { id: 'pickup',   label: 'Pickup',    eta: 'Ready in 1hr', price: 0, icon: '🏪' },
+  { id: 'standard', label: 'Standard',  eta: '2–3 days',     price: 0,  icon: <Truck size={18} strokeWidth={1.8} /> },
+  { id: 'express',  label: 'Express',   eta: 'Next day',     price: 8,  icon: '⚡' },
+  { id: 'quantum',  label: 'Quantum',   eta: '2 hours',      price: 18, icon: '🚀' },
+  { id: 'pickup',   label: 'Pickup',    eta: 'Ready in 1hr', price: 0,  icon: '🏪' },
 ];
 
 const SAMPLE_CART = [
@@ -41,18 +42,18 @@ export default function CheckoutPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-screen bg-page-bg pt-20 pb-28 px-5 overflow-hidden">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[4.5rem] pb-28 sm:pb-14 px-4 overflow-hidden">
         <FloatingOrbs />
         <div className="relative z-10 max-w-md mx-auto">
 
           {/* Step tabs */}
-          <div className="glass-card rounded-2xl p-1.5 flex gap-1 mb-8">
+          <div className="glass-card rounded-2xl p-1.5 flex gap-1 mb-7 mt-3">
             {(['cart', 'delivery', 'confirm'] as Step[]).map(s => (
               <button
                 key={s}
                 onClick={() => setStep(s)}
                 className={`flex-1 py-2.5 rounded-xl text-xs font-bold capitalize transition-all ${
-                  step === s ? 'btn-iridescent shadow-btn' : 'text-plum/55 hover:text-plum'
+                  step === s ? 'btn-iridescent shadow-btn' : 'text-plum/50 hover:text-plum'
                 }`}
               >
                 {s}
@@ -61,40 +62,50 @@ export default function CheckoutPage() {
           </div>
 
           <AnimatePresence mode="wait">
+
+            {/* ── Cart ─────────────────────────────────────────── */}
             {step === 'cart' && (
               <motion.div key="cart"
-                initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -18 }}
-                transition={{ duration: 0.26 }}
+                initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }}
+                transition={{ duration: 0.24 }}
               >
-                <div className="glass-card rounded-3xl p-5 mb-5">
-                  <p className="text-[9px] tracking-widest uppercase font-bold text-plum/45 mb-1">Review</p>
+                <div className="glass-card rounded-3xl p-5 mb-4">
+                  <p className="text-[9px] tracking-widest uppercase font-bold text-plum/45 mb-0.5">Review</p>
                   <h1 className="font-display text-2xl italic font-bold text-plum">Your Order</h1>
                 </div>
 
                 {cart.length === 0 ? (
                   <div className="glass-card rounded-3xl p-10 text-center">
-                    <p className="text-5xl mb-3">🛒</p>
+                    <ShoppingBag size={40} strokeWidth={1.4} className="mx-auto mb-3 text-plum/30" />
                     <p className="text-sm font-semibold text-plum/55">Your cart is empty</p>
                   </div>
                 ) : (
-                  <div className="space-y-3 mb-6">
+                  <div className="space-y-3 mb-5">
                     {cart.map(item => (
                       <div key={item.id} className="glass-card rounded-2xl p-4 flex items-center gap-3">
-                        <div className="text-2xl">{item.emoji}</div>
+                        <div className="text-2xl w-10 h-10 flex items-center justify-center rounded-xl"
+                          style={{ background: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.7)' }}
+                        >
+                          {item.emoji}
+                        </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-bold text-plum truncate">{item.name}</p>
-                          <p className="text-xs font-medium text-plum/55">{item.size} · ${item.price}</p>
+                          <p className="text-xs font-medium text-plum/55">{item.size} · ${item.price} each</p>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5">
                           <button
                             onClick={() => updateQty(item.id, -1)}
-                            className="w-7 h-7 glass rounded-full text-plum/60 hover:text-plum font-bold flex items-center justify-center text-sm"
-                          >−</button>
+                            className="w-7 h-7 glass rounded-full text-plum/55 hover:text-plum flex items-center justify-center"
+                          >
+                            <Minus size={12} strokeWidth={2.5} />
+                          </button>
                           <span className="text-sm font-bold text-plum w-4 text-center">{item.qty}</span>
                           <button
                             onClick={() => updateQty(item.id, 1)}
-                            className="w-7 h-7 glass rounded-full text-plum/60 hover:text-plum font-bold flex items-center justify-center text-sm"
-                          >+</button>
+                            className="w-7 h-7 glass rounded-full text-plum/55 hover:text-plum flex items-center justify-center"
+                          >
+                            <Plus size={12} strokeWidth={2.5} />
+                          </button>
                         </div>
                         <span className="text-sm font-bold text-shimmer w-10 text-right">
                           ${item.price * item.qty}
@@ -107,22 +118,24 @@ export default function CheckoutPage() {
                 <button
                   onClick={() => setStep('delivery')}
                   disabled={cart.length === 0}
-                  className={`w-full py-4 rounded-2xl text-sm font-bold transition-all ${
+                  className={`w-full py-4 rounded-2xl text-sm font-bold transition-all flex items-center justify-center gap-2 ${
                     cart.length > 0 ? 'btn-brand shadow-glow' : 'glass-card text-plum/30 cursor-not-allowed'
                   }`}
                 >
-                  Continue to Delivery →
+                  Continue to Delivery
+                  {cart.length > 0 && <ArrowRight size={15} strokeWidth={2.5} />}
                 </button>
               </motion.div>
             )}
 
+            {/* ── Delivery ─────────────────────────────────────── */}
             {step === 'delivery' && (
               <motion.div key="delivery"
-                initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -18 }}
-                transition={{ duration: 0.26 }}
+                initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }}
+                transition={{ duration: 0.24 }}
               >
-                <div className="glass-card rounded-3xl p-5 mb-5">
-                  <p className="text-[9px] tracking-widest uppercase font-bold text-plum/45 mb-1">How to receive it</p>
+                <div className="glass-card rounded-3xl p-5 mb-4">
+                  <p className="text-[9px] tracking-widest uppercase font-bold text-plum/45 mb-0.5">How to receive it</p>
                   <h1 className="font-display text-2xl italic font-bold text-plum">Delivery</h1>
                 </div>
 
@@ -171,33 +184,35 @@ export default function CheckoutPage() {
 
                 <button
                   onClick={() => setStep('confirm')}
-                  className="w-full btn-brand py-4 rounded-2xl text-sm font-bold shadow-glow"
+                  className="w-full btn-brand py-4 rounded-2xl text-sm font-bold shadow-glow flex items-center justify-center gap-2"
                 >
-                  Review Order →
+                  Review Order
+                  <ArrowRight size={15} strokeWidth={2.5} />
                 </button>
               </motion.div>
             )}
 
+            {/* ── Confirm ──────────────────────────────────────── */}
             {step === 'confirm' && (
               <motion.div key="confirm"
-                initial={{ opacity: 0, x: 18 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -18 }}
-                transition={{ duration: 0.26 }}
+                initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }}
+                transition={{ duration: 0.24 }}
               >
-                <div className="glass-card rounded-3xl p-5 mb-5">
-                  <p className="text-[9px] tracking-widest uppercase font-bold text-plum/45 mb-1">Almost there</p>
+                <div className="glass-card rounded-3xl p-5 mb-4">
+                  <p className="text-[9px] tracking-widest uppercase font-bold text-plum/45 mb-0.5">Almost there</p>
                   <h1 className="font-display text-2xl italic font-bold text-plum">Confirm Order</h1>
                 </div>
 
                 <div className="glass-card rounded-3xl p-5 mb-4">
                   {cart.map(item => (
-                    <div key={item.id} className="flex justify-between text-sm py-2" style={{ borderBottom: '1px solid rgba(45,26,74,0.08)' }}>
+                    <div key={item.id} className="flex justify-between text-sm py-2.5" style={{ borderBottom: '1px solid rgba(45,26,74,0.08)' }}>
                       <span className="text-plum/65 font-medium">{item.emoji} {item.name} ×{item.qty}</span>
                       <span className="font-bold text-plum">${item.price * item.qty}</span>
                     </div>
                   ))}
                   <div className="flex justify-between text-sm py-2.5" style={{ borderBottom: '1px solid rgba(45,26,74,0.08)' }}>
-                    <span className="font-medium text-plum/65">
-                      {DELIVERY_OPTIONS.find(d => d.id === delivery)?.icon}{' '}
+                    <span className="font-medium text-plum/65 flex items-center gap-1">
+                      <Truck size={13} strokeWidth={1.8} />
                       {DELIVERY_OPTIONS.find(d => d.id === delivery)?.label}
                     </span>
                     <span className="font-bold text-plum">{deliveryFee === 0 ? 'Free' : `$${deliveryFee}`}</span>
@@ -218,8 +233,9 @@ export default function CheckoutPage() {
 
                 <button
                   onClick={() => setPlaced(true)}
-                  className="w-full btn-brand py-4 rounded-2xl text-sm font-bold shadow-glow"
+                  className="w-full btn-brand py-4 rounded-2xl text-sm font-bold shadow-glow flex items-center justify-center gap-2"
                 >
+                  <Check size={16} strokeWidth={2.5} />
                   Place Order · ${total}
                 </button>
               </motion.div>
@@ -233,7 +249,7 @@ export default function CheckoutPage() {
 
 function OrderConfirmation({ total }: { total: number }) {
   return (
-    <div className="min-h-screen bg-page-bg flex flex-col items-center justify-center px-6 text-center">
+    <div className="min-h-[100svh] bg-page-bg flex flex-col items-center justify-center px-6 text-center">
       <FloatingOrbs />
       <motion.div
         initial={{ scale: 0.6, opacity: 0 }}
@@ -241,15 +257,15 @@ function OrderConfirmation({ total }: { total: number }) {
         transition={{ type: 'spring', damping: 16, stiffness: 200 }}
         className="relative z-10"
       >
-        <div className="text-7xl mb-6 animate-float-slow">🎉</div>
+        <div className="text-7xl mb-6" style={{ animation: 'float 5s ease-in-out infinite' }}>🎉</div>
         <div className="glass-card rounded-3xl p-8 max-w-sm">
           <h1 className="font-display text-3xl italic font-bold text-plum mb-2">Order Placed!</h1>
-          <p className="text-sm text-plum/65 font-medium mb-3">
+          <p className="text-sm font-medium text-plum/65 mb-3">
             Your baked goods are being crafted with love.
           </p>
           <p className="font-display text-xl font-bold text-shimmer mb-5">${total} confirmed</p>
           <div className="divider-rg mb-5" />
-          <p className="text-sm text-plum/58 font-medium">
+          <p className="text-sm font-medium text-plum/58">
             You&apos;ll receive a confirmation email with tracking details shortly.
           </p>
         </div>

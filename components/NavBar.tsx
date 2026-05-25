@@ -3,13 +3,15 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ShoppingBag, Menu, X } from 'lucide-react';
 import clsx from 'clsx';
 
 const LINKS = [
   { href: '/',          label: 'Home'      },
   { href: '/menu',      label: 'Menu'      },
-  { href: '/customize', label: 'Customize' },
+  { href: '/customize', label: 'Custom'    },
   { href: '/about',     label: 'About'     },
+  { href: '/contact',   label: 'Contact'   },
 ];
 
 export default function NavBar() {
@@ -18,7 +20,7 @@ export default function NavBar() {
   const [open,     setOpen]     = useState(false);
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 20);
+    const handler = () => setScrolled(window.scrollY > 24);
     window.addEventListener('scroll', handler, { passive: true });
     return () => window.removeEventListener('scroll', handler);
   }, []);
@@ -27,28 +29,29 @@ export default function NavBar() {
     <>
       <header
         className={clsx(
-          'fixed top-0 inset-x-0 z-50 transition-all duration-300',
+          'fixed top-0 inset-x-0 z-50 transition-all duration-350',
           scrolled
             ? 'glass-card shadow-card'
-            : 'bg-transparent backdrop-blur-sm',
+            : 'bg-transparent',
         )}
       >
-        <div className="px-5 py-3.5 flex items-center justify-between max-w-2xl mx-auto">
+        <div className="px-4 sm:px-5 h-[60px] flex items-center justify-between max-w-2xl mx-auto">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            {/* Rose-gold logomark */}
+          <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
             <div
-              className="w-7 h-7 rounded-full flex items-center justify-center text-sm flex-shrink-0"
+              className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{
-                background: 'linear-gradient(135deg, #D4956A, #C9748F)',
-                boxShadow: '0 2px 8px rgba(212,149,106,0.4)',
+                background: 'linear-gradient(135deg, #D4956A 0%, #E8BA90 40%, #C9748F 100%)',
+                boxShadow: '0 2px 10px rgba(212,149,106,0.45), inset 0 1px 0 rgba(255,255,255,0.5)',
               }}
             >
-              🍪
+              <span className="font-display text-[13px] font-bold text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.25)' }}>
+                L
+              </span>
             </div>
             <span
-              className="font-display text-base font-semibold tracking-wide"
+              className="font-display text-[15px] font-semibold tracking-wide leading-none"
               style={{
                 color: scrolled ? '#2D1A4A' : 'rgba(255,255,255,0.95)',
                 textShadow: scrolled ? 'none' : '0 1px 8px rgba(4,0,20,0.45)',
@@ -65,12 +68,12 @@ export default function NavBar() {
                 key={href}
                 href={href}
                 className={clsx(
-                  'px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200',
+                  'px-3.5 py-1.5 rounded-full text-[13px] font-semibold transition-all duration-200',
                   pathname === href
                     ? 'btn-iridescent shadow-btn'
                     : scrolled
-                      ? 'text-plum/65 hover:text-plum hover:bg-plum/8'
-                      : 'text-white/70 hover:text-white hover:bg-white/12',
+                      ? 'text-plum/65 hover:text-plum hover:bg-plum/5'
+                      : 'text-white/75 hover:text-white hover:bg-white/12',
                 )}
               >
                 {label}
@@ -79,20 +82,20 @@ export default function NavBar() {
           </nav>
 
           <div className="flex items-center gap-2">
-            {/* Cart */}
+            {/* Cart pill */}
             <Link
               href="/checkout"
               className={clsx(
-                'px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all',
+                'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all',
                 scrolled
                   ? 'glass text-plum hover:shadow-glass'
-                  : 'glass text-white/88 hover:text-white hover:shadow-glow',
+                  : 'glass text-white/90 hover:text-white',
               )}
             >
-              <span>🧁</span>
-              <span>Cart</span>
+              <ShoppingBag size={13} strokeWidth={2.2} />
+              <span className="hidden sm:block">Cart</span>
               <span
-                className="text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold"
+                className="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white leading-none"
                 style={{ background: '#C9748F' }}
               >
                 0
@@ -103,14 +106,12 @@ export default function NavBar() {
             <button
               onClick={() => setOpen(v => !v)}
               className={clsx(
-                'sm:hidden p-2 rounded-xl transition-all',
+                'sm:hidden w-8 h-8 rounded-xl flex items-center justify-center transition-all',
                 scrolled ? 'glass text-plum' : 'glass text-white/80',
               )}
               aria-label="Toggle menu"
             >
-              <span className={clsx('block w-4 h-0.5 bg-current mb-1 transition-transform', open && 'rotate-45 translate-y-1.5')} />
-              <span className={clsx('block w-4 h-0.5 bg-current mb-1 transition-opacity', open && 'opacity-0')} />
-              <span className={clsx('block w-4 h-0.5 bg-current transition-transform', open && '-rotate-45 -translate-y-1.5')} />
+              {open ? <X size={16} strokeWidth={2.5} /> : <Menu size={16} strokeWidth={2.5} />}
             </button>
           </div>
         </div>
@@ -119,35 +120,46 @@ export default function NavBar() {
       {/* Mobile drawer */}
       <AnimatePresence>
         {open && (
-          <motion.nav
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="fixed top-[60px] inset-x-4 z-40 glass-card rounded-3xl p-3 flex flex-col gap-1 sm:hidden"
-          >
-            {LINKS.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setOpen(false)}
-                className={clsx(
-                  'px-4 py-3 rounded-2xl text-sm font-semibold transition-all',
-                  pathname === href ? 'btn-iridescent' : 'text-plum/70 hover:text-plum hover:bg-white/25',
-                )}
-              >
-                {label}
-              </Link>
-            ))}
-            <div className="divider-rg my-1" />
-            <Link
-              href="/checkout"
+          <>
+            <motion.div
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 z-30 sm:hidden"
+              style={{ background: 'rgba(20,10,50,0.2)', backdropFilter: 'blur(4px)' }}
               onClick={() => setOpen(false)}
-              className="px-4 py-3 rounded-2xl text-sm font-semibold text-plum/70 hover:text-plum hover:bg-white/25 transition-all"
+            />
+            <motion.nav
+              initial={{ opacity: 0, y: -8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.98 }}
+              transition={{ duration: 0.2, ease: [0.16,1,0.3,1] }}
+              className="fixed top-[68px] inset-x-4 z-40 glass-card rounded-3xl p-2.5 flex flex-col gap-0.5 sm:hidden"
             >
-              🧁 Cart
-            </Link>
-          </motion.nav>
+              {LINKS.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  className={clsx(
+                    'px-4 py-3 rounded-2xl text-sm font-semibold transition-all',
+                    pathname === href
+                      ? 'btn-iridescent shadow-btn'
+                      : 'text-plum/70 hover:text-plum hover:bg-white/30',
+                  )}
+                >
+                  {label}
+                </Link>
+              ))}
+              <div className="divider-rg my-1" />
+              <Link
+                href="/checkout"
+                onClick={() => setOpen(false)}
+                className="px-4 py-3 rounded-2xl text-sm font-semibold text-plum/70 hover:text-plum hover:bg-white/30 transition-all flex items-center gap-2"
+              >
+                <ShoppingBag size={14} strokeWidth={2} />
+                Cart
+              </Link>
+            </motion.nav>
+          </>
         )}
       </AnimatePresence>
     </>
