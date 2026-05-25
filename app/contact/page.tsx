@@ -33,12 +33,16 @@ export default function ContactPage() {
             className="relative z-10"
           >
             <div className="text-7xl mb-6 animate-float-slow">💌</div>
-            <h1 className="font-display text-3xl italic text-white mb-3">Message Sent!</h1>
-            <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.62)' }}>
-              We&apos;ll be in touch within 24 hours to talk all things dessert.
-            </p>
-            <div className="glass-card rounded-2xl p-5 text-sm max-w-xs mx-auto" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Expect a response from <span className="text-white font-semibold">hello@lexgetbaked.com</span>
+            <div className="glass-card rounded-3xl p-8 max-w-sm mx-auto">
+              <h1 className="font-display text-3xl italic font-bold text-plum mb-3">Message Sent!</h1>
+              <p className="text-sm font-medium text-plum/65 mb-5">
+                We&apos;ll be in touch within 24 hours to talk all things dessert.
+              </p>
+              <div className="divider-rg mb-5" />
+              <p className="text-sm font-medium text-plum/58">
+                Expect a response from{' '}
+                <span className="font-bold text-plum">hello@lexgetbaked.com</span>
+              </p>
             </div>
           </motion.div>
         </div>
@@ -55,11 +59,13 @@ export default function ContactPage() {
 
           {/* Header */}
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-            <p className="text-[9px] tracking-widest uppercase mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-[9px] tracking-[0.15em] uppercase font-bold mb-1 text-plum/50">
               Let&apos;s Connect
             </p>
-            <h1 className="font-display text-3xl italic text-white">Order Inquiry</h1>
-            <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.55)' }}>
+            <h1 className="font-display text-3xl italic font-bold text-white mb-1" style={{ textShadow: '0 2px 12px rgba(10,4,36,0.3)' }}>
+              Order Inquiry
+            </h1>
+            <p className="text-sm font-medium text-plum/65">
               Custom orders, events, collaborations — we love it all.
             </p>
           </motion.div>
@@ -69,12 +75,12 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
             onSubmit={e => { e.preventDefault(); setSent(true); }}
-            className="space-y-4"
+            className="glass-card rounded-3xl p-6 space-y-4"
           >
             {/* Name + Phone row */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[10px] uppercase tracking-widest mb-1 block" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <label className="text-[10px] uppercase tracking-widest font-bold mb-1 block text-plum/55">
                   Name
                 </label>
                 <input
@@ -87,7 +93,7 @@ export default function ContactPage() {
                 />
               </div>
               <div>
-                <label className="text-[10px] uppercase tracking-widest mb-1 block" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <label className="text-[10px] uppercase tracking-widest font-bold mb-1 block text-plum/55">
                   Phone
                 </label>
                 <input
@@ -102,7 +108,7 @@ export default function ContactPage() {
 
             {/* Email */}
             <div>
-              <label className="text-[10px] uppercase tracking-widest mb-1 block" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <label className="text-[10px] uppercase tracking-widest font-bold mb-1 block text-plum/55">
                 Email
               </label>
               <input
@@ -117,7 +123,7 @@ export default function ContactPage() {
 
             {/* Event date */}
             <div>
-              <label className="text-[10px] uppercase tracking-widest mb-1 block" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <label className="text-[10px] uppercase tracking-widest font-bold mb-1 block text-plum/55">
                 Event Date (optional)
               </label>
               <input
@@ -130,7 +136,7 @@ export default function ContactPage() {
 
             {/* Dessert type pills */}
             <div>
-              <label className="text-[10px] uppercase tracking-widest mb-2 block" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <label className="text-[10px] uppercase tracking-widest font-bold mb-2 block text-plum/55">
                 Dessert Type
               </label>
               <div className="flex flex-wrap gap-2">
@@ -139,10 +145,10 @@ export default function ContactPage() {
                     key={type}
                     type="button"
                     onClick={() => handleChange('dessertType', type)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
                       form.dessertType === type
                         ? 'btn-iridescent shadow-btn'
-                        : 'glass text-white/65 hover:text-white'
+                        : 'glass-card text-plum/65 hover:text-plum'
                     }`}
                   >
                     {type}
@@ -153,7 +159,7 @@ export default function ContactPage() {
 
             {/* Message */}
             <div>
-              <label className="text-[10px] uppercase tracking-widest mb-1 block" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <label className="text-[10px] uppercase tracking-widest font-bold mb-1 block text-plum/55">
                 Message
               </label>
               <textarea
@@ -169,12 +175,12 @@ export default function ContactPage() {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full btn-brand py-4 rounded-2xl text-sm font-semibold shadow-glow"
+              className="w-full btn-brand py-4 rounded-2xl text-sm font-bold shadow-glow"
             >
               Send Message ✦
             </button>
 
-            <p className="text-center text-xs" style={{ color: 'rgba(255,255,255,0.38)' }}>
+            <p className="text-center text-xs font-medium text-plum/45">
               We respond within 24 hours · Western Massachusetts
             </p>
           </motion.form>

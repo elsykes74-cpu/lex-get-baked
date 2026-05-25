@@ -5,7 +5,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        lavender: { DEFAULT: '#B4ACCC', light: '#D8D2EC', dark: '#8A82AC', faint: '#F0EDF8' },
+        lavender: { DEFAULT: '#B4ACCC', light: '#D8D2EC', dark: '#8A82AC', faint: '#F2EFFE' },
         blush:    { DEFAULT: '#D4A8B8', light: '#EDD8E4', dark: '#B87890' },
         mauve:    { DEFAULT: '#C0A0B8', light: '#DCCCDC', dark: '#9478A0' },
         pearl:    { DEFAULT: '#FBF7FF', light: '#FFFFFF', dark: '#EDE8F8' },
@@ -22,30 +22,34 @@ const config: Config = {
         body:    ['var(--font-body)', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
-        'hero-bg':           'linear-gradient(145deg, #8878A8 0%, #9C94C0 25%, #B0AACC 55%, #C8C0DC 80%, #DCD6EC 100%)',
-        'page-bg':           'linear-gradient(160deg, #9890BC 0%, #A8A4C8 50%, #B8B4D0 100%)',
-        'brand-gradient':    'linear-gradient(135deg, #A89CC4 0%, #C9748F 50%, #D4956A 100%)',
-        'iridescent':        'linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(210,195,245,0.72) 45%, rgba(255,210,228,0.82) 100%)',
+        /* Hero: richer, more saturated so dark scrim creates proper contrast */
+        'hero-bg':  'linear-gradient(145deg, #7A6EA0 0%, #948CC0 22%, #ACA8CC 50%, #C8C0DA 78%, #DCDAEE 100%)',
+        'page-bg':  'linear-gradient(160deg, #9490BE 0%, #A4A0CA 40%, #B8B4D2 75%, #CCCAEA 100%)',
+        /* Brand */
+        'brand-gradient':    'linear-gradient(135deg, #A89CC4 0%, #C9748F 55%, #D4956A 100%)',
         'rosegold-gradient': 'linear-gradient(135deg, #D4956A 0%, #E8BA90 50%, #C9748F 100%)',
-        'card-glass':        'linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.28) 100%)',
+        /* Misc */
+        'card-glass': 'linear-gradient(135deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.45) 100%)',
       },
       boxShadow: {
-        'glass':     '0 8px 32px rgba(100,80,160,0.14), inset 0 1px 0 rgba(255,255,255,0.75)',
-        'tile':      '0 4px 20px rgba(100,80,160,0.12), inset 0 1px 0 rgba(255,255,255,0.65)',
-        'card':      '0 12px 40px rgba(100,80,160,0.18), 0 2px 8px rgba(100,80,160,0.08)',
-        'glow':      '0 0 40px rgba(201,116,143,0.45)',
-        'glow-gold': '0 0 40px rgba(212,149,106,0.5)',
-        'glow-lav':  '0 0 40px rgba(160,140,210,0.5)',
-        'btn':       '0 4px 24px rgba(180,140,210,0.32), inset 0 1px 0 rgba(255,255,255,0.95)',
+        'glass':      '0 8px 32px rgba(80,60,140,0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
+        'card':       '0 12px 40px rgba(80,60,140,0.16), 0 2px 8px rgba(80,60,140,0.08), inset 0 1.5px 0 rgba(255,255,255,1)',
+        'card-hover': '0 20px 56px rgba(80,60,140,0.22), 0 4px 16px rgba(80,60,140,0.12), inset 0 1.5px 0 rgba(255,255,255,1)',
+        'glow':       '0 0 40px rgba(201,116,143,0.45)',
+        'glow-gold':  '0 0 40px rgba(212,149,106,0.5)',
+        'glow-lav':   '0 0 40px rgba(160,140,210,0.5)',
+        'btn':        '0 6px 28px rgba(160,120,210,0.28), 0 2px 8px rgba(212,149,106,0.18), inset 0 1.5px 0 rgba(255,255,255,1)',
+        'btn-lg':     '0 10px 36px rgba(160,120,210,0.38), 0 3px 12px rgba(212,149,106,0.24), inset 0 1.5px 0 rgba(255,255,255,1)',
       },
       animation: {
-        'float-slow': 'float 6s ease-in-out infinite',
-        'float-med':  'float 4s ease-in-out infinite',
-        'float-fast': 'float 3s ease-in-out infinite',
-        'spin-slow':  'spin 20s linear infinite',
-        'pulse-soft': 'pulseSoft 3s ease-in-out infinite',
-        'shimmer':    'shimmer 2.5s linear infinite',
-        'blob':       'blob 8s ease-in-out infinite',
+        'float-slow':  'float 6s ease-in-out infinite',
+        'float-med':   'float 4s ease-in-out infinite',
+        'float-fast':  'float 3s ease-in-out infinite',
+        'spin-slow':   'spin 20s linear infinite',
+        'pulse-soft':  'pulseSoft 3s ease-in-out infinite',
+        'shimmer':     'shimmer 2.5s linear infinite',
+        'blob':        'blob 8s ease-in-out infinite',
+        'rise':        'rise 0.6s cubic-bezier(0.16,1,0.3,1) both',
       },
       keyframes: {
         float: {
@@ -65,6 +69,10 @@ const config: Config = {
           '0%, 100%': { borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' },
           '33%':      { borderRadius: '40% 60% 70% 30% / 40% 70% 30% 60%' },
           '66%':      { borderRadius: '70% 30% 50% 50% / 30% 60% 40% 70%' },
+        },
+        rise: {
+          from: { opacity: '0', transform: 'translateY(20px)' },
+          to:   { opacity: '1', transform: 'translateY(0)' },
         },
       },
       backdropBlur: { xs: '2px' },

@@ -9,22 +9,22 @@ const STEPS = ['Base', 'Filling', 'Finish', 'Size', 'Review'];
 
 const OPTIONS = {
   Base: [
-    { id: 'classic',    label: 'Brown Butter',      emoji: '🟤', desc: 'Rich, nutty, caramelized' },
-    { id: 'matcha',     label: 'Ceremonial Matcha',  emoji: '🍵', desc: 'Earthy, slightly bitter'  },
-    { id: 'red-velvet', label: 'Red Velvet',         emoji: '❤️', desc: 'Cocoa, tangy buttermilk'  },
-    { id: 'tahini',     label: 'Tahini Sesame',      emoji: '🌾', desc: 'Savory-sweet, nutty'      },
+    { id: 'classic',    label: 'Brown Butter',     emoji: '🟤', desc: 'Rich, nutty, caramelized' },
+    { id: 'matcha',     label: 'Ceremonial Matcha', emoji: '🍵', desc: 'Earthy, slightly bitter'  },
+    { id: 'red-velvet', label: 'Red Velvet',        emoji: '❤️', desc: 'Cocoa, tangy buttermilk'  },
+    { id: 'tahini',     label: 'Tahini Sesame',     emoji: '🌾', desc: 'Savory-sweet, nutty'      },
   ],
   Filling: [
-    { id: 'nutella',  label: 'Nutella Ganache', emoji: '🍫', desc: 'Dark & hazelnut'     },
-    { id: 'lychee',   label: 'Rose Lychee Jam', emoji: '🌸', desc: 'Floral, tropical'    },
-    { id: 'salted',   label: 'Salted Caramel',  emoji: '🧂', desc: 'Buttery, briny'      },
-    { id: 'none',     label: 'No Filling',      emoji: '🤍', desc: 'Pure & simple'       },
+    { id: 'nutella', label: 'Nutella Ganache', emoji: '🍫', desc: 'Dark & hazelnut'   },
+    { id: 'lychee',  label: 'Rose Lychee Jam', emoji: '🌸', desc: 'Floral, tropical'  },
+    { id: 'salted',  label: 'Salted Caramel',  emoji: '🧂', desc: 'Buttery, briny'    },
+    { id: 'none',    label: 'No Filling',      emoji: '🤍', desc: 'Pure & simple'     },
   ],
   Finish: [
-    { id: 'sea-salt',  label: 'Fleur de Sel',    emoji: '✨', desc: 'Crystalline crunch'  },
-    { id: 'gold-dust', label: 'Edible Gold',      emoji: '🌟', desc: 'Luminous, stunning'  },
-    { id: 'cocoa',     label: 'Cocoa Dusting',    emoji: '🍂', desc: 'Deep, bitter accent' },
-    { id: 'plain',     label: 'No Finish',        emoji: '🫧', desc: 'Classic, pure'       },
+    { id: 'sea-salt',  label: 'Fleur de Sel',  emoji: '✨', desc: 'Crystalline crunch' },
+    { id: 'gold-dust', label: 'Edible Gold',   emoji: '🌟', desc: 'Luminous, stunning' },
+    { id: 'cocoa',     label: 'Cocoa Dusting', emoji: '🍂', desc: 'Deep, bitter accent' },
+    { id: 'plain',     label: 'No Finish',     emoji: '🫧', desc: 'Classic, pure'       },
   ],
   Size: [
     { id: 'mini',  label: 'Mini 50g',    emoji: '🤏', desc: 'One perfect bite — $4' },
@@ -44,7 +44,7 @@ export default function CustomizePage() {
 
   const currentStepKey = STEPS[step] as StepKey;
   const currentOptions = OPTIONS[currentStepKey];
-  const isReview = STEPS[step] === 'Review';
+  const isReview       = STEPS[step] === 'Review';
 
   function select(id: string) {
     setSelections(prev => ({ ...prev, [currentStepKey]: id }));
@@ -59,18 +59,16 @@ export default function CustomizePage() {
 
           {/* Header */}
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-            <p className="text-[9px] tracking-widest uppercase mb-1" style={{ color: 'rgba(255,255,255,0.55)' }}>
-              Dessert Lab
-            </p>
-            <h1 className="font-display text-3xl italic text-white">
+            <p className="text-[9px] tracking-[0.15em] uppercase font-semibold mb-1 text-plum/55">Dessert Lab</p>
+            <h1 className="font-display text-3xl italic text-white mb-0.5" style={{ textShadow: '0 2px 12px rgba(10,4,36,0.28)' }}>
               Craft Custom<br />Formulation
             </h1>
           </motion.div>
 
-          {/* Progress */}
-          <div className="flex gap-1.5 mb-8">
+          {/* Progress bar */}
+          <div className="glass-card rounded-2xl p-1 flex gap-1 mb-8">
             {STEPS.map((s, i) => (
-              <div key={s} className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.15)' }}>
+              <div key={s} className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(45,26,74,0.1)' }}>
                 <motion.div
                   className="h-full rounded-full"
                   animate={{ width: i <= step ? '100%' : '0%' }}
@@ -90,12 +88,15 @@ export default function CustomizePage() {
                 exit={{ opacity: 0, x: -22 }}
                 transition={{ duration: 0.28 }}
               >
-                <h2 className="font-display text-xl text-white mb-0.5">
-                  Choose your <span className="text-shimmer italic">{currentStepKey}</span>
-                </h2>
-                <p className="text-xs mb-5" style={{ color: 'rgba(255,255,255,0.45)' }}>
-                  Step {step + 1} of {STEPS.length - 1}
-                </p>
+                <div className="glass-card rounded-3xl p-5 mb-4">
+                  <p className="text-[9px] tracking-[0.15em] uppercase font-bold text-plum/45 mb-1">
+                    Step {step + 1} of {STEPS.length - 1}
+                  </p>
+                  <h2 className="font-display text-xl font-bold text-plum">
+                    Choose your{' '}
+                    <span className="text-shimmer italic">{currentStepKey}</span>
+                  </h2>
+                </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   {currentOptions?.map(opt => {
@@ -105,21 +106,22 @@ export default function CustomizePage() {
                         key={opt.id}
                         onClick={() => select(opt.id)}
                         whileTap={{ scale: 0.96 }}
-                        className={`rounded-2xl p-4 text-left transition-all ${
-                          active ? 'btn-iridescent shadow-btn' : 'glass-card hover:scale-[1.02]'
+                        className={`rounded-3xl p-4 text-left transition-all ${
+                          active ? 'btn-iridescent shadow-btn' : 'glass-card hover:scale-[1.02] hover:shadow-card'
                         }`}
                       >
-                        <div className="text-2xl mb-2">{opt.emoji}</div>
-                        <p className={`text-sm font-semibold leading-snug ${active ? 'text-plum' : 'text-white'}`}>
+                        <div className="text-2xl mb-2.5">{opt.emoji}</div>
+                        <p className={`text-sm font-bold leading-snug ${active ? 'text-plum' : 'text-plum'}`}>
                           {opt.label}
                         </p>
-                        <p className={`text-[11px] mt-0.5 ${active ? 'text-plum/60' : 'text-white/50'}`}>
+                        <p className={`text-[11px] mt-0.5 font-medium ${active ? 'text-plum/62' : 'text-plum/55'}`}>
                           {opt.desc}
                         </p>
                         {active && (
-                          <div className="mt-2 w-5 h-5 rounded-full flex items-center justify-center" style={{ background: '#C9748F' }}>
-                            <span className="text-[10px] text-white font-bold">✓</span>
-                          </div>
+                          <div
+                            className="mt-2.5 w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold"
+                            style={{ background: '#C9748F' }}
+                          >✓</div>
                         )}
                       </motion.button>
                     );
@@ -131,12 +133,12 @@ export default function CustomizePage() {
             )}
           </AnimatePresence>
 
-          {/* Nav buttons */}
-          <div className="flex gap-3 mt-8">
+          {/* Navigation */}
+          <div className="flex gap-3 mt-6">
             {step > 0 && (
               <button
                 onClick={() => setStep(s => s - 1)}
-                className="flex-1 glass py-4 rounded-2xl text-sm font-medium text-white/65 hover:text-white transition-colors"
+                className="flex-1 glass-card py-3.5 rounded-2xl text-sm font-bold text-plum/65 hover:text-plum transition-colors"
               >
                 ← Back
               </button>
@@ -145,10 +147,10 @@ export default function CustomizePage() {
               <button
                 onClick={() => setStep(s => s + 1)}
                 disabled={!selections[currentStepKey]}
-                className={`flex-[2] py-4 rounded-2xl text-sm font-semibold transition-all ${
+                className={`flex-[2] py-3.5 rounded-2xl text-sm font-bold transition-all ${
                   selections[currentStepKey]
                     ? 'btn-brand shadow-glow'
-                    : 'glass text-white/25 cursor-not-allowed'
+                    : 'glass-card text-plum/30 cursor-not-allowed'
                 }`}
               >
                 {step === STEPS.length - 2 ? 'Review Order' : 'Continue →'}
@@ -156,7 +158,7 @@ export default function CustomizePage() {
             ) : (
               <button
                 onClick={() => router.push('/checkout')}
-                className="flex-[2] btn-brand py-4 rounded-2xl text-sm font-semibold shadow-glow"
+                className="flex-[2] btn-brand py-3.5 rounded-2xl text-sm font-bold shadow-glow"
               >
                 Add to Cart →
               </button>
@@ -172,22 +174,22 @@ function ReviewStep({ selections }: { selections: Record<StepKey, string> }) {
   const allOptions = Object.entries(OPTIONS) as [StepKey, typeof OPTIONS[StepKey]][];
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-      <h2 className="font-display text-xl text-white mb-1">
-        Your <span className="text-shimmer italic">Creation</span>
-      </h2>
-      <p className="text-xs mb-5" style={{ color: 'rgba(255,255,255,0.45)' }}>Here&apos;s what we&apos;ll bake for you.</p>
-
       <div className="glass-card rounded-3xl p-6 mb-4">
-        <div className="text-4xl text-center mb-4 animate-float-slow">🍪</div>
+        <p className="text-[9px] tracking-widest uppercase font-bold text-plum/45 mb-1">Your Creation</p>
+        <h2 className="font-display text-xl font-bold text-plum mb-4">
+          Here&apos;s what we&apos;ll{' '}
+          <span className="text-shimmer italic">bake</span> for you.
+        </h2>
+        <div className="text-5xl text-center mb-5 animate-float-slow">🍪</div>
         <div className="space-y-3">
           {allOptions.map(([stepKey, opts]) => {
             const chosen = opts.find(o => o.id === selections[stepKey]);
             return (
-              <div key={stepKey} className="flex items-center justify-between">
-                <span className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>{stepKey}</span>
+              <div key={stepKey} className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid rgba(45,26,74,0.08)' }}>
+                <span className="text-xs font-semibold text-plum/45">{stepKey}</span>
                 <div className="flex items-center gap-2">
                   <span className="text-sm">{chosen?.emoji}</span>
-                  <span className="text-sm font-medium text-white">{chosen?.label}</span>
+                  <span className="text-sm font-bold text-plum">{chosen?.label}</span>
                 </div>
               </div>
             );
@@ -196,8 +198,8 @@ function ReviewStep({ selections }: { selections: Record<StepKey, string> }) {
       </div>
 
       <div className="glass-card rounded-2xl p-4 flex items-center justify-between">
-        <span className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>Est. price</span>
-        <span className="font-display text-lg text-shimmer">$6 – $9</span>
+        <span className="text-sm font-semibold text-plum/55">Est. price</span>
+        <span className="font-display text-lg font-bold text-shimmer">$6 – $9</span>
       </div>
     </motion.div>
   );
