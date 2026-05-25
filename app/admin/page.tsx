@@ -52,7 +52,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-charcoal text-cream p-5 pt-10">
+    <div className="min-h-screen bg-page-bg text-cream p-5 pt-10">
       <div className="max-w-2xl mx-auto">
         <div className="mb-8">
           <p className="text-[10px] tracking-widest text-rose uppercase mb-1">Dashboard</p>

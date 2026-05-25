@@ -6,16 +6,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 
 const LINKS = [
-  { href: '/',          label: 'Home'      },
-  { href: '/menu',      label: 'Menu'      },
-  { href: '/customize', label: 'Customize' },
-  { href: '/checkout',  label: 'Order'     },
+  { href: '/',         label: 'Home'      },
+  { href: '/menu',     label: 'Menu'      },
+  { href: '/customize',label: 'Customize' },
+  { href: '/about',    label: 'About'     },
 ];
 
 export default function NavBar() {
-  const pathname = usePathname();
+  const pathname  = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open,     setOpen]     = useState(false);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -28,13 +28,15 @@ export default function NavBar() {
       <header
         className={clsx(
           'fixed top-0 inset-x-0 z-50 px-5 py-3 flex items-center justify-between transition-all duration-300',
-          scrolled ? 'glass-dark shadow-glass' : 'bg-transparent',
+          scrolled ? 'glass shadow-glass' : 'bg-transparent',
         )}
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <span className="text-lg font-display font-semibold text-shimmer">Lex Get Baked</span>
-          <span className="text-[10px] tracking-widest text-cream/40 uppercase hidden sm:block">✦ Artisan</span>
+        <Link href="/" className="flex items-center gap-1.5 group">
+          <span className="text-lg font-display font-semibold text-white tracking-wide">
+            Lex Get Baked
+          </span>
+          <span className="text-[10px] text-white/40 hidden sm:block">✦</span>
         </Link>
 
         {/* Desktop nav */}
@@ -44,10 +46,10 @@ export default function NavBar() {
               key={href}
               href={href}
               className={clsx(
-                'px-4 py-1.5 rounded-full text-sm font-body font-medium transition-all duration-200',
+                'px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200',
                 pathname === href
-                  ? 'bg-rose/20 text-rose-light border border-rose/30'
-                  : 'text-cream/60 hover:text-cream hover:bg-white/5',
+                  ? 'btn-iridescent shadow-btn'
+                  : 'text-white/65 hover:text-white hover:bg-white/12',
               )}
             >
               {label}
@@ -58,7 +60,7 @@ export default function NavBar() {
         {/* Cart pill */}
         <Link
           href="/checkout"
-          className="glass px-3 py-1.5 rounded-full text-xs font-medium text-cream/80 hover:text-cream flex items-center gap-1.5 transition-all hover:shadow-glow"
+          className="glass px-3 py-1.5 rounded-full text-xs font-semibold text-white/85 hover:text-white flex items-center gap-1.5 transition-all hover:shadow-glow"
         >
           <span>🧁</span>
           <span>Cart</span>
@@ -68,7 +70,7 @@ export default function NavBar() {
         {/* Mobile menu toggle */}
         <button
           onClick={() => setOpen(v => !v)}
-          className="sm:hidden p-2 rounded-lg glass text-cream/70"
+          className="sm:hidden p-2 rounded-xl glass text-white/75"
           aria-label="Toggle menu"
         >
           <span className={clsx('block w-4 h-0.5 bg-current mb-1 transition-transform', open && 'rotate-45 translate-y-1.5')} />
@@ -81,11 +83,11 @@ export default function NavBar() {
       <AnimatePresence>
         {open && (
           <motion.nav
-            initial={{ opacity: 0, y: -12 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed top-14 inset-x-3 z-40 glass-dark rounded-2xl p-4 flex flex-col gap-1 sm:hidden"
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed top-14 inset-x-3 z-40 glass-card rounded-2xl p-3 flex flex-col gap-1 sm:hidden"
           >
             {LINKS.map(({ href, label }) => (
               <Link
@@ -94,12 +96,21 @@ export default function NavBar() {
                 onClick={() => setOpen(false)}
                 className={clsx(
                   'px-4 py-3 rounded-xl text-sm font-medium transition-colors',
-                  pathname === href ? 'bg-rose/20 text-rose-light' : 'text-cream/70 hover:text-cream hover:bg-white/5',
+                  pathname === href
+                    ? 'btn-iridescent'
+                    : 'text-white/70 hover:text-white hover:bg-white/15',
                 )}
               >
                 {label}
               </Link>
             ))}
+            <Link
+              href="/checkout"
+              onClick={() => setOpen(false)}
+              className="px-4 py-3 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/15 transition-colors"
+            >
+              🧁 Cart
+            </Link>
           </motion.nav>
         )}
       </AnimatePresence>

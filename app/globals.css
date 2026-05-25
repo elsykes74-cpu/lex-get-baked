@@ -13,36 +13,92 @@
 
 html, body {
   height: 100%;
-  background: #0f0e1a;
-  color: #F5EDE0;
+  background: #A8A0C4;
+  color: #FFFFFF;
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(201,116,143,0.4); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: rgba(201,116,143,0.35); border-radius: 4px; }
 
-/* Glass card utility */
+/* ── Glass utilities ─────────────────────────────────────────────────── */
 .glass {
-  background: rgba(255,255,255,0.07);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(100,80,160,0.12), inset 0 1px 0 rgba(255,255,255,0.75);
 }
 
 .glass-dark {
-  background: rgba(13,10,18,0.6);
+  background: rgba(80, 60, 120, 0.28);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
 }
 
-/* Shimmer text */
+.glass-card {
+  background: rgba(255, 255, 255, 0.48);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow: 0 12px 40px rgba(100,80,160,0.15), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────── */
+.btn-iridescent {
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.88) 0%,
+    rgba(214,198,252,0.72) 45%,
+    rgba(255,214,232,0.82) 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  box-shadow: 0 4px 24px rgba(180,140,210,0.28), inset 0 1px 0 rgba(255,255,255,0.95);
+  color: #3D2860;
+  font-weight: 600;
+  transition: all 0.22s ease;
+}
+.btn-iridescent:hover {
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.96) 0%,
+    rgba(224,210,255,0.82) 45%,
+    rgba(255,224,240,0.9) 100%
+  );
+  box-shadow: 0 6px 32px rgba(180,140,210,0.42), inset 0 1px 0 rgba(255,255,255,1);
+  transform: translateY(-1px);
+}
+.btn-iridescent:active { transform: scale(0.98); }
+
+.btn-brand {
+  background: linear-gradient(135deg, #A89CC4 0%, #C9748F 50%, #D4956A 100%);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 4px 24px rgba(201,116,143,0.38), inset 0 1px 0 rgba(255,255,255,0.25);
+  color: white;
+  transition: all 0.22s ease;
+}
+.btn-brand:hover {
+  box-shadow: 0 6px 32px rgba(201,116,143,0.55);
+  transform: translateY(-1px);
+}
+.btn-brand:active { transform: scale(0.98); }
+
+/* ── Tile card ───────────────────────────────────────────────────────── */
+.tile-card {
+  background: rgba(255,255,255,0.38);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.68);
+  box-shadow: 0 4px 20px rgba(100,80,160,0.1), inset 0 1px 0 rgba(255,255,255,0.85);
+}
+
+/* ── Typography effects ──────────────────────────────────────────────── */
 .text-shimmer {
-  background: linear-gradient(90deg, #C9748F, #C4965A, #9B7EBC, #C9748F);
+  background: linear-gradient(90deg, #D4956A, #C9748F, #A89CC4, #D4956A);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -50,6 +106,39 @@ html, body {
   animation: shimmer 3s linear infinite;
 }
 
-/* Page transitions */
+.text-shimmer-pearl {
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.95),
+    rgba(255,235,248,1),
+    rgba(255,225,205,0.95),
+    rgba(255,255,255,0.95)
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* ── Inputs ──────────────────────────────────────────────────────────── */
+.input-glass {
+  background: rgba(255,255,255,0.42);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.68);
+  color: #2D1A4A;
+  transition: all 0.18s ease;
+}
+.input-glass::placeholder { color: rgba(80,60,120,0.48); }
+.input-glass:focus {
+  outline: none;
+  border-color: rgba(201,116,143,0.65);
+  box-shadow: 0 0 0 3px rgba(201,116,143,0.15);
+  background: rgba(255,255,255,0.55);
+}
+
+/* ── Utilities ───────────────────────────────────────────────────────── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
 .page-enter { opacity: 0; transform: translateY(16px); }
 .page-enter-active { opacity: 1; transform: translateY(0); transition: all 0.4s cubic-bezier(0.16,1,0.3,1); }
