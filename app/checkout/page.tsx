@@ -1,22 +1,22 @@
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Minus, ShoppingBag, Truck, Check, ArrowRight, Package, Zap, Timer, Store, Cookie, Cake } from 'lucide-react';
+import { Plus, Minus, ShoppingBag, Truck, Check, ArrowRight } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 import FloatingOrbs from '@/components/FloatingOrbs';
 
 type Step = 'cart' | 'delivery' | 'confirm';
 
 const DELIVERY_OPTIONS = [
-  { id: 'standard', label: 'Standard',  eta: '2–3 days',     price: 0,  Icon: Package, color: '#A89CC4' },
-  { id: 'express',  label: 'Express',   eta: 'Next day',     price: 8,  Icon: Zap,     color: '#C9748F' },
-  { id: 'quantum',  label: 'Quantum',   eta: '2 hours',      price: 18, Icon: Timer,   color: '#D4956A' },
-  { id: 'pickup',   label: 'Pickup',    eta: 'Ready in 1hr', price: 0,  Icon: Store,   color: '#6B8C7A' },
+  { id: 'standard', label: 'Standard',  eta: '2–3 days',     price: 0,  icon: <Truck size={18} strokeWidth={1.8} /> },
+  { id: 'express',  label: 'Express',   eta: 'Next day',     price: 8,  icon: '⚡' },
+  { id: 'quantum',  label: 'Quantum',   eta: '2 hours',      price: 18, icon: '🚀' },
+  { id: 'pickup',   label: 'Pickup',    eta: 'Ready in 1hr', price: 0,  icon: '🏪' },
 ];
 
 const SAMPLE_CART = [
-  { id: 1, name: 'Velvet Stuffed Cookie', size: 'Regular', price: 6,  qty: 2, Icon: Cookie, color: '#C9748F' },
-  { id: 2, name: 'Rose Gold Mini Cake',   size: 'Single',  price: 12, qty: 1, Icon: Cake,   color: '#D4956A' },
+  { id: 1, name: 'Velvet Stuffed Cookie', size: 'Regular', price: 6,  qty: 2, emoji: '🍪' },
+  { id: 2, name: 'Rose Gold Mini Cake',   size: 'Single',  price: 12, qty: 1, emoji: '🎂' },
 ];
 
 export default function CheckoutPage() {
@@ -42,7 +42,7 @@ export default function CheckoutPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[3.8rem] pb-28 sm:pb-14 px-4 overflow-hidden">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[4.5rem] pb-28 sm:pb-14 px-4 overflow-hidden">
         <FloatingOrbs />
         <div className="relative z-10 max-w-md mx-auto">
 
@@ -76,19 +76,17 @@ export default function CheckoutPage() {
 
                 {cart.length === 0 ? (
                   <div className="glass-card rounded-3xl p-10 text-center">
-                    <ShoppingBag size={40} strokeWidth={1.4} className="mx-auto mb-3 text-plum/28" />
+                    <ShoppingBag size={40} strokeWidth={1.4} className="mx-auto mb-3 text-plum/30" />
                     <p className="text-sm font-semibold text-plum/55">Your cart is empty</p>
                   </div>
                 ) : (
                   <div className="space-y-3 mb-5">
                     {cart.map(item => (
                       <div key={item.id} className="glass-card rounded-2xl p-4 flex items-center gap-3">
-                        {/* Icon swatch — no emoji */}
-                        <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                          style={{ background: `${item.color}18`, border: `1.5px solid ${item.color}30` }}
+                        <div className="text-2xl w-10 h-10 flex items-center justify-center rounded-xl"
+                          style={{ background: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.7)' }}
                         >
-                          <item.Icon size={18} strokeWidth={1.6} style={{ color: item.color }} />
+                          {item.emoji}
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-bold text-plum truncate">{item.name}</p>
@@ -142,33 +140,22 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mb-5">
-                  {DELIVERY_OPTIONS.map(opt => {
-                    const active = delivery === opt.id;
-                    return (
-                      <button
-                        key={opt.id}
-                        onClick={() => setDelivery(opt.id)}
-                        className={`rounded-3xl p-4 text-left transition-all ${
-                          active ? 'btn-iridescent shadow-btn' : 'glass-card hover:scale-[1.02]'
-                        }`}
-                      >
-                        <div
-                          className="w-9 h-9 rounded-xl flex items-center justify-center mb-2.5"
-                          style={{
-                            background: active ? `${opt.color}22` : `${opt.color}14`,
-                            border: `1.5px solid ${opt.color}${active ? '45' : '28'}`,
-                          }}
-                        >
-                          <opt.Icon size={16} strokeWidth={1.8} style={{ color: opt.color }} />
-                        </div>
-                        <p className="text-sm font-bold text-plum">{opt.label}</p>
-                        <p className="text-xs font-medium text-plum/55">{opt.eta}</p>
-                        <p className="text-xs font-bold mt-1 text-shimmer">
-                          {opt.price === 0 ? 'Free' : `+$${opt.price}`}
-                        </p>
-                      </button>
-                    );
-                  })}
+                  {DELIVERY_OPTIONS.map(opt => (
+                    <button
+                      key={opt.id}
+                      onClick={() => setDelivery(opt.id)}
+                      className={`rounded-3xl p-4 text-left transition-all ${
+                        delivery === opt.id ? 'btn-iridescent shadow-btn' : 'glass-card hover:scale-[1.02]'
+                      }`}
+                    >
+                      <div className="text-xl mb-2">{opt.icon}</div>
+                      <p className="text-sm font-bold text-plum">{opt.label}</p>
+                      <p className="text-xs font-medium text-plum/55">{opt.eta}</p>
+                      <p className="text-xs font-bold mt-1 text-shimmer">
+                        {opt.price === 0 ? 'Free' : `+$${opt.price}`}
+                      </p>
+                    </button>
+                  ))}
                 </div>
 
                 {delivery !== 'pickup' && (
@@ -219,12 +206,12 @@ export default function CheckoutPage() {
                 <div className="glass-card rounded-3xl p-5 mb-4">
                   {cart.map(item => (
                     <div key={item.id} className="flex justify-between text-sm py-2.5" style={{ borderBottom: '1px solid rgba(45,26,74,0.08)' }}>
-                      <span className="text-plum/65 font-medium">{item.name} ×{item.qty}</span>
+                      <span className="text-plum/65 font-medium">{item.emoji} {item.name} ×{item.qty}</span>
                       <span className="font-bold text-plum">${item.price * item.qty}</span>
                     </div>
                   ))}
                   <div className="flex justify-between text-sm py-2.5" style={{ borderBottom: '1px solid rgba(45,26,74,0.08)' }}>
-                    <span className="font-medium text-plum/65 flex items-center gap-1.5">
+                    <span className="font-medium text-plum/65 flex items-center gap-1">
                       <Truck size={13} strokeWidth={1.8} />
                       {DELIVERY_OPTIONS.find(d => d.id === delivery)?.label}
                     </span>
@@ -270,16 +257,7 @@ function OrderConfirmation({ total }: { total: number }) {
         transition={{ type: 'spring', damping: 16, stiffness: 200 }}
         className="relative z-10"
       >
-        <div
-          className="w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-6"
-          style={{
-            background: 'linear-gradient(135deg, #A89CC4, #C9748F, #D4956A)',
-            boxShadow: '0 8px 40px rgba(201,116,143,0.45)',
-            animation: 'float 5s ease-in-out infinite',
-          }}
-        >
-          <Check size={40} strokeWidth={2} style={{ color: 'white' }} />
-        </div>
+        <div className="text-7xl mb-6" style={{ animation: 'float 5s ease-in-out infinite' }}>🎉</div>
         <div className="glass-card rounded-3xl p-8 max-w-sm">
           <h1 className="font-display text-3xl italic font-bold text-plum mb-2">Order Placed!</h1>
           <p className="text-sm font-medium text-plum/65 mb-3">

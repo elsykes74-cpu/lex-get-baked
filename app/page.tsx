@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Sparkles, Gift } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import NavBar from '@/components/NavBar';
 import FloatingOrbs from '@/components/FloatingOrbs';
@@ -11,10 +11,10 @@ import FloatingOrbs from '@/components/FloatingOrbs';
 const CookieScene = dynamic(() => import('@/components/CookieScene'), { ssr: false });
 
 const FADE_UP = {
-  hidden: { opacity: 0, y: 22 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.58, ease: [0.16, 1, 0.3, 1] } },
+  hidden: { opacity: 0, y: 24 },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
 };
-const STAGGER = { show: { transition: { staggerChildren: 0.11 } } };
+const STAGGER = { show: { transition: { staggerChildren: 0.12 } } };
 
 const FEATURED = [
   { name: 'Velvet Stuffed',  price: '$6',  color: '#C9748F', tag: 'Signature',
@@ -27,33 +27,15 @@ const FEATURED = [
     image: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?w=400&q=80' },
 ];
 
-/* Chocolate chip crumbs — positioned relative to cookie wrapper */
+/* Floating chocolate chip / crumb positions around the cookie */
 const CHIPS = [
-  { size: 9,  top: '-6%',   left: '14%',  color: '#3C2018', delay: '0s',   dur: '5.2s' },
-  { size: 6,  top: '3%',    left: '76%',  color: '#D4956A', delay: '1.1s', dur: '4.6s' },
-  { size: 11, top: '53%',   left: '96%',  color: '#3C2018', delay: '0.6s', dur: '5.8s' },
-  { size: 7,  top: '84%',   left: '80%',  color: '#C9748F', delay: '1.7s', dur: '4.2s' },
-  { size: 8,  top: '103%',  left: '33%',  color: '#3C2018', delay: '0.3s', dur: '6.0s' },
-  { size: 5,  top: '90%',   left: '-7%',  color: '#D4956A', delay: '1.4s', dur: '4.8s' },
-  { size: 7,  top: '22%',   left: '-11%', color: '#3C2018', delay: '0.8s', dur: '5.4s' },
-];
-
-/* Pearl orbs — small lustrous circles in a halo around the cookie */
-const PEARLS = [
-  { size: 8,  top: '-13%', left: '88%',  delay: '0.2s', dur: '5.5s' },
-  { size: 5,  top: '7%',   left: '103%', delay: '1.3s', dur: '4.8s' },
-  { size: 10, top: '50%',  left: '98%',  delay: '0.7s', dur: '6.2s' },
-  { size: 6,  top: '83%',  left: '86%',  delay: '1.9s', dur: '5.0s' },
-  { size: 7,  top: '100%', left: '40%',  delay: '0.4s', dur: '4.5s' },
-  { size: 4,  top: '17%',  left: '-9%',  delay: '1.1s', dur: '5.8s' },
-  { size: 6,  top: '74%',  left: '-6%',  delay: '0.6s', dur: '6.5s' },
-];
-
-/* Cream splash blobs */
-const CREAM = [
-  { top: '-7%', left: '52%', w: 54, h: 38, delay: '0.5s' },
-  { top: '76%', left: '64%', w: 44, h: 30, delay: '1.6s' },
-  { top: '32%', left: '99%', w: 36, h: 26, delay: '1.0s' },
+  { top: '14%', left: '52%', size: 9,  color: '#3C2018', delay: '0s',    dur: '5.2s' },
+  { top: '22%', left: '82%', size: 6,  color: '#D4956A', delay: '1.1s',  dur: '4.6s' },
+  { top: '55%', left: '88%', size: 11, color: '#3C2018', delay: '0.6s',  dur: '5.8s' },
+  { top: '78%', left: '72%', size: 7,  color: '#C9748F', delay: '1.7s',  dur: '4.2s' },
+  { top: '82%', left: '45%', size: 8,  color: '#3C2018', delay: '0.3s',  dur: '6.0s' },
+  { top: '68%', left: '28%', size: 5,  color: '#D4956A', delay: '1.4s',  dur: '4.8s' },
+  { top: '30%', left: '24%', size: 7,  color: '#3C2018', delay: '0.8s',  dur: '5.4s' },
 ];
 
 export default function HomePage() {
@@ -69,114 +51,55 @@ export default function HomePage() {
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section
         ref={heroRef}
-        className="relative min-h-[100svh] flex flex-col overflow-hidden bg-hero-bg px-5 pt-[3.8rem] pb-8"
+        className="relative min-h-[100svh] flex flex-col overflow-hidden bg-hero-bg px-5 pt-[4.5rem] pb-8"
       >
         <FloatingOrbs />
         <CookieScene />
 
-        {/* Dark scrim — left contrast zone */}
+        {/* Dark scrim — left-side contrast zone for white headline */}
         <div
           className="pointer-events-none absolute inset-0 z-[3]"
           style={{
             background:
-              'linear-gradient(to right, rgba(10,3,32,0.74) 0%, rgba(10,3,32,0.56) 40%, rgba(10,3,32,0.16) 66%, transparent 86%)',
+              'linear-gradient(to right, rgba(10,3,32,0.72) 0%, rgba(10,3,32,0.54) 42%, rgba(10,3,32,0.18) 68%, transparent 88%)',
           }}
         />
 
-        {/* Bottom vignette */}
+        {/* Bottom vignette — smooth blend into page sections */}
         <div
-          className="pointer-events-none absolute bottom-0 inset-x-0 h-40 z-[4]"
-          style={{ background: 'linear-gradient(to top, rgba(88,76,148,0.62) 0%, transparent 100%)' }}
+          className="pointer-events-none absolute bottom-0 inset-x-0 h-44 z-[4]"
+          style={{ background: 'linear-gradient(to top, rgba(90,80,150,0.60) 0%, transparent 100%)' }}
         />
 
-        {/* ── Cookie — dimensional spinning ring ──────────────────── */}
+        {/* ── Cookie photo — dimensional, ringed ──────────────────── */}
         <div
           className="pointer-events-none absolute z-[5]"
           style={{
-            right: '-7%',
+            right: '-8%',
             top: '50%',
             transform: 'translateY(-50%) rotate(-12deg)',
-            width: '60vw',
-            maxWidth: 300,
+            width: '62vw',
+            maxWidth: 310,
           }}
         >
-          {/* Ambient glow */}
+          {/* Ambient glow beneath */}
           <div
-            className="absolute rounded-full"
+            className="absolute inset-[-30%] rounded-full"
             style={{
-              inset: '-35%',
-              background: 'radial-gradient(ellipse, rgba(212,149,106,0.40) 0%, rgba(201,116,143,0.18) 40%, transparent 68%)',
+              background: 'radial-gradient(ellipse, rgba(212,149,106,0.38) 0%, rgba(201,116,143,0.18) 40%, transparent 70%)',
               filter: 'blur(24px)',
-              animation: 'pulse-glow 4.5s ease-in-out infinite',
+              animation: 'pulse-glow 4s ease-in-out infinite',
             }}
           />
 
-          {/* Chocolate chip crumbs */}
-          {CHIPS.map((chip, i) => (
-            <div
-              key={i}
-              className="pointer-events-none absolute z-[6] rounded-full"
-              style={{
-                width: chip.size, height: chip.size,
-                top: chip.top, left: chip.left,
-                background: chip.color,
-                boxShadow: `0 2px 6px ${chip.color}80`,
-                animation: `float-chip ${chip.dur} ease-in-out ${chip.delay} infinite`,
-                opacity: 0.75,
-              }}
-            />
-          ))}
-
-          {/* Pearl orbs */}
-          {PEARLS.map((p, i) => (
-            <div
-              key={i}
-              className="pointer-events-none absolute z-[7] rounded-full"
-              style={{
-                width: p.size, height: p.size,
-                top: p.top, left: p.left,
-                background: 'radial-gradient(circle at 35% 30%, rgba(255,252,250,1), rgba(238,218,230,0.92))',
-                boxShadow: '0 2px 8px rgba(212,149,106,0.38), inset 0 1px 0 rgba(255,255,255,1)',
-                animation: `float ${p.dur} ease-in-out ${p.delay} infinite`,
-                opacity: 0.88,
-              }}
-            />
-          ))}
-
-          {/* Cream splash blobs */}
-          {CREAM.map((s, i) => (
-            <div
-              key={i}
-              className="pointer-events-none absolute z-[5]"
-              style={{
-                top: s.top, left: s.left,
-                width: s.w, height: s.h,
-                background: 'radial-gradient(ellipse, rgba(255,252,244,0.88) 0%, rgba(255,244,230,0.48) 50%, transparent 80%)',
-                filter: 'blur(9px)',
-                borderRadius: '60% 40% 30% 70% / 50% 60% 40% 50%',
-                animation: `float 7.5s ease-in-out ${s.delay} infinite`,
-              }}
-            />
-          ))}
-
-          {/* Spinning conic ring + image */}
+          {/* Rose-gold ring border */}
           <div
-            className="ring-rosegold"
-            style={{ animation: 'float 6s ease-in-out infinite' }}
+            className="ring-rosegold relative"
+            style={{
+              animation: 'float 6s ease-in-out infinite',
+            }}
           >
-            {/* Rotating conic gradient — the ring itself */}
-            <div
-              className="absolute inset-0 rounded-full"
-              style={{
-                background: 'conic-gradient(#D4956A 0%, #EDD4A8 18%, rgba(255,252,248,0.90) 36%, #E8C4DE 52%, #C9748F 66%, #A89CC4 82%, #D4956A 100%)',
-                animation: 'ring-rotate 12s linear infinite',
-              }}
-            />
-            {/* Image inset to expose 3px of the ring */}
-            <div
-              className="relative rounded-full overflow-hidden"
-              style={{ margin: '3px', background: '#0F0820', zIndex: 1 }}
-            >
+            <div className="rounded-full overflow-hidden" style={{ background: '#0F0820' }}>
               <img
                 src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=700&q=90"
                 alt=""
@@ -185,84 +108,97 @@ export default function HomePage() {
                 style={{
                   aspectRatio: '1/1',
                   objectFit: 'cover',
-                  filter: 'brightness(1.05) contrast(1.04)',
+                  filter: 'brightness(1.04) contrast(1.05)',
                 }}
               />
             </div>
-            {/* Gloss highlight */}
+            {/* Top-left gloss highlight */}
             <div
               className="absolute inset-0 rounded-full pointer-events-none"
               style={{
-                background: 'radial-gradient(ellipse at 28% 18%, rgba(255,252,248,0.40) 0%, transparent 50%)',
-                zIndex: 2,
+                background: 'radial-gradient(ellipse at 28% 18%, rgba(255,252,248,0.38) 0%, transparent 52%)',
               }}
             />
           </div>
         </div>
 
-        {/* ── Hero text ────────────────────────────────────────────── */}
+        {/* Floating chocolate chips */}
+        {CHIPS.map((chip, i) => (
+          <div
+            key={i}
+            className="pointer-events-none absolute z-[6] rounded-full"
+            style={{
+              width: chip.size,
+              height: chip.size,
+              top: chip.top,
+              left: chip.left,
+              background: chip.color,
+              boxShadow: `0 2px 6px ${chip.color}88`,
+              animation: `float-chip ${chip.dur} ease-in-out ${chip.delay} infinite`,
+              opacity: 0.72,
+            }}
+          />
+        ))}
+
+        {/* ── Hero text content ───────────────────────────────────── */}
         <motion.div
-          className="relative z-10 max-w-[300px] mt-2"
+          className="relative z-10 max-w-[300px] mt-[clamp(1.5rem,6vh,4rem)]"
           variants={STAGGER}
           initial="hidden"
           animate="show"
           style={{ y: heroY, opacity: heroOpac }}
         >
-          {/* Eyebrow */}
-          <motion.div variants={FADE_UP} className="mb-4">
+          {/* Eyebrow badge */}
+          <motion.div variants={FADE_UP} className="mb-5">
             <span
               className="glass inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] tracking-[0.14em] uppercase font-semibold"
-              style={{ color: 'rgba(255,255,255,0.88)', textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}
+              style={{ color: 'rgba(255,255,255,0.85)', textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}
             >
               <Sparkles size={9} strokeWidth={2.5} />
               Western Massachusetts · Small Batch
             </span>
           </motion.div>
 
-          {/* Headline — plum-rose tinted shadow, not heavy gray */}
+          {/* Headline */}
           <motion.h1
             variants={FADE_UP}
             className="font-display text-[50px] sm:text-[56px] leading-[1.04] font-bold italic text-white mb-1"
-            style={{ textShadow: '0 2px 22px rgba(70,20,90,0.52), 0 1px 5px rgba(201,116,143,0.32)' }}
+            style={{ textShadow: '0 2px 24px rgba(4,0,20,0.60), 0 1px 6px rgba(4,0,20,0.45)' }}
           >
             Baked with<br />
             <span className="text-shimmer-pearl not-italic">Love</span>
           </motion.h1>
 
-          {/* Glass CTA card */}
-          <motion.div variants={FADE_UP} className="glass-card rounded-3xl p-5 mt-3">
-            <p className="text-[13px] leading-relaxed mb-5 font-medium" style={{ color: 'rgba(45,26,74,0.82)' }}>
+          {/* Glass content card */}
+          <motion.div
+            variants={FADE_UP}
+            className="glass-card rounded-3xl p-5 mt-4"
+          >
+            <p className="text-[13px] leading-relaxed mb-5 font-medium" style={{ color: 'rgba(45,26,74,0.80)' }}>
               Custom desserts made for the moments people remember — stuffed cookies,
               mini cakes, and small-batch boxes crafted in Western Massachusetts.
             </p>
 
             <div className="flex flex-col gap-2.5">
-              {/* Primary CTA — clearly dominant */}
               <Link
                 href="/customize"
-                className="btn-iridescent px-5 py-3.5 rounded-2xl text-[13px] font-bold flex items-center justify-between"
+                className="btn-iridescent px-5 py-3.5 rounded-2xl text-[13px] flex items-center justify-between"
               >
                 <span>Craft Custom Box</span>
-                <div
-                  className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(201,116,143,0.18)', border: '1px solid rgba(201,116,143,0.35)' }}
-                >
-                  <ArrowRight size={12} strokeWidth={2.5} style={{ color: '#C9748F' }} />
-                </div>
+                <ArrowRight size={15} strokeWidth={2.5} style={{ color: '#C9748F' }} />
               </Link>
-              {/* Secondary CTA — clearly lighter weight */}
               <Link
                 href="/menu"
-                className="rounded-2xl px-5 py-3 text-[12px] font-semibold flex items-center justify-between transition-all hover:bg-white/32 active:scale-[0.98]"
+                className="rounded-2xl px-5 py-3.5 text-[13px] font-semibold flex items-center justify-between transition-all hover:bg-white/30 active:scale-[0.98]"
                 style={{
-                  background: 'rgba(255,255,255,0.22)',
-                  border: '1.5px solid rgba(255,255,255,0.55)',
-                  color: 'rgba(45,26,74,0.72)',
+                  background: 'rgba(255,255,255,0.30)',
+                  border: '1.5px solid rgba(255,255,255,0.68)',
+                  color: 'rgba(45,26,74,0.80)',
                   backdropFilter: 'blur(12px)',
                 }}
               >
                 <span>Explore Menu</span>
-                <ArrowRight size={13} strokeWidth={1.8} style={{ color: 'rgba(45,26,74,0.38)' }} />
+                <ArrowRight size={14} strokeWidth={2} style={{ color: 'rgba(45,26,74,0.42)' }} />
               </Link>
             </div>
           </motion.div>
@@ -270,12 +206,12 @@ export default function HomePage() {
 
         {/* Scroll cue */}
         <motion.div
-          className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-10"
-          animate={{ opacity: [0.3, 0.7, 0.3], y: [0, 6, 0] }}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-10"
+          animate={{ opacity: [0.35, 0.75, 0.35], y: [0, 6, 0] }}
           transition={{ duration: 2.8, repeat: Infinity }}
         >
-          <div className="w-px h-6 bg-gradient-to-b from-white/42 to-transparent" />
-          <span className="text-[7px] tracking-[0.30em] uppercase font-medium" style={{ color: 'rgba(255,255,255,0.36)' }}>
+          <div className="w-px h-7 bg-gradient-to-b from-white/45 to-transparent" />
+          <span className="text-[7px] tracking-[0.30em] uppercase font-medium" style={{ color: 'rgba(255,255,255,0.38)' }}>
             Scroll
           </span>
         </motion.div>
@@ -290,7 +226,7 @@ export default function HomePage() {
         >
           <div>
             <p className="text-[9px] tracking-[0.15em] uppercase font-semibold mb-1 text-plum/55">This Week</p>
-            <h2 className="font-display text-2xl italic font-bold text-white" style={{ textShadow: '0 1px 12px rgba(10,4,36,0.25)' }}>
+            <h2 className="font-display text-2xl italic text-white" style={{ textShadow: '0 1px 12px rgba(10,4,36,0.25)' }}>
               Featured Drops
             </h2>
           </div>
@@ -310,11 +246,15 @@ export default function HomePage() {
               <Link href="/menu">
                 <div className="glass-card rounded-3xl overflow-hidden cursor-pointer transition-all hover:scale-[1.03] hover:shadow-card-hover active:scale-[0.97]">
                   <div className="relative h-[110px] overflow-hidden">
-                    <Image src={p.image} alt={p.name} fill className="object-cover" sizes="152px" />
+                    <Image
+                      src={p.image} alt={p.name} fill
+                      className="object-cover"
+                      sizes="152px"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-plum/50 via-transparent to-transparent" />
                     <div
                       className="absolute top-2 left-2 text-[9px] tracking-widest uppercase px-2 py-0.5 rounded-full font-bold"
-                      style={{ background: 'rgba(255,255,255,0.84)', color: p.color, backdropFilter: 'blur(8px)' }}
+                      style={{ background: 'rgba(255,255,255,0.82)', color: p.color, border: `1px solid ${p.color}35`, backdropFilter: 'blur(8px)' }}
                     >
                       {p.tag}
                     </div>
@@ -368,17 +308,11 @@ export default function HomePage() {
           viewport={{ once: true }} transition={{ duration: 0.55 }}
           className="glass-card rounded-3xl p-7 text-center max-w-sm mx-auto"
         >
-          {/* Icon — no emoji */}
           <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,240,225,0.85))',
-              border: '1.5px solid rgba(212,149,106,0.35)',
-              boxShadow: '0 6px 24px rgba(212,149,106,0.22)',
-              animation: 'float 5.5s ease-in-out infinite',
-            }}
+            className="text-5xl mb-4 inline-block"
+            style={{ animation: 'float 5s ease-in-out infinite' }}
           >
-            <Gift size={28} strokeWidth={1.5} style={{ color: '#D4956A' }} />
+            🎁
           </div>
           <h3 className="font-display text-2xl italic font-bold text-plum mb-2">
             Build Your Dream Box

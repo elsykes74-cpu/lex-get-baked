@@ -18,21 +18,19 @@ export default function MenuPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[3.8rem] pb-28 sm:pb-14 px-4 overflow-hidden">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[4.5rem] pb-28 sm:pb-14 px-4 overflow-hidden">
         <FloatingOrbs />
         <div className="relative z-10 max-w-lg mx-auto">
 
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.46 }} className="mb-7 mt-3"
+            transition={{ duration: 0.48 }} className="mb-7 mt-3"
           >
             <p className="text-[9px] tracking-[0.16em] uppercase font-semibold mb-1 text-plum/55">
               Sensory Preview
             </p>
-            <h1 className="font-display text-3xl italic font-bold text-white mb-1.5"
-              style={{ textShadow: '0 2px 20px rgba(70,20,90,0.50), 0 1px 5px rgba(201,116,143,0.30)' }}
-            >
+            <h1 className="font-display text-3xl italic font-bold text-white mb-1.5" style={{ textShadow: '0 2px 12px rgba(10,4,36,0.28)' }}>
               The Menu
             </h1>
             <p className="text-[13px] font-medium text-plum/65">Tap any item to explore its full flavor profile.</p>
@@ -77,11 +75,11 @@ export default function MenuPage() {
                   initial={{ opacity: 0, scale: 0.93, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.93 }}
-                  transition={{ duration: 0.24, delay: i * 0.04 }}
+                  transition={{ duration: 0.26, delay: i * 0.04 }}
                   onClick={() => setSelected(item)}
                   className="glass-card rounded-3xl overflow-hidden cursor-pointer transition-all hover:scale-[1.03] hover:shadow-card-hover active:scale-[0.97]"
                 >
-                  {/* Image — no emoji overlay */}
+                  {/* Image */}
                   <div className="relative h-[118px] w-full overflow-hidden">
                     <Image
                       src={item.image} alt={item.name} fill
@@ -91,19 +89,13 @@ export default function MenuPage() {
                     {item.featured && (
                       <div
                         className="absolute top-2 left-2 flex items-center gap-0.5 text-[8px] tracking-widest uppercase px-2 py-0.5 rounded-full font-bold"
-                        style={{ background: 'rgba(255,255,255,0.86)', color: item.color, backdropFilter: 'blur(8px)' }}
+                        style={{ background: 'rgba(255,255,255,0.85)', color: item.color, backdropFilter: 'blur(8px)' }}
                       >
                         <Star size={7} fill={item.color} strokeWidth={0} />
                         Featured
                       </div>
                     )}
-                    {/* Price badge bottom-right — replaces emoji */}
-                    <div
-                      className="absolute bottom-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded-full"
-                      style={{ background: 'rgba(255,255,255,0.82)', color: item.color, backdropFilter: 'blur(8px)' }}
-                    >
-                      ${item.price}
-                    </div>
+                    <span className="absolute bottom-2 right-2 text-base drop-shadow">{item.emoji}</span>
                   </div>
 
                   {/* Info */}
@@ -168,7 +160,7 @@ export default function MenuPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-plum via-plum/30 to-transparent" />
                 <button
                   onClick={() => setSelected(null)}
-                  className="absolute top-4 right-4 glass w-9 h-9 rounded-full flex items-center justify-center text-white/75 hover:text-white text-sm font-bold"
+                  className="absolute top-4 right-4 glass w-9 h-9 rounded-full flex items-center justify-center text-white/75 hover:text-white font-bold text-sm"
                 >
                   ✕
                 </button>
