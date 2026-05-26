@@ -188,16 +188,15 @@ body { padding-bottom: env(safe-area-inset-bottom); }
 }
 
 /* ── Rose-gold ring (cookie visual) ─────────────────────────────────── */
+/* Wrapper only — spinning ring is a child element in JSX */
 .ring-rosegold {
-  padding: 3px;
-  background: linear-gradient(135deg, #D4956A 0%, #EDD4A8 25%, #FFFAF0 45%, #C9748F 65%, #A89CC4 80%, #D4956A 100%);
+  position: relative;
   border-radius: 50%;
   box-shadow:
-    0 0 0 1px rgba(255,255,255,0.6),
-    0 0 32px rgba(212,149,106,0.55),
-    0 0 64px rgba(201,116,143,0.25),
-    0 24px 64px rgba(10,4,36,0.45);
-  animation: ring-spin 14s linear infinite, float 6s ease-in-out infinite;
+    0 0 0 1px rgba(255,255,255,0.62),
+    0 0 40px rgba(212,149,106,0.58),
+    0 0 80px rgba(201,116,143,0.22),
+    0 28px 72px rgba(10,4,36,0.48);
 }
 
 /* ── Utilities ───────────────────────────────────────────────────────── */
@@ -270,6 +269,11 @@ body { padding-bottom: env(safe-area-inset-bottom); }
 @keyframes rise {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ring-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 @keyframes nav-pill-in {

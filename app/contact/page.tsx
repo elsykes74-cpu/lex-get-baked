@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, Phone, Mail, Calendar, MessageSquare, Send, CheckCircle } from 'lucide-react';
+import { User, Phone, Mail, Calendar, MessageSquare, Send, Check } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 import FloatingOrbs from '@/components/FloatingOrbs';
 
@@ -22,7 +22,7 @@ function InputRow({
   return (
     <div>
       <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold mb-1.5 text-plum/55">
-        <Icon size={10} strokeWidth={2.5} style={{ color: 'rgba(201,116,143,0.7)' }} />
+        <Icon size={10} strokeWidth={2.5} style={{ color: 'rgba(201,116,143,0.72)' }} />
         {label}
       </label>
       {children}
@@ -53,9 +53,19 @@ export default function ContactPage() {
             transition={{ type: 'spring', damping: 16 }}
             className="relative z-10"
           >
-            <div className="text-7xl mb-6" style={{ animation: 'float 5s ease-in-out infinite' }}>💌</div>
+            {/* Icon — no emoji */}
+            <div
+              className="w-22 h-22 rounded-2xl flex items-center justify-center mx-auto mb-6"
+              style={{
+                width: 88, height: 88,
+                background: 'linear-gradient(135deg, #A89CC4, #C9748F, #D4956A)',
+                boxShadow: '0 8px 40px rgba(201,116,143,0.45)',
+                animation: 'float 5s ease-in-out infinite',
+              }}
+            >
+              <Check size={40} strokeWidth={2} style={{ color: 'white' }} />
+            </div>
             <div className="glass-card rounded-3xl p-8 max-w-sm mx-auto">
-              <CheckCircle size={28} className="mx-auto mb-3" style={{ color: '#6B8C7A' }} />
               <h1 className="font-display text-3xl italic font-bold text-plum mb-3">Message Sent!</h1>
               <p className="text-[13px] font-medium text-plum/65 mb-5">
                 We&apos;ll be in touch within 24 hours to talk all things dessert.
@@ -75,7 +85,7 @@ export default function ContactPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[4.5rem] pb-28 sm:pb-14 px-4 overflow-hidden">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[3.8rem] pb-28 sm:pb-14 px-4 overflow-hidden">
         <FloatingOrbs />
         <div className="relative z-10 max-w-md mx-auto">
 
@@ -84,7 +94,9 @@ export default function ContactPage() {
             <p className="text-[9px] tracking-[0.16em] uppercase font-bold mb-1 text-plum/50">
               Let&apos;s Connect
             </p>
-            <h1 className="font-display text-3xl italic font-bold text-white mb-1" style={{ textShadow: '0 2px 12px rgba(10,4,36,0.3)' }}>
+            <h1 className="font-display text-3xl italic font-bold text-white mb-1"
+              style={{ textShadow: '0 2px 20px rgba(70,20,90,0.50), 0 1px 5px rgba(201,116,143,0.30)' }}
+            >
               Order Inquiry
             </h1>
             <p className="text-[13px] font-medium text-plum/65">
@@ -93,19 +105,17 @@ export default function ContactPage() {
           </motion.div>
 
           <motion.form
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.48 }}
+            transition={{ delay: 0.1, duration: 0.46 }}
             onSubmit={e => { e.preventDefault(); setSent(true); }}
             className="glass-card rounded-3xl p-6 space-y-4"
           >
-            {/* Name + Phone row */}
+            {/* Name + Phone */}
             <div className="grid grid-cols-2 gap-3">
               <InputRow icon={User} label="Name">
                 <input
-                  type="text"
-                  required
-                  placeholder="Your name"
+                  type="text" required placeholder="Your name"
                   value={form.name}
                   onChange={e => handleChange('name', e.target.value)}
                   className="w-full input-glass rounded-xl px-4 py-3 text-sm"
@@ -113,8 +123,7 @@ export default function ContactPage() {
               </InputRow>
               <InputRow icon={Phone} label="Phone">
                 <input
-                  type="tel"
-                  placeholder="(413) 000-0000"
+                  type="tel" placeholder="(413) 000-0000"
                   value={form.phone}
                   onChange={e => handleChange('phone', e.target.value)}
                   className="w-full input-glass rounded-xl px-4 py-3 text-sm"
@@ -122,19 +131,15 @@ export default function ContactPage() {
               </InputRow>
             </div>
 
-            {/* Email */}
             <InputRow icon={Mail} label="Email">
               <input
-                type="email"
-                required
-                placeholder="your@email.com"
+                type="email" required placeholder="your@email.com"
                 value={form.email}
                 onChange={e => handleChange('email', e.target.value)}
                 className="w-full input-glass rounded-xl px-4 py-3 text-sm"
               />
             </InputRow>
 
-            {/* Event date */}
             <InputRow icon={Calendar} label="Event Date (optional)">
               <input
                 type="date"
@@ -147,14 +152,13 @@ export default function ContactPage() {
             {/* Dessert type pills */}
             <div>
               <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold mb-2 text-plum/55">
-                <MessageSquare size={10} strokeWidth={2.5} style={{ color: 'rgba(201,116,143,0.7)' }} />
+                <MessageSquare size={10} strokeWidth={2.5} style={{ color: 'rgba(201,116,143,0.72)' }} />
                 Dessert Type
               </label>
               <div className="flex flex-wrap gap-2">
                 {DESSERT_TYPES.map(type => (
                   <button
-                    key={type}
-                    type="button"
+                    key={type} type="button"
                     onClick={() => handleChange('dessertType', type)}
                     className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
                       form.dessertType === type
@@ -168,7 +172,6 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Message */}
             <InputRow icon={MessageSquare} label="Message">
               <textarea
                 required
@@ -180,7 +183,6 @@ export default function ContactPage() {
               />
             </InputRow>
 
-            {/* Submit */}
             <button
               type="submit"
               className="w-full btn-brand py-4 rounded-2xl text-sm font-bold shadow-glow flex items-center justify-center gap-2"
