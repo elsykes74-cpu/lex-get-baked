@@ -2,88 +2,154 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, ArrowLeft, ShoppingBag, Check, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowLeft, ShoppingBag, Check, Sparkles, Star } from 'lucide-react';
 import NavBar from '@/components/NavBar';
-import FloatingOrbs from '@/components/FloatingOrbs';
 
-const STEPS = ['Base', 'Filling', 'Finish', 'Size', 'Review'];
+const STEPS = ['Base', 'Filling', 'Finish', 'Size', 'Review'] as const;
+type StepKey = 'Base' | 'Filling' | 'Finish' | 'Size';
 
-const OPTIONS = {
+const OPTIONS: Record<StepKey, { id: string; label: string; desc: string; color: string; emoji: string; tag?: string }[]> = {
   Base: [
-    { id: 'classic',    label: 'Brown Butter',      emoji: '🟤', desc: 'Rich, nutty, caramelized', color: '#D4956A' },
-    { id: 'matcha',     label: 'Ceremonial Matcha',  emoji: '🍵', desc: 'Earthy, slightly bitter',  color: '#6B8C7A' },
-    { id: 'red-velvet', label: 'Red Velvet',          emoji: '❤️', desc: 'Cocoa, tangy buttermilk',  color: '#C9748F' },
-    { id: 'tahini',     label: 'Tahini Sesame',       emoji: '🌾', desc: 'Savory-sweet, nutty',      color: '#B87040' },
+    { id: 'classic',    label: 'Brown Butter',     desc: 'Rich, nutty, caramelized',  color: '#D4956A', emoji: '🟤', tag: 'Most Popular' },
+    { id: 'matcha',     label: 'Ceremonial Matcha', desc: 'Earthy, slightly bitter',   color: '#6B8C7A', emoji: '🍵' },
+    { id: 'red-velvet', label: 'Red Velvet',        desc: 'Cocoa, tangy buttermilk',   color: '#C9748F', emoji: '❤️' },
+    { id: 'tahini',     label: 'Tahini Sesame',     desc: 'Savory-sweet, nutty',       color: '#B87040', emoji: '🌾' },
   ],
   Filling: [
-    { id: 'nutella', label: 'Nutella Ganache', emoji: '🍫', desc: 'Dark & hazelnut',   color: '#3C2018' },
-    { id: 'lychee',  label: 'Rose Lychee Jam', emoji: '🌸', desc: 'Floral, tropical',  color: '#C9748F' },
-    { id: 'salted',  label: 'Salted Caramel',  emoji: '🧂', desc: 'Buttery, briny',    color: '#D4956A' },
-    { id: 'none',    label: 'No Filling',      emoji: '🤍', desc: 'Pure & simple',     color: '#A89CC4' },
+    { id: 'nutella', label: 'Nutella Ganache',  desc: 'Dark & hazelnut',  color: '#6B4028', emoji: '🍫', tag: 'Best Seller' },
+    { id: 'lychee',  label: 'Rose Lychee Jam',  desc: 'Floral, tropical', color: '#C9748F', emoji: '🌸' },
+    { id: 'salted',  label: 'Salted Caramel',   desc: 'Buttery, briny',   color: '#D4956A', emoji: '🧂' },
+    { id: 'none',    label: 'No Filling',       desc: 'Pure & simple',    color: '#9B7EBC', emoji: '🤍' },
   ],
   Finish: [
-    { id: 'sea-salt',  label: 'Fleur de Sel',  emoji: '✨', desc: 'Crystalline crunch',  color: '#9B7EBC' },
-    { id: 'gold-dust', label: 'Edible Gold',   emoji: '🌟', desc: 'Luminous, stunning',  color: '#D4956A' },
-    { id: 'cocoa',     label: 'Cocoa Dusting', emoji: '🍂', desc: 'Deep, bitter accent',  color: '#3C2018' },
-    { id: 'plain',     label: 'No Finish',     emoji: '🫧', desc: 'Classic, pure',        color: '#A89CC4' },
+    { id: 'sea-salt',  label: 'Fleur de Sel', desc: 'Crystalline crunch', color: '#9B7EBC', emoji: '✨', tag: 'Chef\'s Pick' },
+    { id: 'gold-dust', label: 'Edible Gold',  desc: 'Luminous, stunning', color: '#D4956A', emoji: '🌟' },
+    { id: 'cocoa',     label: 'Cocoa Dusting',desc: 'Deep, bitter accent', color: '#6B4028', emoji: '🍂' },
+    { id: 'plain',     label: 'No Finish',    desc: 'Classic, pure',      color: '#9B7EBC', emoji: '🫧' },
   ],
   Size: [
-    { id: 'mini',  label: 'Mini 50g',    emoji: '🤏', desc: 'One perfect bite — $4', color: '#9B7EBC' },
-    { id: 'reg',   label: 'Regular 90g', emoji: '👌', desc: 'The signature — $6',    color: '#C9748F' },
-    { id: 'jumbo', label: 'Jumbo 150g',  emoji: '🤲', desc: 'Share-worthy — $9',     color: '#D4956A' },
+    { id: 'mini',  label: 'Mini 50g',    desc: 'One perfect bite',  color: '#9B7EBC', emoji: '🤏' },
+    { id: 'reg',   label: 'Regular 90g', desc: 'The signature',     color: '#C9748F', emoji: '👌', tag: 'Most Ordered' },
+    { id: 'jumbo', label: 'Jumbo 150g',  desc: 'Share-worthy',      color: '#D4956A', emoji: '🤲' },
   ],
 };
 
-type StepKey = keyof typeof OPTIONS;
+const PRICE_MAP: Record<string, number> = { mini: 4, reg: 6, jumbo: 9 };
+
 type Selections = Record<StepKey, string>;
+
+function liveEmoji(s: Selections) {
+  const base = { classic: '🟤', matcha: '🍵', 'red-velvet': '❤️', tahini: '🌾' }[s.Base];
+  const fill = { nutella: '🍫', lychee: '🌸', salted: '🧂', none: '' }[s.Filling];
+  const fin  = { 'sea-salt': '✨', 'gold-dust': '🌟', cocoa: '🍂', plain: '' }[s.Finish];
+  return base || '🍪';
+}
 
 export default function CustomizePage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
-  const [selections, setSelections] = useState<Selections>({
-    Base: '', Filling: '', Finish: '', Size: '',
-  });
+  const [selections, setSelections] = useState<Selections>({ Base: '', Filling: '', Finish: '', Size: '' });
 
   const currentStepKey = STEPS[step] as StepKey;
-  const currentOptions  = OPTIONS[currentStepKey];
-  const isReview        = STEPS[step] === 'Review';
+  const currentOptions = OPTIONS[currentStepKey];
+  const isReview = STEPS[step] === 'Review';
+  const price    = PRICE_MAP[selections.Size] ?? 6;
 
   function select(id: string) {
     setSelections(prev => ({ ...prev, [currentStepKey]: id }));
   }
 
+  const completedSteps = Object.values(selections).filter(Boolean).length;
+
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[4.5rem] pb-28 sm:pb-14 px-4 overflow-hidden">
-        <FloatingOrbs />
-        <div className="relative z-10 max-w-md mx-auto">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[4.5rem] pb-32 sm:pb-16 px-4">
+        <div className="max-w-md mx-auto">
 
           {/* Header */}
-          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="mb-7 mt-3">
-            <p className="text-[9px] tracking-[0.16em] uppercase font-semibold mb-1 text-plum/55">Dessert Lab</p>
-            <h1 className="font-display text-3xl italic font-bold text-white" style={{ textShadow: '0 2px 12px rgba(10,4,36,0.28)' }}>
-              Craft Your<br />
-              <span className="text-shimmer-pearl not-italic">Formulation</span>
+          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="mb-6 mt-4">
+            <p className="text-[9px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">Dessert Lab</p>
+            <h1 className="font-display text-[30px] italic font-bold text-plum leading-tight">
+              Build Your<br />Custom Cookie
             </h1>
           </motion.div>
 
-          {/* Step progress */}
-          <div className="glass-card rounded-2xl p-3 mb-6">
+          {/* ── Live Preview ─────────────────────────────────────────── */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="glass-card rounded-[24px] p-5 mb-5"
+          >
+            <div className="flex items-center gap-5">
+              {/* Cookie orb */}
+              <motion.div
+                className="flex-shrink-0 w-20 h-20 rounded-full flex items-center justify-center text-[38px]"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(249,240,255,0.95))',
+                  border: '2px solid rgba(212,149,106,0.30)',
+                  boxShadow: '0 6px 24px rgba(201,116,143,0.16), 0 0 0 1px rgba(255,255,255,0.8)',
+                }}
+                animate={{
+                  scale: completedSteps > 0 ? [1, 1.06, 1] : 1,
+                  rotate: completedSteps > 0 ? [0, 5, -3, 0] : 0,
+                }}
+                transition={{ duration: 0.5, ease: [0.16,1,0.3,1] }}
+              >
+                {liveEmoji(selections)}
+              </motion.div>
+
+              {/* Summary of selections */}
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] tracking-[0.14em] uppercase font-semibold text-muted mb-1.5">Your Creation</p>
+                <div className="space-y-0.5">
+                  {(['Base', 'Filling', 'Finish', 'Size'] as StepKey[]).map(key => {
+                    const chosen = OPTIONS[key].find(o => o.id === selections[key]);
+                    return (
+                      <div key={key} className="flex items-center gap-1.5">
+                        <span className="text-[9px] font-bold text-muted w-10">{key}</span>
+                        <span className="text-[11px] font-semibold text-plum/70 truncate">
+                          {chosen ? chosen.label : '—'}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Price */}
+              <div className="flex-shrink-0 text-right">
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={price}
+                    initial={{ y: 8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -8, opacity: 0 }}
+                    transition={{ duration: 0.22 }}
+                    className="font-display text-[22px] font-bold text-shimmer"
+                  >
+                    ${price}
+                  </motion.p>
+                </AnimatePresence>
+                <p className="text-[9px] font-semibold text-muted">per cookie</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ── Progress bar ─────────────────────────────────────────── */}
+          <div className="glass-card rounded-[18px] p-3.5 mb-5">
             <div className="flex gap-1.5 mb-2">
               {STEPS.map((s, i) => (
                 <div
                   key={s}
                   className="flex-1 overflow-hidden"
-                  style={{ height: 3, borderRadius: 9999, background: 'rgba(45,26,74,0.10)' }}
+                  style={{ height: 4, borderRadius: 9999, background: 'rgba(47,35,67,0.08)' }}
                 >
                   <motion.div
                     className="h-full rounded-full"
                     animate={{ width: i <= step ? '100%' : '0%' }}
-                    transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                     style={{
                       background: i < step
-                        ? 'linear-gradient(90deg, #A89CC4, #C9748F, #D4956A)'
+                        ? 'linear-gradient(90deg, #9B7EBC, #C9748F, #D4956A)'
                         : i === step
                           ? 'linear-gradient(90deg, #C9748F, #D4956A)'
                           : 'transparent',
@@ -101,8 +167,8 @@ export default function CustomizePage() {
                     color: i === step
                       ? '#C9748F'
                       : i < step
-                        ? 'rgba(45,26,74,0.65)'
-                        : 'rgba(45,26,74,0.30)',
+                        ? '#2F2343'
+                        : 'rgba(47,35,67,0.28)',
                   }}
                 >
                   {i < step ? '✓' : s}
@@ -111,22 +177,22 @@ export default function CustomizePage() {
             </div>
           </div>
 
+          {/* ── Step content ─────────────────────────────────────────── */}
           <AnimatePresence mode="wait">
             {!isReview ? (
               <motion.div
                 key={step}
-                initial={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.26 }}
+                exit={{ opacity: 0, x: -24 }}
+                transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="glass-card rounded-3xl p-5 mb-4">
-                  <p className="text-[9px] tracking-[0.15em] uppercase font-bold text-plum/45 mb-1">
+                <div className="glass-card rounded-[22px] px-5 py-4 mb-4">
+                  <p className="text-[9px] tracking-[0.14em] uppercase font-bold text-muted mb-0.5">
                     Step {step + 1} of {STEPS.length - 1}
                   </p>
-                  <h2 className="font-display text-xl font-bold text-plum">
-                    Choose your{' '}
-                    <span className="text-shimmer italic">{currentStepKey}</span>
+                  <h2 className="font-display text-[20px] font-bold text-plum">
+                    Choose your <em className="text-shimmer">{currentStepKey}</em>
                   </h2>
                 </div>
 
@@ -138,27 +204,38 @@ export default function CustomizePage() {
                         key={opt.id}
                         onClick={() => select(opt.id)}
                         whileTap={{ scale: 0.96 }}
-                        className={`rounded-3xl p-4 text-left transition-all ${
-                          active ? 'btn-iridescent shadow-btn' : 'glass-card hover:scale-[1.02] hover:shadow-card'
+                        transition={{ type: 'spring', damping: 18, stiffness: 320 }}
+                        className={`rounded-[24px] p-4 text-left transition-all ${
+                          active ? 'btn-iridescent' : 'glass-card hover:shadow-card-hover'
                         }`}
+                        style={active ? {} : {}}
                       >
-                        <div
-                          className="w-9 h-9 rounded-xl flex items-center justify-center text-xl mb-2.5"
-                          style={{
-                            background: `${opt.color}18`,
-                            border: `1.5px solid ${opt.color}30`,
-                          }}
-                        >
-                          {opt.emoji}
+                        {/* Top row: emoji + tag */}
+                        <div className="flex items-start justify-between mb-3">
+                          <div
+                            className="w-10 h-10 rounded-[14px] flex items-center justify-center text-xl"
+                            style={{
+                              background: `${opt.color}15`,
+                              border: `1.5px solid ${opt.color}28`,
+                            }}
+                          >
+                            {opt.emoji}
+                          </div>
+                          {opt.tag && (
+                            <span className="text-[8px] font-bold px-2 py-0.5 rounded-full"
+                              style={{ background: `${opt.color}18`, color: opt.color }}>
+                              {opt.tag}
+                            </span>
+                          )}
                         </div>
-                        <p className="text-[13px] font-bold leading-snug text-plum">{opt.label}</p>
-                        <p className="text-[11px] mt-0.5 font-medium text-plum/55">{opt.desc}</p>
+                        <p className="text-[13px] font-bold text-plum leading-tight mb-0.5">{opt.label}</p>
+                        <p className="text-[11px] font-medium text-muted">{opt.desc}</p>
                         {active && (
                           <div
-                            className="mt-2.5 w-5 h-5 rounded-full flex items-center justify-center"
+                            className="mt-3 w-5 h-5 rounded-full flex items-center justify-center"
                             style={{ background: opt.color }}
                           >
-                            <Check size={10} strokeWidth={3} style={{ color: 'white' }} />
+                            <Check size={11} strokeWidth={3} style={{ color: 'white' }} />
                           </div>
                         )}
                       </motion.button>
@@ -167,42 +244,48 @@ export default function CustomizePage() {
                 </div>
               </motion.div>
             ) : (
-              <ReviewStep selections={selections} />
+              <ReviewStep selections={selections} price={price} />
             )}
           </AnimatePresence>
 
-          {/* Navigation */}
+          {/* ── Navigation ───────────────────────────────────────────── */}
           <div className="flex gap-3 mt-6">
             {step > 0 && (
-              <button
+              <motion.button
+                whileTap={{ scale: 0.97 }}
                 onClick={() => setStep(s => s - 1)}
-                className="flex items-center gap-1.5 glass-card px-5 py-3.5 rounded-2xl text-sm font-bold text-plum/65 hover:text-plum transition-colors"
+                className="glass-card flex items-center gap-1.5 px-5 py-3 rounded-[18px] text-[13px] font-bold text-plum/60 hover:text-plum transition-colors"
+                style={{ minHeight: '52px' }}
               >
                 <ArrowLeft size={14} strokeWidth={2.5} />
                 Back
-              </button>
+              </motion.button>
             )}
+
             {!isReview ? (
-              <button
+              <motion.button
+                whileTap={{ scale: 0.97 }}
                 onClick={() => setStep(s => s + 1)}
                 disabled={!selections[currentStepKey]}
-                className={`flex-1 py-3.5 rounded-2xl text-sm font-bold transition-all flex items-center justify-center gap-2 ${
+                className={`flex-1 rounded-[18px] text-[15px] font-bold transition-all flex items-center justify-center gap-2 ${
                   selections[currentStepKey]
-                    ? 'btn-brand shadow-glow'
-                    : 'glass-card text-plum/30 cursor-not-allowed'
+                    ? 'btn-primary'
+                    : 'glass-card text-plum/25 cursor-not-allowed'
                 }`}
+                style={{ minHeight: '52px' }}
               >
                 {step === STEPS.length - 2 ? 'Review Order' : 'Continue'}
-                {selections[currentStepKey] && <ArrowRight size={14} strokeWidth={2.5} />}
-              </button>
+                {selections[currentStepKey] && <ArrowRight size={15} strokeWidth={2.5} />}
+              </motion.button>
             ) : (
-              <button
+              <motion.button
+                whileTap={{ scale: 0.97 }}
                 onClick={() => router.push('/checkout')}
-                className="flex-1 btn-brand py-3.5 rounded-2xl text-sm font-bold shadow-glow flex items-center justify-center gap-2"
+                className="flex-1 btn-brand rounded-[18px] text-[15px] font-bold flex items-center justify-center gap-2"
               >
-                <ShoppingBag size={15} strokeWidth={2.2} />
-                Add to Cart
-              </button>
+                <ShoppingBag size={16} strokeWidth={2.2} />
+                Add to Cart · ${price}
+              </motion.button>
             )}
           </div>
         </div>
@@ -211,47 +294,28 @@ export default function CustomizePage() {
   );
 }
 
-function ReviewStep({ selections }: { selections: Selections }) {
-  const allOptions = Object.entries(OPTIONS) as [StepKey, typeof OPTIONS[StepKey]][];
-  const priceMap: Record<string, number> = { mini: 4, reg: 6, jumbo: 9 };
-  const price = priceMap[selections.Size] ?? 6;
-
+function ReviewStep({ selections, price }: { selections: Selections; price: number }) {
   return (
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.38 }}>
-      <div className="glass-card rounded-3xl p-6 mb-4">
-        <p className="text-[9px] tracking-widest uppercase font-bold text-plum/45 mb-1">Your Creation</p>
-        <h2 className="font-display text-xl font-bold text-plum mb-4">
-          Here&apos;s what we&apos;ll{' '}
-          <span className="text-shimmer italic">bake</span> for you.
+      <div className="glass-card rounded-[24px] p-6 mb-4">
+        <p className="text-[9px] tracking-[0.16em] uppercase font-bold text-muted mb-1">Your Creation</p>
+        <h2 className="font-display text-[20px] font-bold text-plum mb-5">
+          Here's what we'll <em className="text-shimmer">bake</em> for you.
         </h2>
 
-        {/* Preview cookie orb */}
-        <div className="flex justify-center mb-5">
-          <div
-            className="w-24 h-24 rounded-full flex items-center justify-center text-5xl"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.65), rgba(255,245,230,0.85))',
-              border: '3px solid rgba(212,149,106,0.42)',
-              boxShadow: '0 8px 32px rgba(201,116,143,0.22), 0 0 0 1px rgba(255,255,255,0.65)',
-            }}
-          >
-            🍪
-          </div>
-        </div>
-
         <div className="space-y-2">
-          {allOptions.map(([stepKey, opts]) => {
-            const chosen = opts.find(o => o.id === selections[stepKey]);
+          {(['Base', 'Filling', 'Finish', 'Size'] as StepKey[]).map(key => {
+            const chosen = OPTIONS[key].find(o => o.id === selections[key]);
             if (!chosen) return null;
             return (
               <div
-                key={stepKey}
-                className="flex items-center justify-between py-2.5 px-3 rounded-xl"
-                style={{ background: 'rgba(255,255,255,0.48)', border: '1px solid rgba(255,255,255,0.65)' }}
+                key={key}
+                className="flex items-center justify-between py-3 px-4 rounded-[14px]"
+                style={{ background: 'rgba(255,255,255,0.65)', border: '1px solid rgba(255,255,255,0.85)' }}
               >
-                <span className="text-[10px] font-bold text-plum/45 uppercase tracking-wide">{stepKey}</span>
+                <span className="text-[10px] font-bold text-muted uppercase tracking-wider">{key}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm">{chosen.emoji}</span>
+                  <span className="text-base">{chosen.emoji}</span>
                   <span className="text-[13px] font-bold text-plum">{chosen.label}</span>
                 </div>
               </div>
@@ -260,14 +324,19 @@ function ReviewStep({ selections }: { selections: Selections }) {
         </div>
       </div>
 
-      <div className="glass-card rounded-2xl p-4 flex items-center justify-between">
+      <div className="glass-card rounded-[20px] p-5 flex items-center justify-between">
         <div>
-          <p className="text-[10px] font-semibold text-plum/45 uppercase tracking-wide mb-0.5">Est. Price</p>
-          <span className="font-display text-xl font-bold text-shimmer">${price}</span>
+          <p className="text-[9px] font-semibold text-muted uppercase tracking-wider mb-1">Estimated Price</p>
+          <span className="font-display text-[22px] font-bold text-shimmer">${price}</span>
         </div>
-        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-plum/55">
-          <Sparkles size={11} strokeWidth={2} style={{ color: '#C9748F' }} />
-          Made fresh to order
+        <div className="text-right">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-muted mb-1">
+            <Sparkles size={11} strokeWidth={2} style={{ color: '#C9748F' }} />
+            Made fresh to order
+          </div>
+          <div className="flex gap-0.5 justify-end">
+            {[1,2,3,4,5].map(i => <Star key={i} size={9} fill="#D4956A" color="#D4956A" />)}
+          </div>
         </div>
       </div>
     </motion.div>

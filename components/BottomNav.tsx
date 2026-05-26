@@ -1,7 +1,7 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
 
 const NAV = [
   { href: '/',          icon: '/icons/nav-home.svg',    label: 'Home'    },
@@ -12,22 +12,35 @@ const NAV = [
 ];
 
 export default function BottomNav() {
-  const pathname = usePathname();
+  const pathname  = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const handler = () => {
+      const y = window.scrollY;
+      setScrolled(y > 80 && y > lastY);
+      lastY = y;
+    };
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
 
   return (
     <nav
       className="fixed bottom-0 inset-x-0 z-50 sm:hidden"
-      style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 6px)' }}
+      style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 8px)' }}
     >
-      <div className="mx-3 mb-2">
+      <div className="mx-4 mb-2">
         <div
-          className="rounded-3xl px-2 py-2 flex items-center justify-around"
+          className="rounded-[28px] flex items-center justify-around transition-all duration-300"
           style={{
-            background: 'rgba(255,255,255,0.68)',
-            backdropFilter: 'blur(40px)',
-            WebkitBackdropFilter: 'blur(40px)',
-            border: '1.5px solid rgba(255,255,255,0.90)',
-            boxShadow: '0 8px 40px rgba(80,60,140,0.16), 0 2px 8px rgba(80,60,140,0.10), inset 0 1.5px 0 rgba(255,255,255,1)',
+            padding: scrolled ? '6px 8px' : '10px 8px',
+            background: 'rgba(255,255,255,0.82)',
+            backdropFilter: 'blur(28px)',
+            WebkitBackdropFilter: 'blur(28px)',
+            border: '1px solid rgba(255,255,255,0.92)',
+            boxShadow: '0 4px 24px rgba(47,35,67,0.10), 0 1px 6px rgba(47,35,67,0.06), inset 0 1px 0 rgba(255,255,255,1)',
           }}
         >
           {NAV.map(({ href, icon, label }) => {
@@ -36,53 +49,57 @@ export default function BottomNav() {
               <Link
                 key={href}
                 href={href}
-                className="flex flex-col items-center gap-1 min-w-[56px]"
-                style={{ textDecoration: 'none' }}
+                className="flex flex-col items-center"
+                style={{ textDecoration: 'none', gap: scrolled ? '0' : '4px' }}
               >
                 {/* Squircle icon container */}
                 <div
                   style={{
-                    width: 56,
-                    height: 56,
+                    width: scrolled ? 44 : 54,
+                    height: scrolled ? 44 : 54,
                     borderRadius: 16,
                     padding: 4,
-                    transition: 'all 0.2s ease',
+                    transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
                     ...(active ? {
-                      background: 'linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(224,208,255,0.92) 40%, rgba(255,200,224,0.88) 70%, rgba(255,228,208,0.85) 100%)',
-                      border: '1.5px solid rgba(255,255,255,0.95)',
-                      boxShadow: '0 6px 20px rgba(160,120,210,0.30), 0 2px 6px rgba(212,149,106,0.20), inset 0 1.5px 0 rgba(255,255,255,1)',
+                      background: 'linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(224,208,255,0.90) 40%, rgba(247,196,216,0.85) 72%, rgba(243,198,157,0.82) 100%)',
+                      border: '1px solid rgba(255,255,255,0.95)',
+                      boxShadow: '0 4px 16px rgba(160,120,210,0.22), 0 1px 4px rgba(212,149,106,0.16), inset 0 1px 0 rgba(255,255,255,1)',
                     } : {
-                      background: 'rgba(255,255,255,0.30)',
-                      border: '1.5px solid rgba(255,255,255,0.50)',
-                      boxShadow: '0 2px 8px rgba(80,60,140,0.08)',
+                      background: 'rgba(255,255,255,0.35)',
+                      border: '1px solid rgba(255,255,255,0.55)',
                     }),
                   }}
                 >
                   <img
                     src={icon}
                     alt={label}
-                    width={48}
-                    height={48}
                     style={{
                       width: '100%',
                       height: '100%',
                       objectFit: 'contain',
                       borderRadius: 12,
-                      opacity: active ? 1 : 0.72,
-                      transition: 'opacity 0.2s ease',
-                      filter: active ? 'none' : 'saturate(0.7)',
+                      opacity: active ? 1 : 0.68,
+                      transition: 'all 0.25s ease',
+                      filter: active ? 'none' : 'saturate(0.65) brightness(1.05)',
                     }}
                   />
                 </div>
-                <span
-                  className="text-[9px] font-semibold tracking-wide leading-none"
-                  style={{
-                    color: active ? '#3D2260' : 'rgba(45,26,74,0.44)',
-                    fontWeight: active ? 700 : 500,
-                  }}
-                >
-                  {label}
-                </span>
+
+                {/* Label — hidden when scrolled */}
+                {!scrolled && (
+                  <span
+                    style={{
+                      fontSize: '9px',
+                      fontWeight: active ? 700 : 500,
+                      letterSpacing: '0.04em',
+                      lineHeight: 1,
+                      color: active ? '#2F2343' : 'rgba(47,35,67,0.42)',
+                      transition: 'color 0.2s ease',
+                    }}
+                  >
+                    {label}
+                  </span>
+                )}
               </Link>
             );
           })}
