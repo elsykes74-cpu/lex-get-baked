@@ -36,11 +36,11 @@ export default function BottomNav() {
           className="rounded-[28px] flex items-center justify-around transition-all duration-300"
           style={{
             padding: scrolled ? '6px 8px' : '10px 8px',
-            background: 'rgba(255,255,255,0.82)',
-            backdropFilter: 'blur(28px)',
-            WebkitBackdropFilter: 'blur(28px)',
-            border: '1px solid rgba(255,255,255,0.92)',
-            boxShadow: '0 4px 24px rgba(47,35,67,0.10), 0 1px 6px rgba(47,35,67,0.06), inset 0 1px 0 rgba(255,255,255,1)',
+            background: 'rgba(255,255,255,0.78)',
+            backdropFilter: 'blur(22px)',
+            WebkitBackdropFilter: 'blur(22px)',
+            border: '1px solid rgba(255,255,255,0.88)',
+            boxShadow: '0 2px 16px rgba(47,35,67,0.07), 0 1px 4px rgba(47,35,67,0.04), inset 0 1px 0 rgba(255,255,255,1)',
           }}
         >
           {NAV.map(({ href, icon, label }) => {
@@ -61,12 +61,12 @@ export default function BottomNav() {
                     padding: 4,
                     transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
                     ...(active ? {
-                      background: 'linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(224,208,255,0.90) 40%, rgba(247,196,216,0.85) 72%, rgba(243,198,157,0.82) 100%)',
-                      border: '1px solid rgba(255,255,255,0.95)',
-                      boxShadow: '0 4px 16px rgba(160,120,210,0.22), 0 1px 4px rgba(212,149,106,0.16), inset 0 1px 0 rgba(255,255,255,1)',
+                      background: 'linear-gradient(145deg, rgba(255,255,255,1) 0%, rgba(228,215,255,0.92) 45%, rgba(247,196,216,0.88) 100%)',
+                      border: '1px solid rgba(255,255,255,0.96)',
+                      boxShadow: '0 3px 12px rgba(160,120,210,0.18), 0 1px 3px rgba(212,149,106,0.12), inset 0 1px 0 rgba(255,255,255,1)',
                     } : {
-                      background: 'rgba(255,255,255,0.35)',
-                      border: '1px solid rgba(255,255,255,0.55)',
+                      background: 'rgba(255,255,255,0.28)',
+                      border: '1px solid rgba(255,255,255,0.48)',
                     }),
                   }}
                 >

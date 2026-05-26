@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Phone, Mail, Calendar, MessageSquare, Send, CheckCircle } from 'lucide-react';
+import { User, Phone, Mail, Calendar, MessageSquare, Send, CheckCircle, ImagePlus } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 
 const OCCASIONS = [
@@ -53,6 +53,7 @@ export default function ContactPage() {
     name: '', phone: '', email: '', eventDate: '',
     occasion: '', message: '',
   });
+  const [inspirationFile, setInspirationFile] = useState<File | null>(null);
   const [sent, setSent] = useState(false);
 
   function handleChange(key: string, value: string) {
@@ -105,7 +106,7 @@ export default function ContactPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[4.5rem] pb-32 sm:pb-16 px-4">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4">
         <div className="max-w-md mx-auto">
 
           {/* Header */}
@@ -223,6 +224,34 @@ export default function ContactPage() {
                 className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] resize-none"
               />
             </InputRow>
+
+            {/* Upload inspiration image */}
+            <div>
+              <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold mb-2 text-muted">
+                <ImagePlus size={10} strokeWidth={2.5} style={{ color: 'rgba(201,116,143,0.75)' }} />
+                Inspiration Image (optional)
+              </label>
+              <label
+                className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] flex items-center gap-3 cursor-pointer transition-all hover:bg-white/90"
+                style={{ minHeight: '52px' }}
+              >
+                <div
+                  className="w-8 h-8 rounded-[10px] flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(201,116,143,0.12)' }}
+                >
+                  <ImagePlus size={14} strokeWidth={1.8} style={{ color: '#C9748F' }} />
+                </div>
+                <span className="text-[13px] font-medium" style={{ color: inspirationFile ? '#2F2343' : 'rgba(108,101,128,0.68)' }}>
+                  {inspirationFile ? inspirationFile.name : 'Upload photo or screenshot'}
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={e => setInspirationFile(e.target.files?.[0] ?? null)}
+                />
+              </label>
+            </div>
 
             <button
               type="submit"

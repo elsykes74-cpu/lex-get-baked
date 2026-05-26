@@ -48,7 +48,7 @@ export default function CheckoutPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[4.5rem] pb-32 sm:pb-16 px-4">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4">
         <div className="max-w-md mx-auto">
 
           {/* ── Progress tabs ──────────────────────────────────────── */}

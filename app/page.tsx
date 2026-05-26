@@ -82,20 +82,14 @@ export default function HomePage() {
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section
         ref={heroRef}
-        className="relative min-h-[100svh] flex flex-col bg-hero-bg px-5 pt-[4.5rem] pb-12 overflow-hidden"
+        className="relative min-h-[100svh] flex flex-col bg-hero-bg px-5 pt-[5.5rem] pb-12 overflow-hidden"
       >
-        {/* Ambient background accents */}
+        {/* Single ambient accent — top right only */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div style={{
-            position: 'absolute', top: '-5%', right: '-12%',
-            width: '65vw', height: '65vw', maxWidth: 360,
-            background: 'radial-gradient(ellipse, rgba(247,196,216,0.40) 0%, transparent 68%)',
-            borderRadius: '50%',
-          }} />
-          <div style={{
-            position: 'absolute', bottom: '10%', left: '-12%',
-            width: '55vw', height: '55vw', maxWidth: 300,
-            background: 'radial-gradient(ellipse, rgba(155,126,188,0.18) 0%, transparent 68%)',
+            position: 'absolute', top: '-8%', right: '-14%',
+            width: '60vw', height: '60vw', maxWidth: 320,
+            background: 'radial-gradient(ellipse, rgba(247,196,216,0.28) 0%, transparent 65%)',
             borderRadius: '50%',
           }} />
         </div>
@@ -109,9 +103,9 @@ export default function HomePage() {
             y: heroY,
             position: 'absolute',
             right: '-6%',
-            top: '12%',
-            width: '58vw',
-            maxWidth: 295,
+            top: '20%',
+            width: '62vw',
+            maxWidth: 325,
             zIndex: 2,
             pointerEvents: 'none',
           }}
@@ -135,27 +129,36 @@ export default function HomePage() {
 
         {/* Hero text */}
         <motion.div
-          className="relative z-10 mt-[clamp(2rem,8vh,5rem)] max-w-[290px]"
+          className="relative z-10 mt-[clamp(1.5rem,6vh,4rem)]"
+          style={{ y: heroY, opacity: heroOpac, width: '65%', maxWidth: 310 }}
           variants={STAGGER}
           initial="hidden"
           animate="show"
-          style={{ y: heroY, opacity: heroOpac }}
         >
-          {/* Social proof badge */}
-          <motion.div variants={FADE_UP} className="mb-6">
+          {/* Eyebrow badge — location signal */}
+          <motion.div variants={FADE_UP} className="mb-4">
             <div className="inline-flex items-center gap-2 glass px-3.5 py-2 rounded-full">
-              <div className="flex gap-0.5">
-                {[1,2,3,4,5].map(i => <Star key={i} size={9} fill="#D4956A" color="#D4956A" />)}
-              </div>
-              <span className="text-[10px] font-bold text-plum/80">4.9 · 200+ Happy Orders</span>
+              <span className="text-[9px] font-bold text-plum/72 tracking-[0.14em] uppercase">
+                Western Mass · Small Batch
+              </span>
             </div>
           </motion.div>
 
-          {/* Headline */}
+          {/* Brand name — primary identity */}
+          <motion.div variants={FADE_UP} className="mb-2">
+            <p
+              className="font-display font-bold text-plum tracking-tight leading-none"
+              style={{ fontSize: '32px' }}
+            >
+              Lex Get Baked
+            </p>
+          </motion.div>
+
+          {/* Tagline — product descriptor */}
           <motion.h1
             variants={FADE_UP}
-            className="font-display font-bold leading-[1.05] text-plum mb-5"
-            style={{ fontSize: 'clamp(38px, 10.5vw, 54px)' }}
+            className="font-display font-bold leading-[1.04] text-plum mb-5"
+            style={{ fontSize: 'clamp(40px, 12vw, 60px)' }}
           >
             Luxury<br />
             Desserts.<br />
@@ -163,13 +166,17 @@ export default function HomePage() {
             by Hand.
           </motion.h1>
 
-          <motion.p variants={FADE_UP} className="text-[14px] leading-relaxed text-muted mb-8 font-medium">
-            Custom cookies, mini cakes,<br />
+          <motion.p
+            variants={FADE_UP}
+            className="leading-[1.4] text-muted mb-8 font-medium"
+            style={{ fontSize: '18px' }}
+          >
+            Custom cookies, mini cakes,
             and unforgettable dessert experiences.
           </motion.p>
 
           {/* CTAs */}
-          <motion.div variants={FADE_UP} className="flex flex-col gap-3 max-w-[260px]">
+          <motion.div variants={FADE_UP} className="flex flex-col gap-3" style={{ maxWidth: 280 }}>
             <Link href="/customize" className="btn-primary rounded-2xl px-6 w-full flex items-center justify-between">
               <span>Build Your Box</span>
               <ArrowRight size={16} strokeWidth={2.5} />

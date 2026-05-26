@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Star, X, Check, ShoppingBag } from 'lucide-react';
+import { Plus, Star, X, Check, ShoppingBag, ArrowRight } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 import { MENU_ITEMS, CATEGORIES, type MenuItem } from '@/lib/menu-data';
 
@@ -25,7 +25,7 @@ export default function MenuPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[4.5rem] pb-32 sm:pb-16 px-4">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4">
         <div className="max-w-lg mx-auto">
 
           {/* Header */}
@@ -92,36 +92,36 @@ export default function MenuPage() {
                     exit={{ opacity: 0, scale: 0.94, y: -8 }}
                     transition={{ duration: 0.26, delay: i * 0.04 }}
                     onClick={() => setSelected(item)}
-                    className="glass-card rounded-[28px] overflow-hidden cursor-pointer group"
+                    className="glass-card rounded-[32px] overflow-hidden cursor-pointer group"
                     whileHover={{ y: -4, boxShadow: '0 12px 40px rgba(80,60,140,0.12)' }}
                     whileTap={{ scale: 0.97 }}
                   >
                     {/* Image */}
-                    <div className="relative h-[130px] overflow-hidden">
+                    <div className="relative h-[220px] overflow-hidden">
                       <Image
                         src={item.image} alt={item.name} fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         sizes="(max-width: 768px) 50vw, 220px"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
 
-                      {/* Badges */}
-                      <div className="absolute top-2.5 left-2.5 flex gap-1.5">
-                        {item.featured && (
+                      {/* Popular badge */}
+                      {item.featured && (
+                        <div className="absolute top-3 left-3">
                           <span className="badge-popular flex items-center gap-1">
                             <Star size={7} fill="white" strokeWidth={0} />
                             Popular
                           </span>
-                        )}
-                      </div>
+                        </div>
+                      )}
 
-                      {/* Quick Add button */}
+                      {/* Quick Add */}
                       <motion.button
                         onClick={e => handleQuickAdd(e, item.id)}
-                        className="absolute bottom-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center transition-all"
+                        className="absolute bottom-3 right-3 w-9 h-9 rounded-full flex items-center justify-center"
                         style={{
-                          background: isAdded ? '#4CAF7D' : 'rgba(255,255,255,0.92)',
-                          boxShadow: '0 2px 10px rgba(0,0,0,0.15)',
+                          background: isAdded ? '#4CAF7D' : 'rgba(255,255,255,0.94)',
+                          boxShadow: '0 2px 10px rgba(0,0,0,0.12)',
                         }}
                         whileTap={{ scale: 0.88 }}
                         animate={isAdded ? { scale: [1, 1.18, 0.92, 1] } : {}}
@@ -135,38 +135,30 @@ export default function MenuPage() {
                     </div>
 
                     {/* Info */}
-                    <div className="p-3.5">
-                      <p className="font-display text-[14px] font-semibold text-plum leading-tight mb-1">
-                        {item.name}
-                      </p>
-                      <p className="text-[11px] mb-3 line-clamp-2 font-medium text-muted">
-                        {item.desc}
-                      </p>
-
-                      {/* Sweetness + Texture indicators */}
-                      <div className="space-y-1.5 mb-3">
-                        {[
-                          { key: 'sweetness', label: 'Sweet', val: item.sensory.sweetness },
-                          { key: 'richness',  label: 'Rich',  val: item.sensory.richness  },
-                        ].map(({ key, label, val }) => (
-                          <div key={key} className="flex items-center gap-2">
-                            <span className="text-[9px] font-semibold w-8 text-muted">{label}</span>
-                            <div className="sensory-track flex-1">
-                              <div
-                                className="h-full rounded-full"
-                                style={{ width: `${val}%`, background: `linear-gradient(90deg, ${item.color}88, ${item.color})` }}
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <span className="text-[15px] font-bold text-plum">${item.price}</span>
+                    <div className="p-4">
+                      {/* Price first — high visibility */}
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[16px] font-bold text-plum">${item.price}</span>
                         <div className="flex gap-0.5">
                           {[1,2,3,4,5].map(i => <Star key={i} size={8} fill="#D4956A" color="#D4956A" />)}
                         </div>
                       </div>
+
+                      <p className="font-display text-[22px] font-semibold text-plum leading-tight mb-2">
+                        {item.name}
+                      </p>
+                      <p className="text-[14px] leading-snug mb-4 line-clamp-2 font-medium text-muted">
+                        {item.desc}
+                      </p>
+
+                      <button
+                        onClick={e => { e.stopPropagation(); }}
+                        className="text-[12px] font-bold flex items-center gap-1 transition-colors"
+                        style={{ color: item.color }}
+                      >
+                        View Details
+                        <ArrowRight size={11} strokeWidth={2.5} />
+                      </button>
                     </div>
                   </motion.div>
                 );

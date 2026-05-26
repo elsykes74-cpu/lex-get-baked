@@ -34,20 +34,35 @@ export default function NavBar() {
           scrolled ? 'glass-card shadow-card' : 'bg-transparent',
         )}
       >
-        <div className="px-4 sm:px-6 h-[60px] flex items-center justify-between max-w-2xl mx-auto">
+        <div
+          className="px-4 sm:px-6 flex items-center justify-between max-w-2xl mx-auto transition-all duration-300"
+          style={{ height: scrolled ? '60px' : '88px' }}
+        >
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
+          <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+              className="rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
               style={{
+                width:  scrolled ? 34 : 48,
+                height: scrolled ? 34 : 48,
                 background: 'linear-gradient(135deg, #D4956A 0%, #EDD4A8 40%, #C9748F 100%)',
-                boxShadow: '0 2px 10px rgba(212,149,106,0.35), inset 0 1px 0 rgba(255,255,255,0.5)',
+                boxShadow: scrolled
+                  ? '0 2px 8px rgba(212,149,106,0.22), inset 0 1px 0 rgba(255,255,255,0.5)'
+                  : '0 3px 14px rgba(212,149,106,0.30), inset 0 1px 0 rgba(255,255,255,0.5)',
               }}
             >
-              <span className="font-display text-[13px] font-bold text-white">L</span>
+              <span
+                className="font-display font-bold text-white transition-all duration-300"
+                style={{ fontSize: scrolled ? '13px' : '18px' }}
+              >
+                L
+              </span>
             </div>
-            <span className="font-display text-[15px] font-semibold tracking-wide leading-none text-plum">
+            <span
+              className="font-display font-semibold tracking-wide leading-none text-plum transition-all duration-300"
+              style={{ fontSize: scrolled ? '15px' : '19px' }}
+            >
               Lex Get Baked
             </span>
           </Link>
