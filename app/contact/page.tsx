@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Phone, Mail, Calendar, MessageSquare, Send, CheckCircle, ImagePlus } from 'lucide-react';
+import { User, Phone, Mail, Calendar, MessageSquare, Send, CheckCircle, ImagePlus, Star, Sparkles } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 
 const OCCASIONS = [
@@ -107,164 +107,193 @@ export default function ContactPage() {
     <>
       <NavBar />
       <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-20">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-[1240px] mx-auto lg:grid lg:grid-cols-[400px_1fr] lg:gap-16 lg:items-start">
 
-          {/* Header */}
-          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="mb-8 mt-4">
-            <p className="text-[9px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">Let's Connect</p>
-            <h1 className="font-display text-[30px] lg:text-[56px] italic font-bold text-plum mb-2 leading-tight">
-              Tell Us Your<br />Dessert Dream
-            </h1>
-            <p className="text-[14px] font-medium text-muted">
-              Custom orders, events, and collaborations — we love it all.
-            </p>
-          </motion.div>
+          {/* ── LEFT COLUMN: info + contact methods ──────────────────── */}
+          <div>
+            {/* Header */}
+            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="mb-8 mt-4">
+              <p className="text-[9px] lg:text-[11px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">Let's Connect</p>
+              <h1 className="font-display text-[30px] lg:text-[52px] italic font-bold text-plum mb-3 leading-tight">
+                Tell Us Your<br />Dessert Dream
+              </h1>
+              <p className="text-[14px] lg:text-[17px] font-medium text-muted leading-relaxed">
+                Custom orders, events, and collaborations — we love it all.
+              </p>
+            </motion.div>
 
-          {/* Contact method cards */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.08 }}
-            className="grid grid-cols-3 gap-3 mb-7"
-          >
-            {CONTACT_METHODS.map(({ icon: Icon, label, handle, desc, color, bg }) => (
-              <motion.div
-                key={label}
-                whileTap={{ scale: 0.96 }}
-                className="glass-card rounded-[20px] p-4 lg:p-6 text-center cursor-pointer"
-              >
-                <div
-                  className="w-10 h-10 rounded-[14px] mx-auto mb-2.5 flex items-center justify-center"
-                  style={{ background: bg }}
-                >
-                  <Icon size={18} strokeWidth={1.8} style={{ color }} />
-                </div>
-                <p className="text-[10px] font-bold text-plum mb-0.5">{label}</p>
-                <p className="text-[9px] font-medium text-muted leading-tight">{desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Occasion selection */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.12 }}
-            className="glass-card rounded-[24px] p-5 mb-5"
-          >
-            <p className="text-[10px] tracking-[0.14em] uppercase font-bold text-muted mb-3">What's the Occasion?</p>
-            <div className="flex flex-wrap gap-2">
-              {OCCASIONS.map(occasion => (
-                <motion.button
-                  key={occasion}
-                  type="button"
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleChange('occasion', occasion)}
-                  className={`px-3.5 py-2 rounded-full text-[11px] font-bold transition-all ${
-                    form.occasion === occasion
-                      ? 'btn-iridescent'
-                      : 'glass-subtle text-plum/60 hover:text-plum'
-                  }`}
-                  style={{ minHeight: '36px' }}
-                >
-                  {occasion}
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Form */}
-          <motion.form
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.16, duration: 0.45 }}
-            onSubmit={e => { e.preventDefault(); setSent(true); }}
-            className="glass-card rounded-[24px] p-6 space-y-4"
-          >
-            <p className="text-[10px] tracking-[0.14em] uppercase font-bold text-muted">Your Details</p>
-
-            {/* Name + Phone row */}
-            <div className="grid grid-cols-2 gap-3">
-              <InputRow icon={User} label="Name">
-                <input
-                  type="text" required placeholder="Your name"
-                  value={form.name} onChange={e => handleChange('name', e.target.value)}
-                  className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px]"
-                />
-              </InputRow>
-              <InputRow icon={Phone} label="Phone">
-                <input
-                  type="tel" placeholder="(413) 000-0000"
-                  value={form.phone} onChange={e => handleChange('phone', e.target.value)}
-                  className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px]"
-                />
-              </InputRow>
-            </div>
-
-            <InputRow icon={Mail} label="Email">
-              <input
-                type="email" required placeholder="your@email.com"
-                value={form.email} onChange={e => handleChange('email', e.target.value)}
-                className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px]"
-              />
-            </InputRow>
-
-            <InputRow icon={Calendar} label="Event Date (optional)">
-              <input
-                type="date" value={form.eventDate}
-                onChange={e => handleChange('eventDate', e.target.value)}
-                className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px]"
-              />
-            </InputRow>
-
-            <InputRow icon={MessageSquare} label="Tell Us More">
-              <textarea
-                required
-                placeholder="Tell us about your dream dessert, event details, quantities..."
-                value={form.message} onChange={e => handleChange('message', e.target.value)}
-                rows={4}
-                className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] resize-none"
-              />
-            </InputRow>
-
-            {/* Upload inspiration image */}
-            <div>
-              <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold mb-2 text-muted">
-                <ImagePlus size={10} strokeWidth={2.5} style={{ color: 'rgba(201,116,143,0.75)' }} />
-                Inspiration Image (optional)
-              </label>
-              <label
-                className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] flex items-center gap-3 cursor-pointer transition-all hover:bg-white/90"
-                style={{ minHeight: '52px' }}
-              >
-                <div
-                  className="w-8 h-8 rounded-[10px] flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(201,116,143,0.12)' }}
-                >
-                  <ImagePlus size={14} strokeWidth={1.8} style={{ color: '#C9748F' }} />
-                </div>
-                <span className="text-[13px] font-medium" style={{ color: inspirationFile ? '#2F2343' : 'rgba(108,101,128,0.68)' }}>
-                  {inspirationFile ? inspirationFile.name : 'Upload photo or screenshot'}
-                </span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="sr-only"
-                  onChange={e => setInspirationFile(e.target.files?.[0] ?? null)}
-                />
-              </label>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full btn-primary rounded-[18px] h-14 text-[15px] font-bold flex items-center justify-center gap-2.5"
+            {/* Contact method cards */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.08 }}
+              className="grid grid-cols-3 lg:grid-cols-1 gap-3 mb-7"
             >
-              <Send size={16} strokeWidth={2.2} />
-              Send Message
-            </button>
+              {CONTACT_METHODS.map(({ icon: Icon, label, handle, desc, color, bg }) => (
+                <motion.div
+                  key={label}
+                  whileTap={{ scale: 0.96 }}
+                  className="glass-card rounded-[20px] p-4 lg:p-5 lg:flex lg:items-center lg:gap-4 text-center lg:text-left cursor-pointer"
+                >
+                  <div
+                    className="w-10 h-10 rounded-[14px] mx-auto lg:mx-0 mb-2.5 lg:mb-0 flex items-center justify-center flex-shrink-0"
+                    style={{ background: bg }}
+                  >
+                    <Icon size={18} strokeWidth={1.8} style={{ color }} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] lg:text-[13px] font-bold text-plum mb-0.5">{label}</p>
+                    <p className="text-[9px] lg:text-[12px] font-semibold text-plum/70 mb-0.5 lg:block hidden">{handle}</p>
+                    <p className="text-[9px] lg:text-[11px] font-medium text-muted leading-tight">{desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
 
-            <p className="text-center text-[11px] font-medium text-muted">
-              We respond within 24 hours · Western Massachusetts
-            </p>
-          </motion.form>
+            {/* Trust / quote — desktop only */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="hidden lg:block glass-card rounded-[24px] p-6"
+            >
+              <div className="flex gap-0.5 mb-3">
+                {[1,2,3,4,5].map(i => <Star key={i} size={11} fill="#D4956A" color="#D4956A" />)}
+              </div>
+              <p className="font-display text-[18px] italic font-bold text-plum leading-snug mb-3">
+                "Every order is crafted with love, care, and obsessive attention to detail."
+              </p>
+              <div className="flex items-center gap-2">
+                <Sparkles size={12} strokeWidth={2} style={{ color: '#C9748F' }} />
+                <span className="text-[11px] font-bold text-muted">Western Massachusetts · Small Batch</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* ── RIGHT COLUMN: occasion + form ────────────────────────── */}
+          <div>
+            {/* Occasion selection */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.12 }}
+              className="glass-card rounded-[24px] p-5 mb-5 mt-4 lg:mt-4"
+            >
+              <p className="text-[10px] lg:text-[11px] tracking-[0.14em] uppercase font-bold text-muted mb-3">What's the Occasion?</p>
+              <div className="flex flex-wrap gap-2">
+                {OCCASIONS.map(occasion => (
+                  <motion.button
+                    key={occasion}
+                    type="button"
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleChange('occasion', occasion)}
+                    className={`px-3.5 py-2 rounded-full text-[11px] lg:text-[13px] font-bold transition-all ${
+                      form.occasion === occasion
+                        ? 'btn-iridescent'
+                        : 'glass-subtle text-plum/60 hover:text-plum'
+                    }`}
+                    style={{ minHeight: '36px' }}
+                  >
+                    {occasion}
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Form */}
+            <motion.form
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.16, duration: 0.45 }}
+              onSubmit={e => { e.preventDefault(); setSent(true); }}
+              className="glass-card rounded-[24px] p-6 lg:p-8 space-y-4 lg:space-y-5"
+            >
+              <p className="text-[10px] lg:text-[11px] tracking-[0.14em] uppercase font-bold text-muted">Your Details</p>
+
+              {/* Name + Phone row */}
+              <div className="grid grid-cols-2 gap-3 lg:gap-4">
+                <InputRow icon={User} label="Name">
+                  <input
+                    type="text" required placeholder="Your name"
+                    value={form.name} onChange={e => handleChange('name', e.target.value)}
+                    className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[15px]"
+                  />
+                </InputRow>
+                <InputRow icon={Phone} label="Phone">
+                  <input
+                    type="tel" placeholder="(413) 000-0000"
+                    value={form.phone} onChange={e => handleChange('phone', e.target.value)}
+                    className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[15px]"
+                  />
+                </InputRow>
+              </div>
+
+              <InputRow icon={Mail} label="Email">
+                <input
+                  type="email" required placeholder="your@email.com"
+                  value={form.email} onChange={e => handleChange('email', e.target.value)}
+                  className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[15px]"
+                />
+              </InputRow>
+
+              <InputRow icon={Calendar} label="Event Date (optional)">
+                <input
+                  type="date" value={form.eventDate}
+                  onChange={e => handleChange('eventDate', e.target.value)}
+                  className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[15px]"
+                />
+              </InputRow>
+
+              <InputRow icon={MessageSquare} label="Tell Us More">
+                <textarea
+                  required
+                  placeholder="Tell us about your dream dessert, event details, quantities..."
+                  value={form.message} onChange={e => handleChange('message', e.target.value)}
+                  rows={4}
+                  className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[15px] resize-none"
+                />
+              </InputRow>
+
+              {/* Upload inspiration image */}
+              <div>
+                <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold mb-2 text-muted">
+                  <ImagePlus size={10} strokeWidth={2.5} style={{ color: 'rgba(201,116,143,0.75)' }} />
+                  Inspiration Image (optional)
+                </label>
+                <label
+                  className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] flex items-center gap-3 cursor-pointer transition-all hover:bg-white/90"
+                  style={{ minHeight: '52px' }}
+                >
+                  <div
+                    className="w-8 h-8 rounded-[10px] flex items-center justify-center flex-shrink-0"
+                    style={{ background: 'rgba(201,116,143,0.12)' }}
+                  >
+                    <ImagePlus size={14} strokeWidth={1.8} style={{ color: '#C9748F' }} />
+                  </div>
+                  <span className="text-[13px] font-medium" style={{ color: inspirationFile ? '#2F2343' : 'rgba(108,101,128,0.68)' }}>
+                    {inspirationFile ? inspirationFile.name : 'Upload photo or screenshot'}
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    onChange={e => setInspirationFile(e.target.files?.[0] ?? null)}
+                  />
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full btn-primary rounded-[18px] flex items-center justify-center gap-2.5 font-bold"
+                style={{ height: '60px', fontSize: '16px' }}
+              >
+                <Send size={16} strokeWidth={2.2} />
+                Send Message
+              </button>
+
+              <p className="text-center text-[11px] font-medium text-muted">
+                We respond within 24 hours · Western Massachusetts
+              </p>
+            </motion.form>
+          </div>
+
         </div>
       </div>
     </>
