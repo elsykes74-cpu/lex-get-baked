@@ -33,6 +33,7 @@ export default function NavBar() {
           'fixed top-0 inset-x-0 z-50 transition-all duration-300',
           scrolled ? 'glass-card shadow-card' : 'bg-transparent',
         )}
+        style={scrolled ? { backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' } : undefined}
       >
         <div
           className="px-4 sm:px-6 flex items-center justify-between max-w-2xl mx-auto transition-all duration-300"

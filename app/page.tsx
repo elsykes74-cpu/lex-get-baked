@@ -96,19 +96,20 @@ export default function HomePage() {
 
         {/* Cookie photo — right side, parallax */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.88, x: 24 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
+          initial={{ opacity: 0, x: 24 }}
+          animate={{ opacity: 0.82, x: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
           style={{
             y: heroY,
+            scale: 0.84,
+            transformOrigin: 'top center',
             position: 'absolute',
             right: '-6%',
-            top: 'calc(20% + 28px)',
+            top: 'calc(20% + 48px)',
             width: '54.5vw',
             maxWidth: 286,
             zIndex: 2,
             pointerEvents: 'none',
-            opacity: 0.88,
           }}
         >
           <div className="ring-rosegold" style={{ animation: 'float 7s ease-in-out infinite' }}>
@@ -137,10 +138,10 @@ export default function HomePage() {
           animate="show"
         >
           {/* Brand label */}
-          <motion.div variants={FADE_UP} className="mb-2">
+          <motion.div variants={FADE_UP} className="mb-3">
             <p
               className="font-display font-bold text-plum"
-              style={{ fontSize: '28px', letterSpacing: '0.04em' }}
+              style={{ fontSize: '28px', letterSpacing: '0.12em' }}
             >
               LEX GET BAKED
             </p>
@@ -158,8 +159,8 @@ export default function HomePage() {
           {/* Tagline — product descriptor */}
           <motion.h1
             variants={FADE_UP}
-            className="font-display font-bold leading-[1.04] text-plum mb-5"
-            style={{ fontSize: 'clamp(44px, 13vw, 64px)' }}
+            className="font-display font-bold leading-[.92] text-plum mb-5"
+            style={{ fontSize: 'clamp(44px, 13vw, 64px)', maxWidth: 300 }}
           >
             Luxury<br />
             Desserts.<br />
@@ -177,12 +178,12 @@ export default function HomePage() {
           </motion.p>
 
           {/* CTAs */}
-          <motion.div variants={FADE_UP} className="flex flex-col gap-3" style={{ width: '88%', maxWidth: 380 }}>
-            <Link href="/customize" className="btn-primary rounded-2xl px-6 w-full flex items-center justify-between">
+          <motion.div variants={FADE_UP} className="flex flex-col gap-3" style={{ width: '88%', maxWidth: 360 }}>
+            <Link href="/customize" className="btn-primary rounded-[24px] h-16 px-6 w-full flex items-center justify-between">
               <span>Build Your Box</span>
               <ArrowRight size={16} strokeWidth={2.5} />
             </Link>
-            <Link href="/menu" className="btn-ghost rounded-2xl px-6 w-full flex items-center justify-between">
+            <Link href="/menu" className="btn-ghost rounded-[24px] h-16 px-6 w-full flex items-center justify-between">
               <span>Explore Menu</span>
               <ArrowRight size={15} strokeWidth={2} style={{ opacity: 0.45 }} />
             </Link>
