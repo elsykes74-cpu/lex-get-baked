@@ -36,7 +36,7 @@ export default function NavBar() {
         style={scrolled ? { backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' } : undefined}
       >
         <div
-          className="px-4 sm:px-6 flex items-center justify-between max-w-2xl mx-auto transition-all duration-300"
+          className="px-4 sm:px-6 lg:px-10 xl:px-16 flex items-center justify-between w-full max-w-[1440px] mx-auto transition-all duration-300"
           style={{ height: scrolled ? '60px' : '88px' }}
         >
 
