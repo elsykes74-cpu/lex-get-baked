@@ -82,7 +82,7 @@ export default function HomePage() {
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section
         ref={heroRef}
-        className="relative min-h-[100svh] flex flex-col bg-hero-bg px-5 pt-[5.5rem] pb-11 overflow-hidden"
+        className="relative min-h-[100svh] flex flex-col bg-hero-bg px-5 pt-[5.5rem] pb-11 overflow-hidden lg:min-h-screen lg:flex-none lg:grid lg:grid-cols-2 lg:px-0 lg:pt-0 lg:pb-0"
       >
         {/* Single ambient accent — top right only */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -96,6 +96,7 @@ export default function HomePage() {
 
         {/* Cookie photo — right side, parallax */}
         <motion.div
+          className="lg:hidden"
           initial={{ opacity: 0, x: 24 }}
           animate={{ opacity: 0.82, x: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
@@ -141,10 +142,25 @@ export default function HomePage() {
           </motion.div>
         </motion.div>
 
+        {/* Desktop hero image — right column */}
+        <div className="hidden lg:flex lg:relative lg:overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=1400&q=90"
+            alt=""
+            aria-hidden
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ filter: 'contrast(1.02) saturate(0.97)' }}
+          />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(237,230,246,0.5) 0%, transparent 35%)' }} />
+          <div className="absolute bottom-16 left-12 glass px-4 py-2 rounded-full">
+            <span className="text-[11px] font-bold text-plum/70 tracking-[0.12em] uppercase">Western Mass · Small Batch</span>
+          </div>
+        </div>
+
         {/* Hero text */}
         <motion.div
-          className="relative z-10 mt-[clamp(1.38rem,5.5vh,3.68rem)]"
-          style={{ y: heroY, opacity: heroOpac, width: '65%', maxWidth: 320 }}
+          className="relative z-10 mt-[clamp(1.38rem,5.5vh,3.68rem)] w-[65%] max-w-[320px] lg:w-auto lg:max-w-none lg:flex lg:flex-col lg:justify-center lg:mt-0 lg:pl-[clamp(48px,6vw,120px)] lg:pr-12 lg:py-28"
+          style={{ y: heroY, opacity: heroOpac }}
           variants={STAGGER}
           initial="hidden"
           animate="show"
@@ -152,8 +168,8 @@ export default function HomePage() {
           {/* Brand label */}
           <motion.div variants={FADE_UP} className="mb-3">
             <p
-              className="font-display font-bold text-plum"
-              style={{ fontSize: '28px', letterSpacing: '0.12em' }}
+              className="font-display font-bold text-plum text-[28px] lg:text-[40px]"
+              style={{ letterSpacing: '0.12em' }}
             >
               LEX GET BAKED
             </p>
@@ -162,8 +178,8 @@ export default function HomePage() {
           {/* Tagline — product descriptor */}
           <motion.h1
             variants={FADE_UP}
-            className="font-display font-bold leading-[.88] text-plum mb-5"
-            style={{ fontSize: 'clamp(44px, 13vw, 64px)', maxWidth: 300, letterSpacing: '-0.04em' }}
+            className="font-display font-bold leading-[.88] text-plum mb-5 lg:mb-10 max-w-[300px] lg:max-w-none"
+            style={{ fontSize: 'clamp(44px, 9vw, 140px)', letterSpacing: '-0.04em' }}
           >
             Luxury<br />
             Desserts.<br />
@@ -173,20 +189,19 @@ export default function HomePage() {
 
           <motion.p
             variants={FADE_UP}
-            className="leading-[1.4] text-muted mb-8 font-medium"
-            style={{ fontSize: '18px' }}
+            className="leading-[1.4] text-muted mb-8 lg:mb-10 font-medium text-[18px] lg:text-[22px]"
           >
             Custom cookies, mini cakes,
             and unforgettable dessert experiences.
           </motion.p>
 
           {/* CTAs */}
-          <motion.div variants={FADE_UP} className="flex flex-col gap-3" style={{ width: '88%', maxWidth: 360 }}>
-            <Link href="/customize" className="btn-primary rounded-[24px] h-16 px-6 w-full flex items-center justify-between">
+          <motion.div variants={FADE_UP} className="flex flex-col gap-3 w-[88%] max-w-[360px] lg:w-[320px] lg:max-w-[320px]">
+            <Link href="/customize" className="btn-primary rounded-[24px] h-16 lg:h-[72px] px-6 w-full flex items-center justify-between">
               <span>Build Your Box</span>
               <ArrowRight size={16} strokeWidth={2.5} />
             </Link>
-            <Link href="/menu" className="btn-ghost rounded-[24px] h-16 px-6 w-full flex items-center justify-between">
+            <Link href="/menu" className="btn-ghost rounded-[24px] h-16 lg:h-[72px] px-6 w-full flex items-center justify-between">
               <span>Explore Menu</span>
               <ArrowRight size={15} strokeWidth={2} style={{ opacity: 0.45 }} />
             </Link>
@@ -215,114 +230,118 @@ export default function HomePage() {
       </section>
 
       {/* ── FEATURED COLLECTION ──────────────────────────────────────── */}
-      <section className="bg-page-bg px-5 pt-16 pb-10">
-        <motion.div
-          initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.48 }}
-          className="mb-7 flex items-end justify-between"
-        >
-          <div>
-            <p className="text-[9px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">This Week</p>
-            <h2 className="font-display text-[26px] font-bold text-plum italic">Featured Collection</h2>
-          </div>
-          <Link href="/menu" className="text-[12px] font-semibold text-muted hover:text-plum transition-colors flex items-center gap-1">
-            All <ArrowRight size={12} />
-          </Link>
-        </motion.div>
+      <section className="bg-page-bg px-5 lg:px-20 pt-16 lg:pt-20 pb-10 lg:pb-20">
+        <div className="max-w-[1440px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.48 }}
+            className="mb-7 lg:mb-10 flex items-end justify-between"
+          >
+            <div>
+              <p className="text-[9px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">This Week</p>
+              <h2 className="font-display text-[26px] font-bold text-plum italic">Featured Collection</h2>
+            </div>
+            <Link href="/menu" className="text-[12px] font-semibold text-muted hover:text-plum transition-colors flex items-center gap-1">
+              All <ArrowRight size={12} />
+            </Link>
+          </motion.div>
 
-        <div className="flex gap-4 overflow-x-auto pb-3 -mx-5 px-5 snap-x snap-mandatory scrollbar-hide">
-          {FEATURED.map((item, i) => (
-            <motion.div
-              key={item.name}
-              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.07, duration: 0.42 }}
-              className="snap-start flex-shrink-0 w-[158px]"
-            >
-              <Link href="/menu">
-                <motion.div
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ type: 'spring', damping: 18, stiffness: 320 }}
-                  className="glass-card rounded-[28px] overflow-hidden cursor-pointer"
-                >
-                  <div className="relative h-[130px] overflow-hidden">
-                    <Image src={item.image} alt={item.name} fill className="object-cover" sizes="158px" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                    <div
-                      className="absolute top-2.5 left-2.5 text-[9px] tracking-widest uppercase px-2.5 py-1 rounded-full font-bold"
-                      style={{ background: 'rgba(255,255,255,0.92)', color: item.color }}
-                    >
-                      {item.tag}
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <p className="font-display text-[14px] font-semibold text-plum leading-tight mb-2">{item.name}</p>
-                    <div className="flex items-center justify-between">
-                      <p className="text-[14px] font-bold text-plum">{item.price}</p>
-                      <div className="flex gap-0.5">
-                        {[1,2,3,4,5].map(i => <Star key={i} size={8} fill="#D4956A" color="#D4956A" />)}
+          <div className="flex gap-4 overflow-x-auto pb-3 -mx-5 px-5 snap-x snap-mandatory scrollbar-hide lg:grid lg:grid-cols-4 lg:overflow-x-visible lg:mx-0 lg:px-0 lg:pb-0">
+            {FEATURED.map((item, i) => (
+              <motion.div
+                key={item.name}
+                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.07, duration: 0.42 }}
+                className="snap-start flex-shrink-0 w-[158px] lg:w-auto lg:flex-shrink"
+              >
+                <Link href="/menu">
+                  <motion.div
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={{ type: 'spring', damping: 18, stiffness: 320 }}
+                    className="glass-card rounded-[28px] overflow-hidden cursor-pointer"
+                  >
+                    <div className="relative h-[130px] lg:h-[240px] overflow-hidden">
+                      <Image src={item.image} alt={item.name} fill className="object-cover" sizes="158px" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                      <div
+                        className="absolute top-2.5 left-2.5 text-[9px] tracking-widest uppercase px-2.5 py-1 rounded-full font-bold"
+                        style={{ background: 'rgba(255,255,255,0.92)', color: item.color }}
+                      >
+                        {item.tag}
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              </Link>
-            </motion.div>
-          ))}
+                    <div className="p-4">
+                      <p className="font-display text-[14px] lg:text-[18px] font-semibold text-plum leading-tight mb-2">{item.name}</p>
+                      <div className="flex items-center justify-between">
+                        <p className="text-[14px] font-bold text-plum">{item.price}</p>
+                        <div className="flex gap-0.5">
+                          {[1,2,3,4,5].map(i => <Star key={i} size={8} fill="#D4956A" color="#D4956A" />)}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── CUSTOMER LOVE ────────────────────────────────────────────── */}
-      <section className="bg-page-bg px-5 py-10">
-        <motion.div
-          initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.48 }}
-          className="mb-7"
-        >
-          <p className="text-[9px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">Reviews</p>
-          <h2 className="font-display text-[26px] font-bold text-plum italic">Customer Love</h2>
-        </motion.div>
+      <section className="bg-page-bg px-5 lg:px-20 py-10 lg:py-20">
+        <div className="max-w-[1440px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.48 }}
+            className="mb-7"
+          >
+            <p className="text-[9px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">Reviews</p>
+            <h2 className="font-display text-[26px] lg:text-[40px] font-bold text-plum italic">Customer Love</h2>
+          </motion.div>
 
-        <div className="space-y-3">
-          {TESTIMONIALS.map((t, i) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, x: -14 }} whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.07, duration: 0.42 }}
-              className="glass-card rounded-[24px] p-5"
-            >
-              <div className="flex gap-0.5 mb-3">
-                {[1,2,3,4,5].map(i => <Star key={i} size={11} fill="#D4956A" color="#D4956A" />)}
-              </div>
-              <p className="text-[14px] leading-relaxed text-plum/75 font-medium mb-3">"{t.text}"</p>
-              <p className="text-[11px] font-bold text-muted">{t.name}</p>
-            </motion.div>
-          ))}
+          <div className="space-y-3 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-6">
+            {TESTIMONIALS.map((t, i) => (
+              <motion.div
+                key={t.name}
+                initial={{ opacity: 0, x: -14 }} whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.07, duration: 0.42 }}
+                className="glass-card rounded-[24px] p-5 lg:p-8"
+              >
+                <div className="flex gap-0.5 mb-3">
+                  {[1,2,3,4,5].map(i => <Star key={i} size={11} fill="#D4956A" color="#D4956A" />)}
+                </div>
+                <p className="text-[14px] lg:text-[16px] leading-relaxed text-plum/75 font-medium mb-3">"{t.text}"</p>
+                <p className="text-[11px] font-bold text-muted">{t.name}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── STORY ────────────────────────────────────────────────────── */}
-      <section className="bg-page-bg px-5 py-10">
+      <section className="bg-page-bg px-5 lg:px-20 py-10 lg:py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.55 }}
-          className="max-w-sm mx-auto"
+          className="max-w-sm mx-auto lg:max-w-[1440px] lg:grid lg:grid-cols-[1fr_auto] lg:gap-12 lg:items-start"
         >
-          <div className="glass-card rounded-[28px] p-7 mb-4">
+          <div className="glass-card rounded-[28px] p-7 mb-4 lg:mb-0 lg:p-10">
             <p className="text-[9px] tracking-[0.18em] uppercase font-semibold mb-3 text-muted">Our Story</p>
-            <h2 className="font-display text-[28px] italic font-bold text-plum mb-3 leading-tight">
+            <h2 className="font-display text-[28px] lg:text-[48px] italic font-bold text-plum mb-3 leading-tight">
               Small batch.<br />Big love.
             </h2>
-            <p className="text-[14px] leading-relaxed text-plum/62">
+            <p className="text-[14px] lg:text-[18px] leading-relaxed text-plum/62">
               Every item is crafted using locally-sourced ingredients,
               traditional techniques, and a whole lot of heart — in
               Western Massachusetts.
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-3 lg:grid-cols-1 lg:gap-4 lg:min-w-[200px]">
             {STATS.map(([val, label]) => (
               <div key={label} className="glass-card rounded-[20px] p-4 text-center">
-                <p className="font-display text-[18px] font-bold text-shimmer mb-0.5">{val}</p>
+                <p className="font-display text-[18px] lg:text-[28px] font-bold text-shimmer mb-0.5">{val}</p>
                 <p className="text-[10px] font-semibold text-muted leading-tight">{label}</p>
               </div>
             ))}
@@ -331,11 +350,11 @@ export default function HomePage() {
       </section>
 
       {/* ── CTA STRIP ────────────────────────────────────────────────── */}
-      <section className="bg-page-bg px-5 pb-32 sm:pb-16">
+      <section className="bg-page-bg px-5 lg:px-20 pb-32 sm:pb-16 lg:pb-20 lg:pt-0">
         <motion.div
           initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.55 }}
-          className="glass-card rounded-[28px] p-8 text-center max-w-sm mx-auto relative overflow-hidden"
+          className="glass-card rounded-[28px] p-8 lg:p-16 text-center max-w-sm lg:max-w-2xl mx-auto relative overflow-hidden"
         >
           <div className="absolute inset-0 pointer-events-none" style={{
             background: 'linear-gradient(135deg, rgba(247,196,216,0.18) 0%, rgba(243,198,157,0.12) 100%)',
@@ -350,10 +369,10 @@ export default function HomePage() {
             >
               <ShoppingBag size={22} strokeWidth={2} className="text-plum" />
             </div>
-            <h3 className="font-display text-[24px] italic font-bold text-plum mb-2">
+            <h3 className="font-display text-[24px] lg:text-[40px] italic font-bold text-plum mb-2">
               Build Your Dream Box
             </h3>
-            <p className="text-[14px] leading-relaxed mb-8 text-plum/60">
+            <p className="text-[14px] lg:text-[18px] leading-relaxed mb-8 text-plum/60">
               Choose your base, fillings, and finishes —<br />
               baked fresh to your exact specifications.
             </p>

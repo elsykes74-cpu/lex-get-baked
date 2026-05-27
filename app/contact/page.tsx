@@ -106,13 +106,13 @@ export default function ContactPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4">
-        <div className="max-w-md mx-auto">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-20">
+        <div className="max-w-2xl mx-auto">
 
           {/* Header */}
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="mb-8 mt-4">
             <p className="text-[9px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">Let's Connect</p>
-            <h1 className="font-display text-[30px] italic font-bold text-plum mb-2 leading-tight">
+            <h1 className="font-display text-[30px] lg:text-[56px] italic font-bold text-plum mb-2 leading-tight">
               Tell Us Your<br />Dessert Dream
             </h1>
             <p className="text-[14px] font-medium text-muted">
@@ -130,7 +130,7 @@ export default function ContactPage() {
               <motion.div
                 key={label}
                 whileTap={{ scale: 0.96 }}
-                className="glass-card rounded-[20px] p-4 text-center cursor-pointer"
+                className="glass-card rounded-[20px] p-4 lg:p-6 text-center cursor-pointer"
               >
                 <div
                   className="w-10 h-10 rounded-[14px] mx-auto mb-2.5 flex items-center justify-center"

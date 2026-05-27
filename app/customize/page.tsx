@@ -64,13 +64,13 @@ export default function CustomizePage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4">
-        <div className="max-w-md mx-auto">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-20">
+        <div className="max-w-2xl mx-auto">
 
           {/* Header */}
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="mb-6 mt-4">
             <p className="text-[9px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">Dessert Lab</p>
-            <h1 className="font-display text-[30px] italic font-bold text-plum leading-tight">
+            <h1 className="font-display text-[30px] lg:text-[48px] italic font-bold text-plum leading-tight">
               Build Your<br />Custom Cookie
             </h1>
           </motion.div>
@@ -196,7 +196,7 @@ export default function CustomizePage() {
                   </h2>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className={`grid grid-cols-2 gap-3 ${currentOptions?.length === 4 ? 'lg:grid-cols-4' : currentOptions?.length === 3 ? 'lg:grid-cols-3' : ''}`}>
                   {currentOptions?.map(opt => {
                     const active = selections[currentStepKey] === opt.id;
                     return (
@@ -254,7 +254,7 @@ export default function CustomizePage() {
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => setStep(s => s - 1)}
-                className="glass-card flex items-center gap-1.5 px-5 py-3 rounded-[18px] text-[13px] font-bold text-plum/60 hover:text-plum transition-colors"
+                className="glass-card flex items-center gap-1.5 px-5 py-3 rounded-[18px] text-[13px] font-bold text-plum/60 hover:text-plum transition-colors lg:h-[60px]"
                 style={{ minHeight: '52px' }}
               >
                 <ArrowLeft size={14} strokeWidth={2.5} />
@@ -267,7 +267,7 @@ export default function CustomizePage() {
                 whileTap={{ scale: 0.97 }}
                 onClick={() => setStep(s => s + 1)}
                 disabled={!selections[currentStepKey]}
-                className={`flex-1 rounded-[18px] text-[15px] font-bold transition-all flex items-center justify-center gap-2 ${
+                className={`flex-1 rounded-[18px] text-[15px] font-bold transition-all flex items-center justify-center gap-2 lg:h-[60px] ${
                   selections[currentStepKey]
                     ? 'btn-primary'
                     : 'glass-card text-plum/25 cursor-not-allowed'

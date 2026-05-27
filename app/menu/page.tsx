@@ -25,8 +25,8 @@ export default function MenuPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4">
-        <div className="max-w-lg mx-auto">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-20">
+        <div className="max-w-[1440px] mx-auto">
 
           {/* Header */}
           <motion.div
@@ -36,7 +36,7 @@ export default function MenuPage() {
             <p className="text-[9px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">
               Sensory Preview
             </p>
-            <h1 className="font-display text-[32px] italic font-bold text-plum mb-1.5">
+            <h1 className="font-display text-[32px] lg:text-[56px] italic font-bold text-plum mb-1.5">
               The Menu
             </h1>
             <p className="text-[14px] font-medium text-muted">
@@ -45,7 +45,7 @@ export default function MenuPage() {
           </motion.div>
 
           {/* Category pills — floating segmented control */}
-          <div className="sticky top-[60px] z-20 -mx-4 px-4 pb-4 pt-1"
+          <div className="sticky top-[60px] lg:top-[88px] z-20 -mx-4 px-4 pb-4 lg:pb-6 pt-1"
             style={{ background: 'linear-gradient(to bottom, rgba(244,240,248,0.95) 80%, transparent)' }}
           >
             <div className="flex gap-2 overflow-x-auto scrollbar-hide">
@@ -79,7 +79,7 @@ export default function MenuPage() {
           </div>
 
           {/* Grid */}
-          <motion.div layout className="grid grid-cols-2 gap-3.5">
+          <motion.div layout className="grid grid-cols-2 lg:grid-cols-3 gap-3.5 lg:gap-6">
             <AnimatePresence>
               {filtered.map((item, i) => {
                 const isAdded = added.includes(item.id);
@@ -97,7 +97,7 @@ export default function MenuPage() {
                     whileTap={{ scale: 0.97 }}
                   >
                     {/* Image */}
-                    <div className="relative h-[220px] overflow-hidden">
+                    <div className="relative h-[220px] lg:h-[320px] overflow-hidden">
                       <Image
                         src={item.image} alt={item.name} fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -144,10 +144,10 @@ export default function MenuPage() {
                         </div>
                       </div>
 
-                      <p className="font-display text-[24px] font-semibold text-plum leading-tight mb-2">
+                      <p className="font-display text-[24px] lg:text-[28px] font-semibold text-plum leading-tight mb-2">
                         {item.name}
                       </p>
-                      <p className="text-[16px] leading-snug mb-4 line-clamp-2 font-medium text-muted">
+                      <p className="text-[16px] lg:text-[15px] leading-snug mb-4 line-clamp-2 font-medium text-muted">
                         {item.desc}
                       </p>
 
@@ -181,7 +181,7 @@ export default function MenuPage() {
             <motion.div
               initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-              className="fixed bottom-0 inset-x-0 z-50 overflow-hidden max-h-[92vh]"
+              className="fixed bottom-0 inset-x-0 z-50 overflow-hidden max-h-[92vh] lg:bottom-auto lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:w-full lg:max-w-3xl lg:max-h-[85vh] lg:rounded-[32px]"
               style={{
                 background: '#F9F7FC',
                 borderRadius: '28px 28px 0 0',
@@ -194,7 +194,7 @@ export default function MenuPage() {
               </div>
 
               {/* Hero image */}
-              <div className="relative h-[220px] w-full">
+              <div className="relative h-[220px] lg:h-[320px] w-full">
                 <Image src={selected.image} alt={selected.name} fill className="object-cover" sizes="100vw" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#F9F7FC] via-transparent to-transparent" />
                 <button
