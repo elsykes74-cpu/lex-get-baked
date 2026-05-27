@@ -89,7 +89,7 @@ export default function HomePage() {
       <section
         ref={heroRef}
         className="relative bg-hero-bg overflow-hidden min-h-[100svh] flex flex-col md:flex-none md:grid md:min-h-screen"
-        style={{ gridTemplateColumns: '52fr 48fr' }}
+        style={{ gridTemplateColumns: '52fr 48fr', gridTemplateRows: 'auto 1fr' }}
       >
         {/* Ambient glow */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -148,12 +148,40 @@ export default function HomePage() {
           </motion.div>
         </motion.div>
 
+        {/* ── Brand wordmark — desktop only, spans full width ─────────── */}
+        <motion.div
+          className="hidden md:flex items-center gap-6"
+          style={{
+            gridColumn: '1 / -1',
+            paddingTop: 'clamp(100px, 11vh, 124px)',
+            paddingBottom: 'clamp(18px, 2.2vh, 28px)',
+            paddingLeft:  'clamp(48px, 6vw, 96px)',
+            paddingRight: 'clamp(48px, 6vw, 96px)',
+          }}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="flex-1 h-px" style={{ background: 'linear-gradient(to right, transparent, rgba(212,149,106,0.42))' }} />
+          <div className="flex items-center gap-3.5 flex-shrink-0">
+            <Sparkles size={15} strokeWidth={1.8} style={{ color: '#D4956A' }} />
+            <p
+              className="font-display italic font-bold text-shimmer"
+              style={{ fontSize: 'clamp(26px, 2.6vw, 40px)', letterSpacing: '0.10em', whiteSpace: 'nowrap' }}
+            >
+              Lex Get Baked
+            </p>
+            <Sparkles size={15} strokeWidth={1.8} style={{ color: '#C9748F' }} />
+          </div>
+          <div className="flex-1 h-px" style={{ background: 'linear-gradient(to left, transparent, rgba(201,116,143,0.42))' }} />
+        </motion.div>
+
         {/* ── Text column — grid col 1 on desktop ───────────────────── */}
         <motion.div
           className="relative z-10 flex flex-col
                      mt-[clamp(1.38rem,5.5vh,3.68rem)] w-[65%] max-w-[320px]
                      md:mt-0 md:w-auto md:max-w-none md:justify-center
-                     md:pl-[clamp(48px,6vw,96px)] md:pr-[clamp(24px,3vw,48px)] md:py-28"
+                     md:pl-[clamp(48px,6vw,96px)] md:pr-[clamp(24px,3vw,48px)] md:pt-6 md:pb-28"
           style={{ y: heroY, opacity: heroOpac }}
           variants={STAGGER}
           initial="hidden"
@@ -169,8 +197,8 @@ export default function HomePage() {
             </span>
           </motion.div>
 
-          {/* Brand label */}
-          <motion.div variants={FADE_UP} className="mb-3 md:mb-5">
+          {/* Brand label — mobile only; desktop version is the centered wordmark above */}
+          <motion.div variants={FADE_UP} className="mb-3 md:hidden">
             <p
               className="font-display font-bold text-plum"
               style={{ fontSize: 'clamp(22px, 4vw, 28px)', letterSpacing: '0.12em' }}
