@@ -59,7 +59,7 @@ export default function HomePage() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -72, opacity: 0 }}
             transition={{ type: 'spring', damping: 22, stiffness: 320 }}
-            className="fixed top-[62px] inset-x-0 z-40 px-4 pointer-events-none"
+            className="fixed top-[60px] inset-x-0 z-40 px-4 pointer-events-none"
           >
             <div className="max-w-sm mx-auto pointer-events-auto">
               <Link href="/customize">
@@ -158,7 +158,7 @@ export default function HomePage() {
           <motion.h1
             variants={FADE_UP}
             className="font-display font-bold leading-[1.04] text-plum mb-5"
-            style={{ fontSize: 'clamp(40px, 12vw, 60px)' }}
+            style={{ fontSize: 'clamp(44px, 13vw, 64px)' }}
           >
             Luxury<br />
             Desserts.<br />

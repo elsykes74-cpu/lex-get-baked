@@ -45,7 +45,7 @@ export default function MenuPage() {
           </motion.div>
 
           {/* Category pills — floating segmented control */}
-          <div className="sticky top-[62px] z-20 -mx-4 px-4 pb-4 pt-1"
+          <div className="sticky top-[60px] z-20 -mx-4 px-4 pb-4 pt-1"
             style={{ background: 'linear-gradient(to bottom, rgba(244,240,248,0.95) 80%, transparent)' }}
           >
             <div className="flex gap-2 overflow-x-auto scrollbar-hide">
@@ -144,10 +144,10 @@ export default function MenuPage() {
                         </div>
                       </div>
 
-                      <p className="font-display text-[22px] font-semibold text-plum leading-tight mb-2">
+                      <p className="font-display text-[24px] font-semibold text-plum leading-tight mb-2">
                         {item.name}
                       </p>
-                      <p className="text-[14px] leading-snug mb-4 line-clamp-2 font-medium text-muted">
+                      <p className="text-[16px] leading-snug mb-4 line-clamp-2 font-medium text-muted">
                         {item.desc}
                       </p>
 

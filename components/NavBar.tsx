@@ -44,8 +44,8 @@ export default function NavBar() {
             <div
               className="rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
               style={{
-                width:  scrolled ? 34 : 48,
-                height: scrolled ? 34 : 48,
+                width:  scrolled ? 40 : 56,
+                height: scrolled ? 40 : 56,
                 background: 'linear-gradient(135deg, #D4956A 0%, #EDD4A8 40%, #C9748F 100%)',
                 boxShadow: scrolled
                   ? '0 2px 8px rgba(212,149,106,0.22), inset 0 1px 0 rgba(255,255,255,0.5)'
@@ -54,14 +54,14 @@ export default function NavBar() {
             >
               <span
                 className="font-display font-bold text-white transition-all duration-300"
-                style={{ fontSize: scrolled ? '13px' : '18px' }}
+                style={{ fontSize: scrolled ? '15px' : '21px' }}
               >
                 L
               </span>
             </div>
             <span
               className="font-display font-semibold tracking-wide leading-none text-plum transition-all duration-300"
-              style={{ fontSize: scrolled ? '15px' : '19px' }}
+              style={{ fontSize: scrolled ? '15px' : '20px' }}
             >
               Lex Get Baked
             </span>
@@ -126,7 +126,7 @@ export default function NavBar() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.97 }}
               transition={{ duration: 0.2, ease: [0.16,1,0.3,1] }}
-              className="fixed top-[68px] inset-x-4 z-40 glass-card rounded-[28px] p-2.5 flex flex-col gap-0.5 sm:hidden"
+              className="fixed top-[92px] inset-x-4 z-40 glass-card rounded-[28px] p-2.5 flex flex-col gap-0.5 sm:hidden"
             >
               {LINKS.map(({ href, label }) => (
                 <Link
