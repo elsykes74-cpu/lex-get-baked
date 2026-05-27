@@ -82,7 +82,7 @@ export default function HomePage() {
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section
         ref={heroRef}
-        className="relative min-h-[100svh] flex flex-col bg-hero-bg px-5 pt-[5.5rem] pb-12 overflow-hidden"
+        className="relative min-h-[100svh] flex flex-col bg-hero-bg px-5 pt-[5.5rem] pb-11 overflow-hidden"
       >
         {/* Single ambient accent — top right only */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -103,11 +103,12 @@ export default function HomePage() {
             y: heroY,
             position: 'absolute',
             right: '-6%',
-            top: '20%',
-            width: '62vw',
-            maxWidth: 325,
+            top: 'calc(20% + 28px)',
+            width: '54.5vw',
+            maxWidth: 286,
             zIndex: 2,
             pointerEvents: 'none',
+            opacity: 0.88,
           }}
         >
           <div className="ring-rosegold" style={{ animation: 'float 7s ease-in-out infinite' }}>
@@ -129,29 +130,29 @@ export default function HomePage() {
 
         {/* Hero text */}
         <motion.div
-          className="relative z-10 mt-[clamp(1.5rem,6vh,4rem)]"
-          style={{ y: heroY, opacity: heroOpac, width: '65%', maxWidth: 310 }}
+          className="relative z-10 mt-[clamp(1.38rem,5.5vh,3.68rem)]"
+          style={{ y: heroY, opacity: heroOpac, width: '65%', maxWidth: 320 }}
           variants={STAGGER}
           initial="hidden"
           animate="show"
         >
+          {/* Brand label */}
+          <motion.div variants={FADE_UP} className="mb-2">
+            <p
+              className="font-display font-bold text-plum"
+              style={{ fontSize: '28px', letterSpacing: '0.04em' }}
+            >
+              LEX GET BAKED
+            </p>
+          </motion.div>
+
           {/* Eyebrow badge — location signal */}
-          <motion.div variants={FADE_UP} className="mb-4">
+          <motion.div variants={FADE_UP} className="mb-3">
             <div className="inline-flex items-center gap-2 glass px-3.5 py-2 rounded-full">
               <span className="text-[9px] font-bold text-plum/72 tracking-[0.14em] uppercase">
                 Western Mass · Small Batch
               </span>
             </div>
-          </motion.div>
-
-          {/* Brand name — primary identity */}
-          <motion.div variants={FADE_UP} className="mb-2">
-            <p
-              className="font-display font-bold text-plum tracking-tight leading-none"
-              style={{ fontSize: '32px' }}
-            >
-              Lex Get Baked
-            </p>
           </motion.div>
 
           {/* Tagline — product descriptor */}
@@ -176,7 +177,7 @@ export default function HomePage() {
           </motion.p>
 
           {/* CTAs */}
-          <motion.div variants={FADE_UP} className="flex flex-col gap-3" style={{ maxWidth: 280 }}>
+          <motion.div variants={FADE_UP} className="flex flex-col gap-3" style={{ width: '88%', maxWidth: 380 }}>
             <Link href="/customize" className="btn-primary rounded-2xl px-6 w-full flex items-center justify-between">
               <span>Build Your Box</span>
               <ArrowRight size={16} strokeWidth={2.5} />

@@ -40,7 +40,7 @@ export default function NavBar() {
         >
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
+          <Link href="/" className="flex items-center group flex-shrink-0">
             <div
               className="rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
               style={{
@@ -59,12 +59,6 @@ export default function NavBar() {
                 L
               </span>
             </div>
-            <span
-              className="font-display font-semibold tracking-wide leading-none text-plum transition-all duration-300"
-              style={{ fontSize: scrolled ? '15px' : '20px' }}
-            >
-              Lex Get Baked
-            </span>
           </Link>
 
           {/* Desktop nav */}
