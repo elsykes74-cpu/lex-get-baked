@@ -37,8 +37,8 @@ export default function BottomNav() {
           style={{
             padding: scrolled ? '6px 8px' : '10px 8px',
             background: 'rgba(255,255,255,0.78)',
-            backdropFilter: 'blur(22px)',
-            WebkitBackdropFilter: 'blur(22px)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
             border: '1px solid rgba(255,255,255,0.88)',
             boxShadow: '0 2px 16px rgba(47,35,67,0.07), 0 1px 4px rgba(47,35,67,0.04), inset 0 1px 0 rgba(255,255,255,1)',
           }}

@@ -101,11 +101,11 @@ export default function HomePage() {
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
           style={{
             y: heroY,
-            scale: 0.86,
+            scale: 0.90,
             transformOrigin: 'top center',
             position: 'absolute',
             right: '-6%',
-            top: 'calc(20% + 32px)',
+            top: 'calc(20% + 24px)',
             width: '54.5vw',
             maxWidth: 286,
             zIndex: 2,
@@ -119,7 +119,7 @@ export default function HomePage() {
                 alt=""
                 aria-hidden
                 className="w-full block"
-                style={{ aspectRatio: '1/1', objectFit: 'cover' }}
+                style={{ aspectRatio: '1/1', objectFit: 'cover', filter: 'contrast(1.02) saturate(0.97)' }}
               />
             </div>
             <div
@@ -127,6 +127,18 @@ export default function HomePage() {
               style={{ background: 'radial-gradient(ellipse at 28% 18%, rgba(255,252,248,0.30) 0%, transparent 55%)' }}
             />
           </div>
+          {/* Review chip — anchored to image */}
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute glass px-3 py-1.5 rounded-full"
+            style={{ bottom: '-18px', left: '10%' }}
+          >
+            <span className="text-[9px] font-bold text-plum/70 tracking-[0.12em] uppercase whitespace-nowrap">
+              Western Mass · Small Batch
+            </span>
+          </motion.div>
         </motion.div>
 
         {/* Hero text */}
@@ -147,20 +159,11 @@ export default function HomePage() {
             </p>
           </motion.div>
 
-          {/* Eyebrow badge — location signal */}
-          <motion.div variants={FADE_UP} className="mb-3">
-            <div className="inline-flex items-center gap-2 glass px-3.5 py-2 rounded-full">
-              <span className="text-[9px] font-bold text-plum/72 tracking-[0.14em] uppercase">
-                Western Mass · Small Batch
-              </span>
-            </div>
-          </motion.div>
-
           {/* Tagline — product descriptor */}
           <motion.h1
             variants={FADE_UP}
-            className="font-display font-bold leading-[.90] text-plum mb-5"
-            style={{ fontSize: 'clamp(44px, 13vw, 64px)', maxWidth: 300, letterSpacing: '-0.03em' }}
+            className="font-display font-bold leading-[.88] text-plum mb-5"
+            style={{ fontSize: 'clamp(44px, 13vw, 64px)', maxWidth: 300, letterSpacing: '-0.04em' }}
           >
             Luxury<br />
             Desserts.<br />
@@ -195,7 +198,7 @@ export default function HomePage() {
               className="text-muted font-medium"
               style={{ fontSize: '11px', letterSpacing: '0.05em', marginTop: '12px' }}
             >
-              Made fresh&nbsp;•&nbsp;Western Massachusetts
+              Made fresh in Western Massachusetts
             </p>
           </motion.div>
         </motion.div>
