@@ -89,7 +89,7 @@ export default function HomePage() {
           <div style={{
             position: 'absolute', top: '-8%', right: '-14%',
             width: '60vw', height: '60vw', maxWidth: 320,
-            background: 'radial-gradient(ellipse, rgba(247,196,216,0.28) 0%, transparent 65%)',
+            background: 'radial-gradient(ellipse, rgba(247,196,216,0.18) 0%, transparent 65%)',
             borderRadius: '50%',
           }} />
         </div>
@@ -101,11 +101,11 @@ export default function HomePage() {
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
           style={{
             y: heroY,
-            scale: 0.84,
+            scale: 0.86,
             transformOrigin: 'top center',
             position: 'absolute',
             right: '-6%',
-            top: 'calc(20% + 48px)',
+            top: 'calc(20% + 32px)',
             width: '54.5vw',
             maxWidth: 286,
             zIndex: 2,
@@ -159,8 +159,8 @@ export default function HomePage() {
           {/* Tagline — product descriptor */}
           <motion.h1
             variants={FADE_UP}
-            className="font-display font-bold leading-[.92] text-plum mb-5"
-            style={{ fontSize: 'clamp(44px, 13vw, 64px)', maxWidth: 300 }}
+            className="font-display font-bold leading-[.90] text-plum mb-5"
+            style={{ fontSize: 'clamp(44px, 13vw, 64px)', maxWidth: 300, letterSpacing: '-0.03em' }}
           >
             Luxury<br />
             Desserts.<br />
@@ -187,6 +187,16 @@ export default function HomePage() {
               <span>Explore Menu</span>
               <ArrowRight size={15} strokeWidth={2} style={{ opacity: 0.45 }} />
             </Link>
+          </motion.div>
+
+          {/* Micro trust label */}
+          <motion.div variants={FADE_UP}>
+            <p
+              className="text-muted font-medium"
+              style={{ fontSize: '11px', letterSpacing: '0.05em', marginTop: '12px' }}
+            >
+              Made fresh&nbsp;•&nbsp;Western Massachusetts
+            </p>
           </motion.div>
         </motion.div>
 
