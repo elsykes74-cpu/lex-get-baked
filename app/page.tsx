@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Star, ShoppingBag, Sparkles } from 'lucide-react';
 import NavBar from '@/components/NavBar';
+import VideoBackground from '@/components/ui/VideoBackground';
 
 const FADE_UP = {
   hidden: { opacity: 0, y: 20 },
@@ -90,8 +91,21 @@ export default function HomePage() {
         ref={heroRef}
         className="relative bg-hero-bg overflow-hidden min-h-[100svh] md:min-h-screen"
       >
-        {/* Ambient glow */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/*
+          Video background — desktop only (≥1024 px), respects prefers-reduced-motion.
+          Falls back silently to bg-hero-bg when video is unavailable.
+          TODO: add /public/media/bakery-hero.mp4  (see VideoBackground.tsx for ffmpeg recipe)
+          TODO: add /public/media/bakery-poster.jpg (first frame of video, ~80 KB JPEG)
+        */}
+        <VideoBackground
+          src="/media/bakery-hero.mp4"
+          poster="/media/bakery-poster.jpg"
+          enabledOnDesktopOnly
+          respectReducedMotion
+        />
+
+        {/* Ambient glow — layers above video, adds extra warmth on desktop */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden z-[1]">
           <div style={{
             position: 'absolute', top: '-10%', right: '-10%',
             width: '60vw', height: '60vw', maxWidth: '800px',
@@ -115,7 +129,7 @@ export default function HomePage() {
             top: 'calc(20% + 24px)',
             width: '54.5vw',
             maxWidth: 286,
-            zIndex: 2,
+            zIndex: 5,
             pointerEvents: 'none',
           }}
         >
@@ -148,7 +162,7 @@ export default function HomePage() {
         </motion.div>
 
         {/* ── Inner container: centered, flex-col, brand row + grid ── */}
-        <div className="relative z-10 flex flex-col min-h-[100svh] md:min-h-screen md:max-w-[1440px] md:mx-auto md:w-full">
+        <div className="relative z-20 flex flex-col min-h-[100svh] md:min-h-screen md:max-w-[1440px] md:mx-auto md:w-full">
 
           {/* Brand wordmark — desktop only */}
           <motion.div
@@ -347,7 +361,7 @@ export default function HomePage() {
 
         {/* Scroll cue */}
         <motion.div
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20"
           animate={{ opacity: [0.3, 0.65, 0.3], y: [0, 5, 0] }}
           transition={{ duration: 2.6, repeat: Infinity }}
         >
