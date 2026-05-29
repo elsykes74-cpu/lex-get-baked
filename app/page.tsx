@@ -94,8 +94,7 @@ export default function HomePage() {
         {/*
           Video background — desktop only (≥1024 px), respects prefers-reduced-motion.
           Falls back silently to bg-hero-bg when video is unavailable.
-          TODO: add /public/media/bakery-hero.mp4  (see VideoBackground.tsx for ffmpeg recipe)
-          TODO: add /public/media/bakery-poster.jpg (first frame of video, ~80 KB JPEG)
+          Files: /public/media/bakery-hero.mp4 + bakery-poster.jpg (generated)
         */}
         <VideoBackground
           src="/media/bakery-hero.mp4"
