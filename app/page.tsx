@@ -99,7 +99,7 @@ export default function HomePage() {
         <VideoBackground
           src="/media/bakery-hero.mp4"
           poster="/media/bakery-poster.jpg"
-          enabledOnDesktopOnly
+          enabledOnDesktopOnly={false}
           respectReducedMotion
         />
 
