@@ -25,7 +25,7 @@ export default function MenuPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-20">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-16 xl:px-24">
         <div className="max-w-[1440px] mx-auto">
 
           {/* Header */}
@@ -39,7 +39,7 @@ export default function MenuPage() {
             <h1 className="font-display text-[32px] lg:text-[56px] italic font-bold text-plum mb-1.5">
               The Menu
             </h1>
-            <p className="text-[14px] font-medium text-muted">
+            <p className="text-[14px] lg:text-[18px] font-medium text-muted">
               Tap any item to explore its full flavor profile.
             </p>
           </motion.div>
@@ -97,7 +97,7 @@ export default function MenuPage() {
                     whileTap={{ scale: 0.97 }}
                   >
                     {/* Image */}
-                    <div className="relative h-[220px] lg:h-[320px] overflow-hidden">
+                    <div className="relative h-[220px] lg:h-[340px] overflow-hidden">
                       <Image
                         src={item.image} alt={item.name} fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -135,19 +135,19 @@ export default function MenuPage() {
                     </div>
 
                     {/* Info */}
-                    <div className="p-4">
+                    <div className="p-4 lg:p-6">
                       {/* Price first — high visibility */}
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[16px] font-bold text-plum">${item.price}</span>
+                        <span className="text-[16px] lg:text-[20px] font-bold text-plum">${item.price}</span>
                         <div className="flex gap-0.5">
                           {[1,2,3,4,5].map(i => <Star key={i} size={8} fill="#D4956A" color="#D4956A" />)}
                         </div>
                       </div>
 
-                      <p className="font-display text-[24px] lg:text-[28px] font-semibold text-plum leading-tight mb-2">
+                      <p className="font-display text-[24px] lg:text-[30px] font-semibold text-plum leading-tight mb-2">
                         {item.name}
                       </p>
-                      <p className="text-[16px] lg:text-[15px] leading-snug mb-4 line-clamp-2 font-medium text-muted">
+                      <p className="text-[16px] lg:text-[17px] leading-snug mb-4 line-clamp-2 font-medium text-muted">
                         {item.desc}
                       </p>
 

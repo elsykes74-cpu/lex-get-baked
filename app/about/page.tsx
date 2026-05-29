@@ -22,7 +22,7 @@ export default function AboutPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-20">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-16 xl:px-24">
         <div className="max-w-[1200px] mx-auto">
 
           {/* ── MOBILE Header ──────────────────────────────────────── */}
@@ -51,13 +51,13 @@ export default function AboutPage() {
               <p className="text-[11px] tracking-[0.18em] uppercase font-semibold mb-4 text-muted">Our Story</p>
               <h1
                 className="font-display italic font-bold text-plum leading-[.88] mb-3"
-                style={{ fontSize: 'clamp(64px, 7vw, 96px)' }}
+                style={{ fontSize: 'clamp(72px, 7.5vw, 108px)' }}
               >
                 Baked with Love
               </h1>
               <span
                 className="font-display italic font-bold text-shimmer leading-[.88]"
-                style={{ fontSize: 'clamp(64px, 7vw, 96px)' }}
+                style={{ fontSize: 'clamp(72px, 7.5vw, 108px)' }}
               >
                 Since Day One
               </span>
@@ -65,11 +65,11 @@ export default function AboutPage() {
 
             {/* Right: intro copy */}
             <div className="pb-2">
-              <p className="text-[20px] leading-relaxed font-medium text-plum/65 mb-6" style={{ maxWidth: '480px' }}>
+              <p className="text-[22px] leading-relaxed font-medium text-plum/65 mb-6" style={{ maxWidth: '520px' }}>
                 A Western Massachusetts small-batch dessert experience built around love, flavor, and unforgettable presentation. Every bite tells a story.
               </p>
               <div className="h-px mb-6" style={{ background: 'linear-gradient(to right, transparent, rgba(212,149,106,0.22), transparent)' }} />
-              <p className="font-display text-[22px] italic font-bold text-plum leading-snug" style={{ maxWidth: '420px' }}>
+              <p className="font-display text-[24px] italic font-bold text-plum leading-snug" style={{ maxWidth: '460px' }}>
                 &ldquo;Turn ordinary moments into extraordinary memories.&rdquo;
               </p>
             </div>
@@ -99,7 +99,7 @@ export default function AboutPage() {
           >
             {STATS.map(({ val, label }) => (
               <div key={label} className="glass-card rounded-[24px] p-5 lg:p-8 text-center">
-                <p className="font-display text-[26px] lg:text-[44px] font-bold text-shimmer mb-1 lg:mb-2">{val}</p>
+                <p className="font-display text-[26px] lg:text-[48px] font-bold text-shimmer mb-1 lg:mb-2">{val}</p>
                 <p className="text-[11px] lg:text-[13px] font-bold text-muted">{label}</p>
               </div>
             ))}
@@ -126,8 +126,8 @@ export default function AboutPage() {
                   {emoji}
                 </div>
                 <div>
-                  <p className="text-[14px] lg:text-[18px] font-bold text-plum mb-1">{title}</p>
-                  <p className="text-[13px] lg:text-[15px] leading-relaxed font-medium text-muted">{desc}</p>
+                  <p className="text-[14px] lg:text-[20px] font-bold text-plum mb-1">{title}</p>
+                  <p className="text-[13px] lg:text-[17px] leading-relaxed font-medium text-muted">{desc}</p>
                 </div>
               </motion.div>
             ))}

@@ -106,18 +106,18 @@ export default function ContactPage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-20">
-        <div className="max-w-[1240px] mx-auto lg:grid lg:grid-cols-[400px_1fr] lg:gap-16 lg:items-start">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-16 xl:px-24">
+        <div className="max-w-[1320px] mx-auto lg:grid lg:grid-cols-[440px_1fr] lg:gap-20 lg:items-start">
 
           {/* ── LEFT COLUMN: info + contact methods ──────────────────── */}
           <div>
             {/* Header */}
             <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="mb-8 mt-4">
               <p className="text-[9px] lg:text-[11px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">Let's Connect</p>
-              <h1 className="font-display text-[30px] lg:text-[52px] italic font-bold text-plum mb-3 leading-tight">
+              <h1 className="font-display text-[30px] lg:text-[58px] italic font-bold text-plum mb-3 leading-tight">
                 Tell Us Your<br />Dessert Dream
               </h1>
-              <p className="text-[14px] lg:text-[17px] font-medium text-muted leading-relaxed">
+              <p className="text-[14px] lg:text-[19px] font-medium text-muted leading-relaxed">
                 Custom orders, events, and collaborations — we love it all.
               </p>
             </motion.div>
@@ -203,7 +203,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.16, duration: 0.45 }}
               onSubmit={e => { e.preventDefault(); setSent(true); }}
-              className="glass-card rounded-[24px] p-6 lg:p-8 space-y-4 lg:space-y-5"
+              className="glass-card rounded-[24px] p-6 lg:p-10 space-y-4 lg:space-y-6"
             >
               <p className="text-[10px] lg:text-[11px] tracking-[0.14em] uppercase font-bold text-muted">Your Details</p>
 
@@ -213,14 +213,14 @@ export default function ContactPage() {
                   <input
                     type="text" required placeholder="Your name"
                     value={form.name} onChange={e => handleChange('name', e.target.value)}
-                    className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[15px]"
+                    className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[16px]"
                   />
                 </InputRow>
                 <InputRow icon={Phone} label="Phone">
                   <input
                     type="tel" placeholder="(413) 000-0000"
                     value={form.phone} onChange={e => handleChange('phone', e.target.value)}
-                    className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[15px]"
+                    className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[16px]"
                   />
                 </InputRow>
               </div>
@@ -229,7 +229,7 @@ export default function ContactPage() {
                 <input
                   type="email" required placeholder="your@email.com"
                   value={form.email} onChange={e => handleChange('email', e.target.value)}
-                  className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[15px]"
+                  className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[16px]"
                 />
               </InputRow>
 
@@ -237,7 +237,7 @@ export default function ContactPage() {
                 <input
                   type="date" value={form.eventDate}
                   onChange={e => handleChange('eventDate', e.target.value)}
-                  className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[15px]"
+                  className="w-full input-glass rounded-[14px] px-4 py-3.5 text-[13px] lg:text-[16px]"
                 />
               </InputRow>
 
@@ -282,7 +282,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 className="w-full btn-primary rounded-[18px] flex items-center justify-center gap-2.5 font-bold"
-                style={{ height: '60px', fontSize: '16px' }}
+                style={{ height: '68px', fontSize: '17px' }}
               >
                 <Send size={16} strokeWidth={2.2} />
                 Send Message

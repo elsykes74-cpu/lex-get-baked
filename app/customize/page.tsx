@@ -62,8 +62,8 @@ export default function CustomizePage() {
   return (
     <>
       <NavBar />
-      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-20">
-        <div className="max-w-[1440px] mx-auto lg:grid lg:grid-cols-[1fr_480px] lg:gap-16 lg:items-start">
+      <div className="relative min-h-[100svh] bg-page-bg pt-[5.5rem] pb-32 sm:pb-16 px-4 lg:px-16 xl:px-24">
+        <div className="max-w-[1440px] mx-auto lg:grid lg:grid-cols-[1fr_560px] lg:gap-20 lg:items-start">
 
           {/* ── LEFT COLUMN: Stepper ─────────────────────────────────── */}
           <div>
@@ -182,7 +182,7 @@ export default function CustomizePage() {
                     <p className="text-[9px] tracking-[0.14em] uppercase font-bold text-muted mb-0.5">
                       Step {step + 1} of {STEPS.length - 1}
                     </p>
-                    <h2 className="font-display text-[20px] lg:text-[28px] font-bold text-plum">
+                    <h2 className="font-display text-[20px] lg:text-[34px] font-bold text-plum">
                       Choose your <em className="text-shimmer">{currentStepKey}</em>
                     </h2>
                   </div>
@@ -196,7 +196,7 @@ export default function CustomizePage() {
                           onClick={() => select(opt.id)}
                           whileTap={{ scale: 0.96 }}
                           transition={{ type: 'spring', damping: 18, stiffness: 320 }}
-                          className={`rounded-[24px] p-4 lg:p-5 text-left transition-all ${
+                          className={`rounded-[24px] p-4 lg:p-6 text-left transition-all ${
                             active ? 'btn-iridescent' : 'glass-card hover:shadow-card-hover'
                           }`}
                         >
@@ -214,8 +214,8 @@ export default function CustomizePage() {
                               </span>
                             )}
                           </div>
-                          <p className="text-[13px] lg:text-[15px] font-bold text-plum leading-tight mb-0.5">{opt.label}</p>
-                          <p className="text-[11px] lg:text-[13px] font-medium text-muted">{opt.desc}</p>
+                          <p className="text-[13px] lg:text-[17px] font-bold text-plum leading-tight mb-0.5">{opt.label}</p>
+                          <p className="text-[11px] lg:text-[14px] font-medium text-muted">{opt.desc}</p>
                           {active && (
                             <div
                               className="mt-3 w-5 h-5 rounded-full flex items-center justify-center"
@@ -279,16 +279,16 @@ export default function CustomizePage() {
 
           {/* ── RIGHT COLUMN: Desktop live preview ───────────────────── */}
           <div className="hidden lg:block" style={{ position: 'sticky', top: '108px' }}>
-            <div className="glass-card rounded-[28px] p-8">
+            <div className="glass-card rounded-[28px] p-10">
               <p className="text-[11px] tracking-[0.18em] uppercase font-bold text-muted mb-8">Live Preview</p>
 
               {/* Large cookie orb */}
-              <div className="flex justify-center mb-8">
+              <div className="flex justify-center mb-10">
                 <div
                   className="relative"
                   style={{
-                    width: '200px',
-                    height: '200px',
+                    width: '280px',
+                    height: '280px',
                   }}
                 >
                   {/* Glow */}
@@ -305,8 +305,8 @@ export default function CustomizePage() {
                     style={{
                       background: 'linear-gradient(135deg, rgba(255,255,255,0.94), rgba(249,240,255,0.98))',
                       border: '3px solid rgba(212,149,106,0.32)',
-                      boxShadow: '0 16px 56px rgba(201,116,143,0.22), 0 0 0 1px rgba(255,255,255,0.85)',
-                      fontSize: '80px',
+                      boxShadow: '0 20px 64px rgba(201,116,143,0.26), 0 0 0 1px rgba(255,255,255,0.85)',
+                      fontSize: '110px',
                       lineHeight: 1,
                     }}
                     animate={{
@@ -361,7 +361,7 @@ export default function CustomizePage() {
                     initial={{ y: 8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -8, opacity: 0 }}
                     transition={{ duration: 0.22 }}
                     className="font-display font-bold text-shimmer"
-                    style={{ fontSize: '36px' }}
+                    style={{ fontSize: '48px' }}
                   >
                     ${price}
                   </motion.p>

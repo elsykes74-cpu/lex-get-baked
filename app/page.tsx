@@ -81,21 +81,20 @@ export default function HomePage() {
 
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       {/*
-        Single section: flex-col on mobile, 2-col grid at md (768px+).
-        This aligns with when the desktop nav links appear (sm:flex = 640px).
-        Mobile cookie is absolutely positioned (md:hidden).
-        Desktop cookie is a proper grid column (hidden md:flex).
+        Section = full-bleed background.
+        Inner container = max-w-1440 centered, flex-col → brand row + 2-col grid.
+        Mobile cookie is absolute on section (md:hidden).
+        Desktop grid uses minmax columns so cookie fills its column properly.
       */}
       <section
         ref={heroRef}
-        className="relative bg-hero-bg overflow-hidden min-h-[100svh] flex flex-col md:flex-none md:grid md:min-h-screen"
-        style={{ gridTemplateColumns: '52fr 48fr', gridTemplateRows: 'auto 1fr' }}
+        className="relative bg-hero-bg overflow-hidden min-h-[100svh] md:min-h-screen"
       >
         {/* Ambient glow */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div style={{
             position: 'absolute', top: '-10%', right: '-10%',
-            width: '55vw', height: '55vw', maxWidth: '600px',
+            width: '60vw', height: '60vw', maxWidth: '800px',
             background: 'radial-gradient(ellipse, rgba(247,196,216,0.22) 0%, transparent 65%)',
             borderRadius: '50%',
           }} />
@@ -148,198 +147,202 @@ export default function HomePage() {
           </motion.div>
         </motion.div>
 
-        {/* ── Brand wordmark — desktop only, spans full width ─────────── */}
-        <motion.div
-          className="hidden md:flex items-center gap-6"
-          style={{
-            gridColumn: '1 / -1',
-            paddingTop: 'clamp(100px, 11vh, 124px)',
-            paddingBottom: 'clamp(18px, 2.2vh, 28px)',
-            paddingLeft:  'clamp(48px, 6vw, 96px)',
-            paddingRight: 'clamp(48px, 6vw, 96px)',
-          }}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="flex-1 h-px" style={{ background: 'linear-gradient(to right, transparent, rgba(212,149,106,0.42))' }} />
-          <div className="flex items-center gap-3.5 flex-shrink-0">
-            <Sparkles size={15} strokeWidth={1.8} style={{ color: '#D4956A' }} />
-            <p
-              className="font-display italic font-bold text-shimmer"
-              style={{ fontSize: 'clamp(26px, 2.6vw, 40px)', letterSpacing: '0.10em', whiteSpace: 'nowrap' }}
-            >
-              Lex Get Baked
-            </p>
-            <Sparkles size={15} strokeWidth={1.8} style={{ color: '#C9748F' }} />
-          </div>
-          <div className="flex-1 h-px" style={{ background: 'linear-gradient(to left, transparent, rgba(201,116,143,0.42))' }} />
-        </motion.div>
+        {/* ── Inner container: centered, flex-col, brand row + grid ── */}
+        <div className="relative z-10 flex flex-col min-h-[100svh] md:min-h-screen md:max-w-[1440px] md:mx-auto md:w-full">
 
-        {/* ── Text column — grid col 1 on desktop ───────────────────── */}
-        <motion.div
-          className="relative z-10 flex flex-col
-                     mt-[clamp(1.38rem,5.5vh,3.68rem)] w-[65%] max-w-[320px]
-                     md:mt-0 md:w-auto md:max-w-none md:justify-center
-                     md:pl-[clamp(48px,6vw,96px)] md:pr-[clamp(24px,3vw,48px)] md:pt-6 md:pb-28"
-          style={{ y: heroY, opacity: heroOpac }}
-          variants={STAGGER}
-          initial="hidden"
-          animate="show"
-        >
-          {/* Rating chip — desktop only, above headline */}
-          <motion.div variants={FADE_UP} className="hidden md:flex items-center gap-2.5 glass px-4 py-2.5 rounded-full mb-7" style={{ width: 'fit-content' }}>
-            <div className="flex gap-0.5">
-              {[1,2,3,4,5].map(i => <Star key={i} size={11} fill="#D4956A" color="#D4956A" />)}
-            </div>
-            <span style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(47,35,67,0.68)', whiteSpace: 'nowrap' }}>
-              5.0 · 200+ happy customers
-            </span>
-          </motion.div>
-
-          {/* Brand label — mobile only; desktop version is the centered wordmark above */}
-          <motion.div variants={FADE_UP} className="mb-3 md:hidden">
-            <p
-              className="font-display font-bold text-plum"
-              style={{ fontSize: 'clamp(22px, 4vw, 28px)', letterSpacing: '0.12em' }}
-            >
-              LEX GET BAKED
-            </p>
-          </motion.div>
-
-          {/* H1 */}
-          <motion.h1
-            variants={FADE_UP}
-            className="font-display font-bold text-plum mb-5 md:mb-10 max-w-[300px] md:max-w-none"
-            style={{
-              fontSize: 'clamp(44px, 13vw, 64px)',
-              lineHeight: 0.88,
-              letterSpacing: '-0.04em',
-            }}
-          >
-            <span className="block md:hidden">
-              Luxury<br />Desserts.<br />
-              <em className="text-shimmer not-italic">Crafted</em><br />by Hand.
-            </span>
-            <span
-              className="hidden md:block"
-              style={{ fontSize: 'clamp(88px, 7vw, 132px)', letterSpacing: '-0.055em', lineHeight: 0.88 }}
-            >
-              Luxury<br />Desserts.<br />
-              <em className="text-shimmer not-italic">Crafted</em><br />by Hand.
-            </span>
-          </motion.h1>
-
-          {/* Body */}
-          <motion.p
-            variants={FADE_UP}
-            className="leading-[1.4] md:leading-[1.55] text-muted font-medium mb-8 md:mb-10"
-            style={{ fontSize: 'clamp(16px, 2vw, 22px)', maxWidth: '520px' }}
-          >
-            Custom cookies, mini cakes, and unforgettable dessert experiences.
-          </motion.p>
-
-          {/* CTAs */}
+          {/* Brand wordmark — desktop only */}
           <motion.div
-            variants={FADE_UP}
-            className="flex flex-col gap-3 w-[88%] max-w-[360px] md:w-[360px]"
+            className="hidden md:flex items-center gap-6"
+            style={{
+              paddingTop: 'clamp(100px, 11vh, 120px)',
+              paddingBottom: 'clamp(14px, 1.8vh, 22px)',
+              paddingLeft: 'clamp(48px, 6vw, 96px)',
+              paddingRight: 'clamp(48px, 6vw, 96px)',
+            }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Link
-              href="/customize"
-              className="btn-primary rounded-[24px] px-6 flex items-center justify-between w-full"
-              style={{ height: 'clamp(60px, 7vh, 72px)', fontSize: 'clamp(15px, 1.4vw, 18px)' }}
-            >
-              <span>Build Your Box</span>
-              <ArrowRight size={17} strokeWidth={2.5} />
-            </Link>
-            <Link
-              href="/menu"
-              className="btn-ghost rounded-[24px] px-6 flex items-center justify-between w-full"
-              style={{ height: 'clamp(60px, 7vh, 72px)', fontSize: 'clamp(15px, 1.4vw, 18px)' }}
-            >
-              <span>Explore Menu</span>
-              <ArrowRight size={15} strokeWidth={2} style={{ opacity: 0.45 }} />
-            </Link>
+            <div className="flex-1 h-px" style={{ background: 'linear-gradient(to right, transparent, rgba(212,149,106,0.42))' }} />
+            <div className="flex items-center gap-3.5 flex-shrink-0">
+              <Sparkles size={15} strokeWidth={1.8} style={{ color: '#D4956A' }} />
+              <p
+                className="font-display italic font-bold text-shimmer"
+                style={{ fontSize: 'clamp(26px, 2.6vw, 40px)', letterSpacing: '0.10em', whiteSpace: 'nowrap' }}
+              >
+                Lex Get Baked
+              </p>
+              <Sparkles size={15} strokeWidth={1.8} style={{ color: '#C9748F' }} />
+            </div>
+            <div className="flex-1 h-px" style={{ background: 'linear-gradient(to left, transparent, rgba(201,116,143,0.42))' }} />
           </motion.div>
 
-          {/* Trust */}
-          <motion.div variants={FADE_UP}>
-            <p
-              className="text-muted font-medium"
-              style={{ fontSize: '11px', letterSpacing: '0.05em', marginTop: '14px' }}
-            >
-              Made fresh in Western Massachusetts
-            </p>
-          </motion.div>
-        </motion.div>
-
-        {/* ── Desktop cookie column — grid col 2 ────────────────────── */}
-        <div
-          className="hidden md:flex items-center justify-center relative"
-          style={{ paddingRight: 'clamp(40px, 5vw, 80px)' }}
-        >
-          {/* Glow blob behind image */}
+          {/* ── 2-column content area ─────────────────────────────────── */}
           <div
-            className="absolute pointer-events-none"
+            className="flex-1 flex flex-col md:grid md:items-center"
             style={{
-              width: 'clamp(320px, 48vw, 800px)',
-              height: 'clamp(320px, 48vw, 800px)',
-              background: 'radial-gradient(ellipse, rgba(247,196,216,0.50) 0%, rgba(243,198,157,0.25) 35%, transparent 65%)',
-              borderRadius: '50%',
-              filter: 'blur(60px)',
-              transform: 'translate(5%, -8%)',
-              zIndex: 0,
-            }}
-          />
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85, x: 60 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="relative z-10"
-            style={{
-              width: 'clamp(260px, 40vw, 620px)',
-              flexShrink: 0,
+              gridTemplateColumns: 'minmax(520px, 1fr) minmax(460px, .9fr)',
+              gap: 'clamp(56px, 7vw, 120px)',
             }}
           >
-            <div
-              className="ring-rosegold"
-              style={{ animation: 'float 7s ease-in-out infinite', position: 'relative', display: 'block' }}
+            {/* Text column */}
+            <motion.div
+              className="relative z-10 flex flex-col
+                         mt-[clamp(1.38rem,5.5vh,3.68rem)] w-[65%] max-w-[320px]
+                         md:mt-0 md:w-auto md:max-w-none md:justify-center
+                         md:pl-[clamp(48px,6vw,96px)] md:pb-16"
+              style={{ y: heroY, opacity: heroOpac }}
+              variants={STAGGER}
+              initial="hidden"
+              animate="show"
             >
-              <div className="rounded-full overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=1200&q=90"
-                  alt="Signature luxury cookie"
-                  style={{
-                    width: '100%',
-                    aspectRatio: '1/1',
-                    objectFit: 'cover',
-                    filter: 'contrast(1.02) saturate(0.97)',
-                    display: 'block',
-                  }}
-                />
-              </div>
-              <div
-                className="absolute inset-0 rounded-full pointer-events-none"
-                style={{ background: 'radial-gradient(ellipse at 28% 18%, rgba(255,252,248,0.30) 0%, transparent 55%)' }}
-              />
-            </div>
-
-            {/* Review chip on image */}
-            <div
-              className="absolute glass px-4 py-2.5 rounded-full"
-              style={{ bottom: '-18px', left: '10%' }}
-            >
-              <div className="flex items-center gap-2">
+              {/* Rating chip — desktop only */}
+              <motion.div variants={FADE_UP} className="hidden md:flex items-center gap-2.5 glass px-4 py-2.5 rounded-full mb-7" style={{ width: 'fit-content' }}>
                 <div className="flex gap-0.5">
-                  {[1,2,3,4,5].map(i => <Star key={i} size={10} fill="#D4956A" color="#D4956A" />)}
+                  {[1,2,3,4,5].map(i => <Star key={i} size={11} fill="#D4956A" color="#D4956A" />)}
                 </div>
-                <span style={{ fontSize: '12px', fontWeight: 700, color: 'rgba(47,35,67,0.65)', whiteSpace: 'nowrap' }}>
-                  5.0 · 200+ orders
+                <span style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(47,35,67,0.68)', whiteSpace: 'nowrap' }}>
+                  5.0 · 200+ happy customers
                 </span>
-              </div>
+              </motion.div>
+
+              {/* Brand label — mobile only */}
+              <motion.div variants={FADE_UP} className="mb-3 md:hidden">
+                <p
+                  className="font-display font-bold text-plum"
+                  style={{ fontSize: 'clamp(22px, 4vw, 28px)', letterSpacing: '0.12em' }}
+                >
+                  LEX GET BAKED
+                </p>
+              </motion.div>
+
+              {/* H1 */}
+              <motion.h1
+                variants={FADE_UP}
+                className="font-display font-bold text-plum mb-5 md:mb-10 max-w-[300px] md:max-w-none"
+                style={{ fontSize: 'clamp(44px, 13vw, 64px)', lineHeight: 0.88, letterSpacing: '-0.04em' }}
+              >
+                <span className="block md:hidden">
+                  Luxury<br />Desserts.<br />
+                  <em className="text-shimmer not-italic">Crafted</em><br />by Hand.
+                </span>
+                <span
+                  className="hidden md:block"
+                  style={{ fontSize: 'clamp(92px, 8vw, 148px)', letterSpacing: '-0.06em', lineHeight: 0.86 }}
+                >
+                  Luxury<br />Desserts.<br />
+                  <em className="text-shimmer not-italic">Crafted</em><br />by Hand.
+                </span>
+              </motion.h1>
+
+              {/* Body */}
+              <motion.p
+                variants={FADE_UP}
+                className="leading-[1.55] text-muted font-medium mb-8 md:mb-10"
+                style={{ fontSize: 'clamp(16px, 1.4vw, 24px)', maxWidth: '560px' }}
+              >
+                Custom cookies, mini cakes, and unforgettable dessert experiences.
+              </motion.p>
+
+              {/* CTAs */}
+              <motion.div
+                variants={FADE_UP}
+                className="flex flex-col gap-3 w-[88%] max-w-[360px] md:w-[380px] md:max-w-[380px]"
+              >
+                <Link
+                  href="/customize"
+                  className="btn-primary rounded-[24px] px-6 flex items-center justify-between w-full"
+                  style={{ height: 'clamp(60px, 7vh, 72px)', fontSize: 'clamp(15px, 1.4vw, 18px)' }}
+                >
+                  <span>Build Your Box</span>
+                  <ArrowRight size={17} strokeWidth={2.5} />
+                </Link>
+                <Link
+                  href="/menu"
+                  className="btn-ghost rounded-[24px] px-6 flex items-center justify-between w-full"
+                  style={{ height: 'clamp(60px, 7vh, 72px)', fontSize: 'clamp(15px, 1.4vw, 18px)' }}
+                >
+                  <span>Explore Menu</span>
+                  <ArrowRight size={15} strokeWidth={2} style={{ opacity: 0.45 }} />
+                </Link>
+              </motion.div>
+
+              {/* Trust */}
+              <motion.div variants={FADE_UP}>
+                <p
+                  className="text-muted font-medium"
+                  style={{ fontSize: '11px', letterSpacing: '0.05em', marginTop: '14px' }}
+                >
+                  Made fresh in Western Massachusetts
+                </p>
+              </motion.div>
+            </motion.div>
+
+            {/* ── Desktop cookie column ──────────────────────────────── */}
+            <div
+              className="hidden md:flex items-center justify-center relative"
+              style={{ paddingRight: 'clamp(48px, 6vw, 96px)' }}
+            >
+              {/* Glow blob */}
+              <div
+                className="absolute pointer-events-none"
+                style={{
+                  width: 'clamp(460px, 54vw, 920px)',
+                  height: 'clamp(460px, 54vw, 920px)',
+                  background: 'radial-gradient(ellipse, rgba(247,196,216,0.55) 0%, rgba(243,198,157,0.28) 38%, transparent 65%)',
+                  borderRadius: '50%',
+                  filter: 'blur(70px)',
+                  transform: 'translate(4%, -6%)',
+                  zIndex: 0,
+                }}
+              />
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.85, x: 60 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                className="relative z-10"
+                style={{ width: 'clamp(460px, 38vw, 680px)', flexShrink: 0 }}
+              >
+                <div
+                  className="ring-rosegold"
+                  style={{ animation: 'float 7s ease-in-out infinite', position: 'relative', display: 'block' }}
+                >
+                  <div className="rounded-full overflow-hidden">
+                    <img
+                      src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=1400&q=90"
+                      alt="Signature luxury cookie"
+                      style={{
+                        width: '100%',
+                        aspectRatio: '1/1',
+                        objectFit: 'cover',
+                        filter: 'contrast(1.02) saturate(0.97)',
+                        display: 'block',
+                      }}
+                    />
+                  </div>
+                  <div
+                    className="absolute inset-0 rounded-full pointer-events-none"
+                    style={{ background: 'radial-gradient(ellipse at 28% 18%, rgba(255,252,248,0.30) 0%, transparent 55%)' }}
+                  />
+                </div>
+
+                <div
+                  className="absolute glass px-4 py-2.5 rounded-full"
+                  style={{ bottom: '-18px', left: '10%' }}
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-0.5">
+                      {[1,2,3,4,5].map(i => <Star key={i} size={10} fill="#D4956A" color="#D4956A" />)}
+                    </div>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: 'rgba(47,35,67,0.65)', whiteSpace: 'nowrap' }}>
+                      5.0 · 200+ orders
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Scroll cue */}
