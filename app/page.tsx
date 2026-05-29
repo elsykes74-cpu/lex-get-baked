@@ -89,7 +89,7 @@ export default function HomePage() {
       */}
       <section
         ref={heroRef}
-        className="relative bg-hero-bg overflow-hidden min-h-[100svh] md:min-h-screen"
+        className="relative bg-hero-bg overflow-hidden pt-[5rem] pb-20 md:pt-0 md:pb-0 md:min-h-screen"
       >
         {/*
           Video background — desktop only (≥1024 px), respects prefers-reduced-motion.
@@ -161,7 +161,7 @@ export default function HomePage() {
         </motion.div>
 
         {/* ── Inner container: centered, flex-col, brand row + grid ── */}
-        <div className="relative z-20 flex flex-col min-h-[100svh] md:min-h-screen md:max-w-[1440px] md:mx-auto md:w-full">
+        <div className="relative z-20 flex flex-col md:min-h-screen md:max-w-[1440px] md:mx-auto md:w-full">
 
           {/* Brand wordmark — desktop only */}
           <motion.div
@@ -201,7 +201,7 @@ export default function HomePage() {
             {/* Text column */}
             <motion.div
               className="relative z-10 flex flex-col
-                         mt-[clamp(1.38rem,5.5vh,3.68rem)] w-[65%] max-w-[320px]
+                         w-[65%] max-w-[320px]
                          md:mt-0 md:w-auto md:max-w-none md:justify-center
                          md:pl-[clamp(48px,6vw,96px)] md:pb-16"
               style={{ y: heroY, opacity: heroOpac }}
