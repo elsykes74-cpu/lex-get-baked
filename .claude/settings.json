@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"systemMessage\": \"REMINDER: Always include the live site hyperlink at the end of your response: https://lex-get-baked.vercel.app\"}'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
