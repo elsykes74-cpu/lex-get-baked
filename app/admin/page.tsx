@@ -1,10 +1,11 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft, RefreshCw, Package, ChefHat, DollarSign,
   Clock, CheckCircle, XCircle, Truck, ToggleLeft, ToggleRight,
+  Camera, Upload, Link2, Check, X, Loader2, ImageOff,
 } from 'lucide-react';
 import { supabase, type DbOrder, type DbMenuItem } from '@/lib/supabase';
 
@@ -27,11 +28,16 @@ const NEXT_STATUS: Record<string, string> = {
 type Tab = 'orders' | 'menu';
 
 export default function AdminPage() {
-  const [tab,     setTab]     = useState<Tab>('orders');
-  const [orders,  setOrders]  = useState<DbOrder[]>([]);
-  const [menu,    setMenu]    = useState<DbMenuItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error,   setError]   = useState<string | null>(null);
+  const [tab,          setTab]          = useState<Tab>('orders');
+  const [orders,       setOrders]       = useState<DbOrder[]>([]);
+  const [menu,         setMenu]         = useState<DbMenuItem[]>([]);
+  const [loading,      setLoading]      = useState(true);
+  const [error,        setError]        = useState<string | null>(null);
+  const [editingPhoto, setEditingPhoto] = useState<number | null>(null);
+  const [urlInput,     setUrlInput]     = useState('');
+  const [uploading,    setUploading]    = useState(false);
+  const [saved,        setSaved]        = useState<number | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   async function load() {
     setLoading(true);
@@ -71,6 +77,45 @@ export default function AdminPage() {
   async function toggleAvailable(id: number, available: boolean) {
     await supabase.from('menu_items').update({ available: !available }).eq('id', id);
     setMenu(prev => prev.map(i => i.id === id ? { ...i, available: !available } : i));
+  }
+
+  function openPhotoEditor(item: DbMenuItem) {
+    setEditingPhoto(item.id);
+    setUrlInput(item.image_url ?? '');
+    setSaved(null);
+  }
+
+  function closePhotoEditor() {
+    setEditingPhoto(null);
+    setUrlInput('');
+  }
+
+  async function saveImageUrl(itemId: number, url: string) {
+    await supabase.from('menu_items').update({ image_url: url }).eq('id', itemId);
+    setMenu(prev => prev.map(i => i.id === itemId ? { ...i, image_url: url } : i));
+    setSaved(itemId);
+    setTimeout(() => setSaved(null), 2000);
+    closePhotoEditor();
+  }
+
+  async function handleFileUpload(itemId: number, file: File) {
+    setUploading(true);
+    try {
+      const ext  = file.name.split('.').pop() ?? 'jpg';
+      const path = `item-${itemId}-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from('menu-images')
+        .upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) throw upErr;
+      const { data: { publicUrl } } = supabase.storage
+        .from('menu-images')
+        .getPublicUrl(path);
+      await saveImageUrl(itemId, publicUrl);
+    } catch (e) {
+      console.error('Upload failed', e);
+    } finally {
+      setUploading(false);
+    }
   }
 
   const pendingCount   = orders.filter(o => o.status === 'pending').length;
@@ -123,9 +168,9 @@ export default function AdminPage() {
         {/* ── Stats row ───────────────────────────────────────────── */}
         <div className="grid grid-cols-3 gap-3 mb-6">
           {[
-            { Icon: Clock,       val: pendingCount,        label: 'Awaiting',  color: '#C4965A' },
-            { Icon: ChefHat,     val: preparingCount,      label: 'In Kitchen', color: '#C9748F' },
-            { Icon: DollarSign,  val: `$${revenue.toFixed(0)}`, label: 'Revenue', color: '#6B8C7A' },
+            { Icon: Clock,       val: pendingCount,             label: 'Awaiting',   color: '#C4965A' },
+            { Icon: ChefHat,     val: preparingCount,           label: 'In Kitchen', color: '#C9748F' },
+            { Icon: DollarSign,  val: `$${revenue.toFixed(0)}`, label: 'Revenue',    color: '#6B8C7A' },
           ].map(({ Icon, val, label, color }) => (
             <div key={label} className="glass-card rounded-[20px] overflow-hidden text-center">
               <div className="h-0.5 w-full" style={{ background: `linear-gradient(90deg, ${color}44, ${color})` }} />
@@ -147,11 +192,9 @@ export default function AdminPage() {
               key={t}
               onClick={() => setTab(t)}
               className={`px-5 py-2 rounded-[12px] text-[13px] font-bold capitalize transition-all ${
-                tab === t
-                  ? 'btn-primary'
-                  : 'text-plum/50 hover:text-plum'
+                tab === t ? 'btn-primary' : 'text-plum/50 hover:text-plum'
               }`}
-              style={tab === t ? { minHeight: '36px' } : { minHeight: '36px' }}
+              style={{ minHeight: '36px' }}
             >
               {t === 'orders' ? `Orders${pendingCount > 0 ? ` (${pendingCount})` : ''}` : 'Menu'}
             </button>
@@ -198,9 +241,7 @@ export default function AdminPage() {
                   transition={{ delay: i * 0.03 }}
                   className="glass-card rounded-[24px] overflow-hidden"
                 >
-                  {/* Status bar */}
                   <div className="h-0.5 w-full" style={{ background: meta.color }} />
-
                   <div className="p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div>
@@ -237,8 +278,6 @@ export default function AdminPage() {
                         </div>
                       </div>
                     </div>
-
-                    {/* Quick action + all statuses */}
                     <div className="flex gap-2 flex-wrap items-center">
                       {next && (
                         <button
@@ -278,37 +317,169 @@ export default function AdminPage() {
                 <p className="text-[14px] font-semibold text-muted">No menu items</p>
               </div>
             )}
+
+            {/* Hidden file input */}
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={e => {
+                const file = e.target.files?.[0];
+                if (file && editingPhoto) handleFileUpload(editingPhoto, file);
+                e.target.value = '';
+              }}
+            />
+
             {menu.map((item, i) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.025 }}
-                className="glass-card rounded-[18px] px-4 py-3 flex items-center gap-3"
+                className="glass-card rounded-[18px] overflow-hidden"
               >
-                <div
-                  className="w-10 h-10 rounded-[12px] flex items-center justify-center text-lg flex-shrink-0"
-                  style={{ background: 'rgba(255,255,255,0.6)' }}
-                >
-                  {item.emoji}
+                {/* Main row */}
+                <div className="px-4 py-3 flex items-center gap-3">
+                  {/* Thumbnail / emoji */}
+                  <div
+                    className="w-10 h-10 rounded-[12px] flex-shrink-0 overflow-hidden flex items-center justify-center text-lg"
+                    style={{ background: 'rgba(255,255,255,0.6)' }}
+                  >
+                    {item.image_url ? (
+                      <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                    ) : (
+                      item.emoji
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-bold text-plum truncate">{item.name}</p>
+                    <p className="text-[11px] text-muted capitalize">{item.category} · ${item.price}</p>
+                  </div>
+
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {/* Photo button */}
+                    <button
+                      onClick={() => editingPhoto === item.id ? closePhotoEditor() : openPhotoEditor(item)}
+                      className="w-8 h-8 glass rounded-[10px] flex items-center justify-center transition-all"
+                      title="Edit photo"
+                      style={{
+                        color: saved === item.id ? '#4CAF7D' : editingPhoto === item.id ? '#C9748F' : 'rgba(47,35,67,0.45)',
+                      }}
+                    >
+                      {saved === item.id
+                        ? <Check size={13} strokeWidth={2.5} />
+                        : <Camera size={13} strokeWidth={2} />
+                      }
+                    </button>
+
+                    {/* Available toggle */}
+                    <button
+                      onClick={() => toggleAvailable(item.id, item.available)}
+                      className="flex items-center gap-1.5 text-[11px] font-bold transition-all px-3 py-1.5 rounded-full"
+                      style={{
+                        background: item.available ? 'rgba(76,175,125,0.12)' : 'rgba(224,92,92,0.10)',
+                        color: item.available ? '#4CAF7D' : '#E05C5C',
+                      }}
+                    >
+                      {item.available
+                        ? <><ToggleRight size={14} strokeWidth={2} /> Available</>
+                        : <><ToggleLeft  size={14} strokeWidth={2} /> Sold Out</>
+                      }
+                    </button>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-bold text-plum truncate">{item.name}</p>
-                  <p className="text-[11px] text-muted capitalize">{item.category} · ${item.price}</p>
-                </div>
-                <button
-                  onClick={() => toggleAvailable(item.id, item.available)}
-                  className="flex items-center gap-1.5 text-[11px] font-bold transition-all px-3 py-1.5 rounded-full"
-                  style={{
-                    background: item.available ? 'rgba(76,175,125,0.12)' : 'rgba(224,92,92,0.10)',
-                    color: item.available ? '#4CAF7D' : '#E05C5C',
-                  }}
-                >
-                  {item.available
-                    ? <><ToggleRight size={14} strokeWidth={2} /> Available</>
-                    : <><ToggleLeft  size={14} strokeWidth={2} /> Sold Out</>
-                  }
-                </button>
+
+                {/* ── Photo editor ─────────────────────────────────── */}
+                <AnimatePresence>
+                  {editingPhoto === item.id && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div
+                        className="px-4 pb-4 pt-1"
+                        style={{ borderTop: '1px solid rgba(47,35,67,0.07)' }}
+                      >
+                        <p className="text-[10px] tracking-[0.14em] uppercase font-bold text-muted mb-3 mt-2">
+                          Photo
+                        </p>
+
+                        <div className="flex gap-3 items-start">
+                          {/* Preview */}
+                          <div
+                            className="w-20 h-20 rounded-[14px] flex-shrink-0 overflow-hidden flex flex-col items-center justify-center"
+                            style={{ background: 'rgba(255,255,255,0.7)', border: '1.5px dashed rgba(47,35,67,0.15)' }}
+                          >
+                            {item.image_url ? (
+                              <img src={item.image_url} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              <>
+                                <ImageOff size={18} strokeWidth={1.5} style={{ color: 'rgba(47,35,67,0.25)' }} />
+                                <span className="text-[9px] text-plum/30 mt-1 font-medium">No photo</span>
+                              </>
+                            )}
+                          </div>
+
+                          <div className="flex-1 space-y-2">
+                            {/* Upload button */}
+                            <button
+                              onClick={() => fileRef.current?.click()}
+                              disabled={uploading}
+                              className="w-full glass rounded-[12px] flex items-center justify-center gap-2 text-[12px] font-semibold text-plum/70 hover:text-plum transition-all disabled:opacity-50"
+                              style={{ height: '36px' }}
+                            >
+                              {uploading
+                                ? <><Loader2 size={13} strokeWidth={2} className="animate-spin" /> Uploading…</>
+                                : <><Upload size={13} strokeWidth={2} /> Upload from device</>
+                              }
+                            </button>
+
+                            {/* URL input */}
+                            <div className="flex gap-1.5">
+                              <div className="relative flex-1">
+                                <Link2 size={11} strokeWidth={2} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-plum/30" />
+                                <input
+                                  type="url"
+                                  placeholder="Or paste image URL"
+                                  value={urlInput}
+                                  onChange={e => setUrlInput(e.target.value)}
+                                  className="w-full rounded-[10px] pl-7 pr-3 py-2 text-[12px] outline-none"
+                                  style={{
+                                    background: 'rgba(255,255,255,0.7)',
+                                    border: '1px solid rgba(47,35,67,0.12)',
+                                    color: '#2F2343',
+                                  }}
+                                />
+                              </div>
+                              <button
+                                onClick={() => saveImageUrl(item.id, urlInput)}
+                                disabled={!urlInput.trim()}
+                                className="w-9 h-9 btn-primary rounded-[10px] flex items-center justify-center flex-shrink-0 disabled:opacity-40"
+                              >
+                                <Check size={13} strokeWidth={2.5} />
+                              </button>
+                            </div>
+
+                            {/* Remove photo */}
+                            {item.image_url && (
+                              <button
+                                onClick={() => saveImageUrl(item.id, '')}
+                                className="text-[11px] text-plum/35 hover:text-red-400 transition-colors flex items-center gap-1"
+                              >
+                                <X size={10} strokeWidth={2} /> Remove photo
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             ))}
           </div>
