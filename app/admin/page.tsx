@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft, RefreshCw, Package, ChefHat, DollarSign,
   Clock, CheckCircle, XCircle, Truck, ToggleLeft, ToggleRight,
-  Camera, Upload, Link2, Check, X, Loader2, ImageOff,
+  Camera, Upload, Check, X, Loader2, ImageOff,
 } from 'lucide-react';
 import { supabase, type DbOrder, type DbMenuItem } from '@/lib/supabase';
 
@@ -34,7 +34,6 @@ export default function AdminPage() {
   const [loading,      setLoading]      = useState(true);
   const [error,        setError]        = useState<string | null>(null);
   const [editingPhoto, setEditingPhoto] = useState<number | null>(null);
-  const [urlInput,     setUrlInput]     = useState('');
   const [uploading,    setUploading]    = useState(false);
   const [saved,        setSaved]        = useState<number | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -81,13 +80,11 @@ export default function AdminPage() {
 
   function openPhotoEditor(item: DbMenuItem) {
     setEditingPhoto(item.id);
-    setUrlInput(item.image_url ?? '');
     setSaved(null);
   }
 
   function closePhotoEditor() {
     setEditingPhoto(null);
-    setUrlInput('');
   }
 
   async function saveImageUrl(itemId: number, url: string) {
@@ -127,7 +124,7 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-page-bg">
 
-      {/* ── Top bar ─────────────────────────────────────────────── */}
+      {/* Top bar */}
       <div
         className="sticky top-0 z-50 px-4 sm:px-8"
         style={{
@@ -152,7 +149,6 @@ export default function AdminPage() {
               <span className="text-[11px] text-plum/35 ml-2">Lex Get Baked</span>
             </div>
           </div>
-
           <button
             onClick={load}
             className="w-8 h-8 glass rounded-xl flex items-center justify-center text-plum/45 hover:text-plum transition-all"
@@ -165,7 +161,7 @@ export default function AdminPage() {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-8 py-6">
 
-        {/* ── Stats row ───────────────────────────────────────────── */}
+        {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-6">
           {[
             { Icon: Clock,       val: pendingCount,             label: 'Awaiting',   color: '#C4965A' },
@@ -185,7 +181,7 @@ export default function AdminPage() {
           ))}
         </div>
 
-        {/* ── Tabs ────────────────────────────────────────────────── */}
+        {/* Tabs */}
         <div className="flex gap-1 glass-card rounded-[16px] p-1 mb-5 w-fit">
           {(['orders', 'menu'] as Tab[]).map(t => (
             <button
@@ -201,7 +197,7 @@ export default function AdminPage() {
           ))}
         </div>
 
-        {/* ── Error ───────────────────────────────────────────────── */}
+        {/* Error */}
         {error && (
           <div className="glass-card rounded-[18px] p-4 mb-5 flex items-start gap-3 border border-red-200/50">
             <XCircle size={16} strokeWidth={2} style={{ color: '#E05C5C', flexShrink: 0, marginTop: 1 }} />
@@ -213,14 +209,14 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* ── Loading ─────────────────────────────────────────────── */}
+        {/* Loading */}
         {loading && (
           <div className="flex justify-center pt-16">
             <div className="w-7 h-7 rounded-full border-2 border-plum/10 border-t-plum/40 animate-spin" />
           </div>
         )}
 
-        {/* ── Orders ──────────────────────────────────────────────── */}
+        {/* Orders */}
         {!loading && tab === 'orders' && (
           <div className="space-y-3">
             {orders.length === 0 && !error && (
@@ -246,9 +242,7 @@ export default function AdminPage() {
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <div className="flex items-center gap-2 mb-0.5">
-                          <p className="text-[14px] font-bold text-plum">
-                            #{String(order.id).padStart(4, '0')}
-                          </p>
+                          <p className="text-[14px] font-bold text-plum">#{String(order.id).padStart(4, '0')}</p>
                           <span
                             className="text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wide"
                             style={{ background: meta.bg, color: meta.color }}
@@ -263,18 +257,9 @@ export default function AdminPage() {
                           )}
                         </p>
                         <div className="flex items-center gap-3 mt-1 text-[11px] text-muted">
-                          <span className="flex items-center gap-1">
-                            <Truck size={10} strokeWidth={2} />
-                            {order.delivery_type}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <DollarSign size={10} strokeWidth={2} />
-                            ${(order.total ?? 0).toFixed(2)}
-                          </span>
-                          <span>{new Date(order.created_at).toLocaleString('en-US', {
-                            month: 'short', day: 'numeric',
-                            hour: 'numeric', minute: '2-digit',
-                          })}</span>
+                          <span className="flex items-center gap-1"><Truck size={10} strokeWidth={2} />{order.delivery_type}</span>
+                          <span className="flex items-center gap-1"><DollarSign size={10} strokeWidth={2} />${(order.total ?? 0).toFixed(2)}</span>
+                          <span>{new Date(order.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</span>
                         </div>
                       </div>
                     </div>
@@ -308,7 +293,7 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* ── Menu ────────────────────────────────────────────────── */}
+        {/* Menu */}
         {!loading && tab === 'menu' && (
           <div className="space-y-2">
             {menu.length === 0 && !error && (
@@ -318,7 +303,6 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* Hidden file input */}
             <input
               ref={fileRef}
               type="file"
@@ -341,7 +325,6 @@ export default function AdminPage() {
               >
                 {/* Main row */}
                 <div className="px-4 py-3 flex items-center gap-3">
-                  {/* Thumbnail */}
                   <div
                     className="w-10 h-10 rounded-[12px] flex-shrink-0 overflow-hidden flex items-center justify-center text-lg"
                     style={{ background: 'rgba(255,255,255,0.6)' }}
@@ -352,29 +335,19 @@ export default function AdminPage() {
                       item.emoji
                     )}
                   </div>
-
                   <div className="flex-1 min-w-0">
                     <p className="text-[13px] font-bold text-plum truncate">{item.name}</p>
                     <p className="text-[11px] text-muted capitalize">{item.category} · ${item.price}</p>
                   </div>
-
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    {/* Photo button */}
                     <button
                       onClick={() => editingPhoto === item.id ? closePhotoEditor() : openPhotoEditor(item)}
                       className="w-8 h-8 glass rounded-[10px] flex items-center justify-center transition-all"
                       title="Edit photo"
-                      style={{
-                        color: saved === item.id ? '#4CAF7D' : editingPhoto === item.id ? '#C9748F' : 'rgba(47,35,67,0.45)',
-                      }}
+                      style={{ color: saved === item.id ? '#4CAF7D' : editingPhoto === item.id ? '#C9748F' : 'rgba(47,35,67,0.45)' }}
                     >
-                      {saved === item.id
-                        ? <Check size={13} strokeWidth={2.5} />
-                        : <Camera size={13} strokeWidth={2} />
-                      }
+                      {saved === item.id ? <Check size={13} strokeWidth={2.5} /> : <Camera size={13} strokeWidth={2} />}
                     </button>
-
-                    {/* Available toggle */}
                     <button
                       onClick={() => toggleAvailable(item.id, item.available)}
                       className="flex items-center gap-1.5 text-[11px] font-bold transition-all px-3 py-1.5 rounded-full"
@@ -391,7 +364,7 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                {/* ── Photo editor ─────────────────────────────────── */}
+                {/* Photo editor */}
                 <AnimatePresence>
                   {editingPhoto === item.id && (
                     <motion.div
@@ -401,14 +374,8 @@ export default function AdminPage() {
                       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
                       style={{ overflow: 'hidden' }}
                     >
-                      <div
-                        className="px-4 pb-4 pt-1"
-                        style={{ borderTop: '1px solid rgba(47,35,67,0.07)' }}
-                      >
-                        <p className="text-[10px] tracking-[0.14em] uppercase font-bold text-muted mb-3 mt-2">
-                          Photo
-                        </p>
-
+                      <div className="px-4 pb-4 pt-1" style={{ borderTop: '1px solid rgba(47,35,67,0.07)' }}>
+                        <p className="text-[10px] tracking-[0.14em] uppercase font-bold text-muted mb-3 mt-2">Photo</p>
                         <div className="flex gap-3 items-start">
                           {/* Preview */}
                           <div
@@ -424,48 +391,18 @@ export default function AdminPage() {
                               </>
                             )}
                           </div>
-
                           <div className="flex-1 space-y-2">
-                            {/* Upload button */}
                             <button
                               onClick={() => fileRef.current?.click()}
                               disabled={uploading}
-                              className="w-full glass rounded-[12px] flex items-center justify-center gap-2 text-[12px] font-semibold text-plum/70 hover:text-plum transition-all disabled:opacity-50"
-                              style={{ height: '36px' }}
+                              className="w-full btn-primary rounded-[12px] flex items-center justify-center gap-2 text-[12px] font-semibold transition-all disabled:opacity-50"
+                              style={{ height: '44px' }}
                             >
                               {uploading
-                                ? <><Loader2 size={13} strokeWidth={2} className="animate-spin" /> Uploading…</>
-                                : <><Upload size={13} strokeWidth={2} /> Upload from device</>
+                                ? <><Loader2 size={14} strokeWidth={2} className="animate-spin" /> Uploading…</>
+                                : <><Upload size={14} strokeWidth={2} /> {item.image_url ? 'Replace photo' : 'Upload photo'}</>
                               }
                             </button>
-
-                            {/* URL input */}
-                            <div className="flex gap-1.5">
-                              <div className="relative flex-1">
-                                <Link2 size={11} strokeWidth={2} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-plum/30" />
-                                <input
-                                  type="url"
-                                  placeholder="Or paste image URL"
-                                  value={urlInput}
-                                  onChange={e => setUrlInput(e.target.value)}
-                                  className="w-full rounded-[10px] pl-7 pr-3 py-2 text-[12px] outline-none"
-                                  style={{
-                                    background: 'rgba(255,255,255,0.7)',
-                                    border: '1px solid rgba(47,35,67,0.12)',
-                                    color: '#2F2343',
-                                  }}
-                                />
-                              </div>
-                              <button
-                                onClick={() => saveImageUrl(item.id, urlInput)}
-                                disabled={!urlInput.trim()}
-                                className="w-9 h-9 btn-primary rounded-[10px] flex items-center justify-center flex-shrink-0 disabled:opacity-40"
-                              >
-                                <Check size={13} strokeWidth={2.5} />
-                              </button>
-                            </div>
-
-                            {/* Remove photo */}
                             {item.image_url && (
                               <button
                                 onClick={() => saveImageUrl(item.id, '')}

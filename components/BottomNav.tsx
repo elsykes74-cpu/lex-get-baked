@@ -19,6 +19,8 @@ export default function BottomNav() {
   const [scrolled, setScrolled] = useState(false);
   const { count }               = useCart();
 
+  if (pathname.startsWith('/admin')) return null;
+
   useEffect(() => {
     let lastY = window.scrollY;
     const handler = () => {
