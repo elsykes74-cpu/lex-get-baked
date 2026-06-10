@@ -50,6 +50,8 @@ const config: Config = {
         'bounce-add':   'bounce-add 0.4s cubic-bezier(0.16,1,0.3,1)',
         'blob':         'blob 9s ease-in-out infinite',
         'ring-spin':    'ring-spin 12s linear infinite',
+        'marquee':      'marquee 28s linear infinite',
+        'marquee-rev':  'marquee-reverse 28s linear infinite',
       },
       borderRadius: {
         'xl2': '20px',
