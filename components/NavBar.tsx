@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Menu, X } from 'lucide-react';
+import { ShoppingBag, Menu, X, Settings2 } from 'lucide-react';
 import clsx from 'clsx';
 import { useCart } from '@/lib/cart-context';
 
@@ -83,6 +83,16 @@ export default function NavBar() {
           </nav>
 
           <div className="flex items-center gap-2">
+            {/* Admin toggle — discrete, for owner use */}
+            <Link
+              href="/admin"
+              className="w-8 h-8 rounded-xl glass hidden sm:flex items-center justify-center text-plum/30 hover:text-plum/70 transition-all"
+              title="Admin panel"
+              aria-label="Admin panel"
+            >
+              <Settings2 size={14} strokeWidth={2} />
+            </Link>
+
             <Link
               href="/checkout"
               className="glass flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-plum/75 hover:text-plum transition-all"

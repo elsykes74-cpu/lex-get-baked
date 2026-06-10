@@ -1,45 +1,67 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
+import {
+  ArrowLeft, RefreshCw, Package, ChefHat, DollarSign,
+  Clock, CheckCircle, XCircle, Truck, ToggleLeft, ToggleRight,
+} from 'lucide-react';
 import { supabase, type DbOrder, type DbMenuItem } from '@/lib/supabase';
 
-const STATUS_COLORS: Record<string, string> = {
-  pending:   '#C4965A',
-  confirmed: '#6B4E8C',
-  preparing: '#C9748F',
-  ready:     '#6B8C7A',
-  delivered: '#9B7EBC',
-  cancelled: '#666',
+const STATUS_META: Record<string, { label: string; color: string; bg: string }> = {
+  pending:   { label: 'Pending',   color: '#C4965A', bg: 'rgba(196,150,90,0.12)'  },
+  confirmed: { label: 'Confirmed', color: '#9B7EBC', bg: 'rgba(155,126,188,0.12)' },
+  preparing: { label: 'Preparing', color: '#C9748F', bg: 'rgba(201,116,143,0.12)' },
+  ready:     { label: 'Ready',     color: '#6B8C7A', bg: 'rgba(107,140,122,0.12)' },
+  delivered: { label: 'Delivered', color: '#4CAF7D', bg: 'rgba(76,175,125,0.12)'  },
+  cancelled: { label: 'Cancelled', color: '#888',    bg: 'rgba(128,128,128,0.10)' },
 };
 
-export default function AdminPage() {
-  const [tab, setTab] = useState<'orders' | 'menu'>('orders');
-  const [orders, setOrders] = useState<DbOrder[]>([]);
-  const [menu, setMenu] = useState<DbMenuItem[]>([]);
-  const [loading, setLoading] = useState(true);
+const NEXT_STATUS: Record<string, string> = {
+  pending:   'confirmed',
+  confirmed: 'preparing',
+  preparing: 'ready',
+  ready:     'delivered',
+};
 
-  useEffect(() => {
-    async function load() {
-      setLoading(true);
+type Tab = 'orders' | 'menu';
+
+export default function AdminPage() {
+  const [tab,     setTab]     = useState<Tab>('orders');
+  const [orders,  setOrders]  = useState<DbOrder[]>([]);
+  const [menu,    setMenu]    = useState<DbMenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState<string | null>(null);
+
+  async function load() {
+    setLoading(true);
+    setError(null);
+    try {
       if (tab === 'orders') {
-        const { data } = await supabase
+        const { data, error: e } = await supabase
           .from('orders')
           .select('*')
           .order('created_at', { ascending: false })
           .limit(50);
+        if (e) throw e;
         setOrders(data ?? []);
       } else {
-        const { data } = await supabase
+        const { data, error: e } = await supabase
           .from('menu_items')
           .select('*')
           .order('category')
           .order('name');
+        if (e) throw e;
         setMenu(data ?? []);
       }
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Could not connect to database');
+    } finally {
       setLoading(false);
     }
-    load();
-  }, [tab]);
+  }
+
+  useEffect(() => { load(); }, [tab]);
 
   async function updateOrderStatus(id: number, status: string) {
     await supabase.from('orders').update({ status }).eq('id', id);
@@ -51,97 +73,243 @@ export default function AdminPage() {
     setMenu(prev => prev.map(i => i.id === id ? { ...i, available: !available } : i));
   }
 
+  const pendingCount   = orders.filter(o => o.status === 'pending').length;
+  const preparingCount = orders.filter(o => o.status === 'preparing' || o.status === 'confirmed').length;
+  const revenue        = orders
+    .filter(o => o.status !== 'cancelled')
+    .reduce((s, o) => s + (o.total ?? 0), 0);
+
   return (
-    <div className="min-h-screen bg-page-bg text-cream p-5 pt-10">
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-8">
-          <p className="text-[10px] tracking-widest text-rose uppercase mb-1">Dashboard</p>
-          <h1 className="font-display text-3xl italic text-cream">Admin Panel</h1>
+    <div className="min-h-screen bg-page-bg">
+
+      {/* ── Top bar ─────────────────────────────────────────────── */}
+      <div
+        className="sticky top-0 z-50 px-4 sm:px-8"
+        style={{
+          background: 'rgba(244,240,248,0.92)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderBottom: '1px solid rgba(47,35,67,0.06)',
+        }}
+      >
+        <div className="max-w-3xl mx-auto flex items-center justify-between h-16">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="glass flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold text-plum/65 hover:text-plum transition-all"
+            >
+              <ArrowLeft size={13} strokeWidth={2.5} />
+              Back to Store
+            </Link>
+            <div className="h-4 w-px bg-plum/10" />
+            <div>
+              <span className="text-[11px] tracking-[0.16em] uppercase font-bold text-muted">Admin</span>
+              <span className="text-[11px] text-plum/35 ml-2">Lex Get Baked</span>
+            </div>
+          </div>
+
+          <button
+            onClick={load}
+            className="w-8 h-8 glass rounded-xl flex items-center justify-center text-plum/45 hover:text-plum transition-all"
+            title="Refresh"
+          >
+            <RefreshCw size={13} strokeWidth={2} />
+          </button>
+        </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-8 py-6">
+
+        {/* ── Stats row ───────────────────────────────────────────── */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          {[
+            { Icon: Clock,       val: pendingCount,        label: 'Awaiting',  color: '#C4965A' },
+            { Icon: ChefHat,     val: preparingCount,      label: 'In Kitchen', color: '#C9748F' },
+            { Icon: DollarSign,  val: `$${revenue.toFixed(0)}`, label: 'Revenue', color: '#6B8C7A' },
+          ].map(({ Icon, val, label, color }) => (
+            <div key={label} className="glass-card rounded-[20px] overflow-hidden text-center">
+              <div className="h-0.5 w-full" style={{ background: `linear-gradient(90deg, ${color}44, ${color})` }} />
+              <div className="p-4">
+                <div className="w-8 h-8 rounded-xl mx-auto mb-2 flex items-center justify-center" style={{ background: `${color}15` }}>
+                  <Icon size={15} strokeWidth={2} style={{ color }} />
+                </div>
+                <p className="font-display text-[20px] font-bold text-plum leading-none">{val}</p>
+                <p className="text-[10px] font-bold text-muted mt-1">{label}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-1 glass rounded-xl p-1 mb-6 w-fit">
-          {(['orders', 'menu'] as const).map(t => (
+        {/* ── Tabs ────────────────────────────────────────────────── */}
+        <div className="flex gap-1 glass-card rounded-[16px] p-1 mb-5 w-fit">
+          {(['orders', 'menu'] as Tab[]).map(t => (
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-5 py-2 rounded-lg text-sm font-medium capitalize transition-all ${
-                tab === t ? 'bg-brand-gradient text-white' : 'text-cream/50 hover:text-cream'
+              className={`px-5 py-2 rounded-[12px] text-[13px] font-bold capitalize transition-all ${
+                tab === t
+                  ? 'btn-primary'
+                  : 'text-plum/50 hover:text-plum'
               }`}
+              style={tab === t ? { minHeight: '36px' } : { minHeight: '36px' }}
             >
-              {t}
+              {t === 'orders' ? `Orders${pendingCount > 0 ? ` (${pendingCount})` : ''}` : 'Menu'}
             </button>
           ))}
         </div>
 
-        {loading ? (
-          <div className="flex justify-center pt-20">
-            <div className="w-8 h-8 border-2 border-rose/30 border-t-rose rounded-full animate-spin" />
+        {/* ── Error ───────────────────────────────────────────────── */}
+        {error && (
+          <div className="glass-card rounded-[18px] p-4 mb-5 flex items-start gap-3 border border-red-200/50">
+            <XCircle size={16} strokeWidth={2} style={{ color: '#E05C5C', flexShrink: 0, marginTop: 1 }} />
+            <div>
+              <p className="text-[13px] font-bold text-plum mb-0.5">Database offline</p>
+              <p className="text-[12px] text-muted">{error}</p>
+              <p className="text-[11px] text-muted mt-1">The Supabase project may be paused — resume it from your Supabase dashboard.</p>
+            </div>
           </div>
-        ) : tab === 'orders' ? (
+        )}
+
+        {/* ── Loading ─────────────────────────────────────────────── */}
+        {loading && (
+          <div className="flex justify-center pt-16">
+            <div className="w-7 h-7 rounded-full border-2 border-plum/10 border-t-plum/40 animate-spin" />
+          </div>
+        )}
+
+        {/* ── Orders ──────────────────────────────────────────────── */}
+        {!loading && tab === 'orders' && (
           <div className="space-y-3">
-            {orders.length === 0 && <p className="text-cream/30 text-sm text-center pt-12">No orders yet.</p>}
-            {orders.map(order => (
-              <motion.div
-                key={order.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="glass rounded-2xl p-4"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <p className="font-medium text-cream">#{order.id} — {order.customer_name || 'Anonymous'}</p>
-                    <p className="text-xs text-cream/40">{new Date(order.created_at).toLocaleString()}</p>
-                    <p className="text-xs text-cream/40">{order.delivery_type} · ${order.total}</p>
+            {orders.length === 0 && !error && (
+              <div className="glass-card rounded-[28px] p-16 text-center">
+                <Package size={32} strokeWidth={1.4} className="mx-auto mb-3 text-plum/20" />
+                <p className="text-[14px] font-semibold text-muted">No orders yet</p>
+                <p className="text-[12px] text-plum/35 mt-1">Orders will appear here once customers check out</p>
+              </div>
+            )}
+            {orders.map((order, i) => {
+              const meta = STATUS_META[order.status] ?? STATUS_META.pending;
+              const next = NEXT_STATUS[order.status];
+              return (
+                <motion.div
+                  key={order.id}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.03 }}
+                  className="glass-card rounded-[24px] overflow-hidden"
+                >
+                  {/* Status bar */}
+                  <div className="h-0.5 w-full" style={{ background: meta.color }} />
+
+                  <div className="p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <p className="text-[14px] font-bold text-plum">
+                            #{String(order.id).padStart(4, '0')}
+                          </p>
+                          <span
+                            className="text-[9px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wide"
+                            style={{ background: meta.bg, color: meta.color }}
+                          >
+                            {meta.label}
+                          </span>
+                        </div>
+                        <p className="text-[12px] font-semibold text-plum/70">
+                          {order.customer_name || 'Anonymous'}
+                          {order.customer_email && (
+                            <span className="font-normal text-muted ml-1.5">· {order.customer_email}</span>
+                          )}
+                        </p>
+                        <div className="flex items-center gap-3 mt-1 text-[11px] text-muted">
+                          <span className="flex items-center gap-1">
+                            <Truck size={10} strokeWidth={2} />
+                            {order.delivery_type}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <DollarSign size={10} strokeWidth={2} />
+                            ${(order.total ?? 0).toFixed(2)}
+                          </span>
+                          <span>{new Date(order.created_at).toLocaleString('en-US', {
+                            month: 'short', day: 'numeric',
+                            hour: 'numeric', minute: '2-digit',
+                          })}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Quick action + all statuses */}
+                    <div className="flex gap-2 flex-wrap items-center">
+                      {next && (
+                        <button
+                          onClick={() => updateOrderStatus(order.id, next)}
+                          className="btn-primary rounded-[12px] flex items-center gap-1.5 px-3.5"
+                          style={{ height: '34px', fontSize: '12px' }}
+                        >
+                          <CheckCircle size={12} strokeWidth={2.5} />
+                          Mark {STATUS_META[next]?.label}
+                        </button>
+                      )}
+                      <div className="flex gap-1.5 flex-wrap">
+                        {Object.keys(STATUS_META).filter(s => s !== order.status).map(s => (
+                          <button
+                            key={s}
+                            onClick={() => updateOrderStatus(order.id, s)}
+                            className="glass text-[10px] px-2.5 py-1 rounded-full font-semibold text-plum/50 hover:text-plum transition-colors capitalize"
+                          >
+                            {STATUS_META[s].label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <span
-                    className="text-[10px] px-2 py-0.5 rounded-full font-medium uppercase tracking-wide"
-                    style={{ background: `${STATUS_COLORS[order.status]}22`, color: STATUS_COLORS[order.status] }}
-                  >
-                    {order.status}
-                  </span>
-                </div>
-                <div className="flex gap-2 flex-wrap">
-                  {['confirmed','preparing','ready','delivered','cancelled'].map(s => (
-                    <button
-                      key={s}
-                      onClick={() => updateOrderStatus(order.id, s)}
-                      disabled={order.status === s}
-                      className={`text-[10px] px-2.5 py-1 rounded-full transition-all capitalize ${
-                        order.status === s
-                          ? 'bg-white/10 text-cream/40'
-                          : 'glass text-cream/60 hover:text-cream'
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
-        ) : (
+        )}
+
+        {/* ── Menu ────────────────────────────────────────────────── */}
+        {!loading && tab === 'menu' && (
           <div className="space-y-2">
-            {menu.map(item => (
-              <div key={item.id} className="glass rounded-xl px-4 py-3 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-xl">{item.emoji}</span>
-                  <div>
-                    <p className="text-sm font-medium text-cream">{item.name}</p>
-                    <p className="text-xs text-cream/40">{item.category} · ${item.price}</p>
-                  </div>
+            {menu.length === 0 && !error && (
+              <div className="glass-card rounded-[28px] p-16 text-center">
+                <ChefHat size={32} strokeWidth={1.4} className="mx-auto mb-3 text-plum/20" />
+                <p className="text-[14px] font-semibold text-muted">No menu items</p>
+              </div>
+            )}
+            {menu.map((item, i) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.025 }}
+                className="glass-card rounded-[18px] px-4 py-3 flex items-center gap-3"
+              >
+                <div
+                  className="w-10 h-10 rounded-[12px] flex items-center justify-center text-lg flex-shrink-0"
+                  style={{ background: 'rgba(255,255,255,0.6)' }}
+                >
+                  {item.emoji}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] font-bold text-plum truncate">{item.name}</p>
+                  <p className="text-[11px] text-muted capitalize">{item.category} · ${item.price}</p>
                 </div>
                 <button
                   onClick={() => toggleAvailable(item.id, item.available)}
-                  className={`text-xs px-3 py-1.5 rounded-full font-medium transition-all ${
-                    item.available
-                      ? 'bg-green-500/20 text-green-400 hover:bg-red-500/20 hover:text-red-400'
-                      : 'bg-red-500/20 text-red-400 hover:bg-green-500/20 hover:text-green-400'
-                  }`}
+                  className="flex items-center gap-1.5 text-[11px] font-bold transition-all px-3 py-1.5 rounded-full"
+                  style={{
+                    background: item.available ? 'rgba(76,175,125,0.12)' : 'rgba(224,92,92,0.10)',
+                    color: item.available ? '#4CAF7D' : '#E05C5C',
+                  }}
                 >
-                  {item.available ? 'Available' : 'Sold out'}
+                  {item.available
+                    ? <><ToggleRight size={14} strokeWidth={2} /> Available</>
+                    : <><ToggleLeft  size={14} strokeWidth={2} /> Sold Out</>
+                  }
                 </button>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}
