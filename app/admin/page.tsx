@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft, RefreshCw, Package, ChefHat, DollarSign,
   Clock, CheckCircle, XCircle, Truck, ToggleLeft, ToggleRight,
-  Camera, Upload, Link2, Check, X, Loader2, ImageOff,
+  Camera, Upload, Check, X, Loader2, ImageOff,
 } from 'lucide-react';
 import { supabase, type DbOrder, type DbMenuItem } from '@/lib/supabase';
 
@@ -34,7 +34,6 @@ export default function AdminPage() {
   const [loading,      setLoading]      = useState(true);
   const [error,        setError]        = useState<string | null>(null);
   const [editingPhoto, setEditingPhoto] = useState<number | null>(null);
-  const [urlInput,     setUrlInput]     = useState('');
   const [uploading,    setUploading]    = useState(false);
   const [saved,        setSaved]        = useState<number | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -81,7 +80,6 @@ export default function AdminPage() {
 
   function openPhotoEditor(item: DbMenuItem) {
     setEditingPhoto(item.id);
-    setUrlInput(item.image_url ?? '');
     setSaved(null);
   }
 
@@ -430,40 +428,14 @@ export default function AdminPage() {
                             <button
                               onClick={() => fileRef.current?.click()}
                               disabled={uploading}
-                              className="w-full glass rounded-[12px] flex items-center justify-center gap-2 text-[12px] font-semibold text-plum/70 hover:text-plum transition-all disabled:opacity-50"
-                              style={{ height: '36px' }}
+                              className="w-full btn-primary rounded-[12px] flex items-center justify-center gap-2 text-[12px] font-semibold transition-all disabled:opacity-50"
+                              style={{ height: '44px' }}
                             >
                               {uploading
-                                ? <><Loader2 size={13} strokeWidth={2} className="animate-spin" /> Uploading…</>
-                                : <><Upload size={13} strokeWidth={2} /> Upload from device</>
+                                ? <><Loader2 size={14} strokeWidth={2} className="animate-spin" /> Uploading…</>
+                                : <><Upload size={14} strokeWidth={2} /> {item.image_url ? 'Replace photo' : 'Upload photo'}</>
                               }
                             </button>
-
-                            {/* URL input */}
-                            <div className="flex gap-1.5">
-                              <div className="relative flex-1">
-                                <Link2 size={11} strokeWidth={2} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-plum/30" />
-                                <input
-                                  type="url"
-                                  placeholder="Or paste image URL"
-                                  value={urlInput}
-                                  onChange={e => setUrlInput(e.target.value)}
-                                  className="w-full rounded-[10px] pl-7 pr-3 py-2 text-[12px] outline-none"
-                                  style={{
-                                    background: 'rgba(255,255,255,0.7)',
-                                    border: '1px solid rgba(47,35,67,0.12)',
-                                    color: '#2F2343',
-                                  }}
-                                />
-                              </div>
-                              <button
-                                onClick={() => saveImageUrl(item.id, urlInput)}
-                                disabled={!urlInput.trim()}
-                                className="w-9 h-9 btn-primary rounded-[10px] flex items-center justify-center flex-shrink-0 disabled:opacity-40"
-                              >
-                                <Check size={13} strokeWidth={2.5} />
-                              </button>
-                            </div>
 
                             {/* Remove photo */}
                             {item.image_url && (
