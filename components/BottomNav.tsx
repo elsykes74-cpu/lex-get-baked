@@ -19,9 +19,8 @@ export default function BottomNav() {
   const [scrolled, setScrolled] = useState(false);
   const { count }               = useCart();
 
-  if (pathname.startsWith('/admin')) return null;
-
   useEffect(() => {
+    if (pathname.startsWith('/admin')) return;
     let lastY = window.scrollY;
     const handler = () => {
       const y = window.scrollY;
@@ -30,7 +29,9 @@ export default function BottomNav() {
     };
     window.addEventListener('scroll', handler, { passive: true });
     return () => window.removeEventListener('scroll', handler);
-  }, []);
+  }, [pathname]);
+
+  if (pathname.startsWith('/admin')) return null;
 
   return (
     <nav
