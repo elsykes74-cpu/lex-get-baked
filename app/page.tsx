@@ -3,15 +3,16 @@ import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Star, ShoppingBag, Sparkles } from 'lucide-react';
+import { ArrowRight, Star, ShoppingBag, Sparkles, Pencil, Flame, Gift, Heart, MapPin, Clock } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 import VideoBackground from '@/components/ui/VideoBackground';
+import Marquee from '@/components/ui/Marquee';
 
 const FADE_UP = {
-  hidden: { opacity: 0, y: 20 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+  hidden: { opacity: 0, y: 22 },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
 };
-const STAGGER = { show: { transition: { staggerChildren: 0.09 } } };
+const STAGGER = { show: { transition: { staggerChildren: 0.10 } } };
 
 const FEATURED = [
   { name: 'Velvet Stuffed',   price: '$6',  tag: 'Signature',  color: '#C9748F',
@@ -25,15 +26,62 @@ const FEATURED = [
 ];
 
 const TESTIMONIALS = [
-  { name: 'Sophia M.',  text: 'The most beautiful cookies I\'ve ever seen — tasted even better.',      rating: 5 },
-  { name: 'James K.',   text: 'Ordered for my wedding. Every guest asked where they were from.',       rating: 5 },
-  { name: 'Priya L.',   text: 'The custom box was perfect. Will never order from anyone else.',        rating: 5 },
+  { name: 'Sophia M.',  text: 'The most beautiful cookies I\'ve ever seen — tasted even better.',    rating: 5, avatar: 'SM' },
+  { name: 'James K.',   text: 'Ordered for my wedding. Every guest asked where they were from.',     rating: 5, avatar: 'JK' },
+  { name: 'Priya L.',   text: 'The custom box was perfect. Will never order from anyone else.',      rating: 5, avatar: 'PL' },
 ];
 
 const STATS = [
-  ['100%', 'Scratch-made'],
-  ['48hr',  'Max shelf life'],
-  ['Local', 'Ingredients'],
+  { val: '200+', label: 'Happy Customers', color: '#C9748F' },
+  { val: '100%', label: 'Scratch-Made',    color: '#D4956A' },
+  { val: '48hr', label: 'Max Lead Time',   color: '#9B7EBC' },
+  { val: 'Local', label: 'Ingredients',   color: '#6B8C7A' },
+];
+
+const HOW_IT_WORKS = [
+  {
+    step: '01',
+    Icon: Pencil,
+    title: 'Build Your Box',
+    desc: 'Choose your base, filling, finish, and size. Every combination is crafted for you — or go fully custom.',
+    color: '#C9748F',
+  },
+  {
+    step: '02',
+    Icon: Flame,
+    title: 'We Bake Fresh',
+    desc: 'Every order is made to order in our Western Mass kitchen. Never frozen, never pre-made, never compromised.',
+    color: '#D4956A',
+  },
+  {
+    step: '03',
+    Icon: Gift,
+    title: 'Pick Up or Deliver',
+    desc: 'Ready in 24–48 hours. Packaged in our signature luxury gift boxes — beautiful before it\'s even opened.',
+    color: '#9B7EBC',
+  },
+];
+
+const GALLERY = [
+  'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=600&q=85',
+  'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&q=85',
+  'https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=600&q=85',
+  'https://images.unsplash.com/photo-1587668178277-295251f900ce?w=600&q=85',
+  'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=85',
+  'https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=600&q=85',
+];
+
+const TRUST_ITEMS = [
+  'Small Batch Made',
+  'Western Massachusetts',
+  'Scratch Recipes Daily',
+  'No Preservatives',
+  'Gluten-Free Options',
+  'Custom Orders Welcome',
+  '200+ Happy Customers',
+  'Locally Sourced',
+  'Luxury Gift Packaging',
+  'Made To Order',
 ];
 
 export default function HomePage() {
@@ -81,21 +129,10 @@ export default function HomePage() {
       </AnimatePresence>
 
       {/* ── HERO ─────────────────────────────────────────────────────── */}
-      {/*
-        Section = full-bleed background.
-        Inner container = max-w-1440 centered, flex-col → brand row + 2-col grid.
-        Mobile cookie is absolute on section (md:hidden).
-        Desktop grid uses minmax columns so cookie fills its column properly.
-      */}
       <section
         ref={heroRef}
         className="relative bg-hero-bg overflow-hidden pt-[5rem] pb-20 md:pt-0 md:pb-0 md:min-h-screen"
       >
-        {/*
-          Video background — desktop only (≥1024 px), respects prefers-reduced-motion.
-          Falls back silently to bg-hero-bg when video is unavailable.
-          Files: /public/media/bakery-hero.mp4 + bakery-poster.jpg (generated)
-        */}
         <VideoBackground
           src="/media/bakery-hero.mp4"
           poster="/media/bakery-poster.jpg"
@@ -103,7 +140,7 @@ export default function HomePage() {
           respectReducedMotion
         />
 
-        {/* Ambient glow — layers above video, adds extra warmth on desktop */}
+        {/* Ambient glow */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden z-[1]">
           <div style={{
             position: 'absolute', top: '-10%', right: '-10%',
@@ -113,7 +150,7 @@ export default function HomePage() {
           }} />
         </div>
 
-        {/* Mobile cookie — absolute, hidden on desktop */}
+        {/* Mobile cookie */}
         <motion.div
           className="md:hidden"
           initial={{ opacity: 0, x: 24 }}
@@ -160,7 +197,7 @@ export default function HomePage() {
           </motion.div>
         </motion.div>
 
-        {/* ── Inner container: centered, flex-col, brand row + grid ── */}
+        {/* Inner container */}
         <div className="relative z-20 flex flex-col md:min-h-screen md:max-w-[1440px] md:mx-auto md:w-full">
 
           {/* Brand wordmark — desktop only */}
@@ -190,7 +227,7 @@ export default function HomePage() {
             <div className="flex-1 h-px" style={{ background: 'linear-gradient(to left, transparent, rgba(201,116,143,0.42))' }} />
           </motion.div>
 
-          {/* ── 2-column content area ─────────────────────────────────── */}
+          {/* 2-column content area */}
           <div
             className="flex-1 flex flex-col md:grid md:items-center"
             style={{
@@ -264,7 +301,7 @@ export default function HomePage() {
               >
                 <Link
                   href="/customize"
-                  className="btn-primary rounded-[24px] px-6 flex items-center justify-between w-full"
+                  className="btn-primary rounded-[24px] px-6 flex items-center justify-between w-full cursor-pointer"
                   style={{ height: 'clamp(60px, 7vh, 72px)', fontSize: 'clamp(15px, 1.4vw, 18px)' }}
                 >
                   <span>Build Your Box</span>
@@ -272,7 +309,7 @@ export default function HomePage() {
                 </Link>
                 <Link
                   href="/menu"
-                  className="btn-ghost rounded-[24px] px-6 flex items-center justify-between w-full"
+                  className="btn-ghost rounded-[24px] px-6 flex items-center justify-between w-full cursor-pointer"
                   style={{ height: 'clamp(60px, 7vh, 72px)', fontSize: 'clamp(15px, 1.4vw, 18px)' }}
                 >
                   <span>Explore Menu</span>
@@ -281,22 +318,19 @@ export default function HomePage() {
               </motion.div>
 
               {/* Trust */}
-              <motion.div variants={FADE_UP}>
-                <p
-                  className="text-muted font-medium"
-                  style={{ fontSize: '11px', letterSpacing: '0.05em', marginTop: '14px' }}
-                >
+              <motion.div variants={FADE_UP} className="flex items-center gap-2 mt-[14px]">
+                <MapPin size={11} strokeWidth={2} style={{ color: '#D4956A', flexShrink: 0 }} />
+                <p className="text-muted font-medium" style={{ fontSize: '11px', letterSpacing: '0.05em' }}>
                   Made fresh in Western Massachusetts
                 </p>
               </motion.div>
             </motion.div>
 
-            {/* ── Desktop cookie column ──────────────────────────────── */}
+            {/* Desktop cookie column */}
             <div
               className="hidden md:flex items-center justify-center relative"
               style={{ paddingRight: 'clamp(48px, 6vw, 96px)' }}
             >
-              {/* Glow blob */}
               <div
                 className="absolute pointer-events-none"
                 style={{
@@ -369,6 +403,23 @@ export default function HomePage() {
         </motion.div>
       </section>
 
+      {/* ── MARQUEE TRUST STRIP ──────────────────────────────────────── */}
+      <div
+        style={{
+          borderTop: '1px solid rgba(47,35,67,0.07)',
+          borderBottom: '1px solid rgba(47,35,67,0.07)',
+          background: 'rgba(255,255,255,0.55)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+        }}
+      >
+        <Marquee
+          items={TRUST_ITEMS}
+          speed={32}
+          className="py-4 text-[10px] font-bold tracking-[0.18em] uppercase text-plum/45"
+        />
+      </div>
+
       {/* ── FEATURED COLLECTION ──────────────────────────────────────── */}
       <section className="bg-page-bg px-5 lg:px-20 pt-16 lg:pt-24 pb-10 lg:pb-20">
         <div className="max-w-[1440px] mx-auto">
@@ -379,9 +430,9 @@ export default function HomePage() {
           >
             <div>
               <p className="text-[9px] lg:text-[11px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">This Week</p>
-              <h2 className="font-display text-[26px] lg:text-[40px] font-bold text-plum italic">Featured Collection</h2>
+              <h2 className="font-display text-[28px] lg:text-[44px] font-bold text-plum italic">Featured Collection</h2>
             </div>
-            <Link href="/menu" className="text-[12px] lg:text-[14px] font-semibold text-muted hover:text-plum transition-colors flex items-center gap-1">
+            <Link href="/menu" className="text-[12px] lg:text-[14px] font-semibold text-muted hover:text-plum transition-colors flex items-center gap-1 cursor-pointer">
               All <ArrowRight size={12} />
             </Link>
           </motion.div>
@@ -394,15 +445,15 @@ export default function HomePage() {
                 viewport={{ once: true }} transition={{ delay: i * 0.07, duration: 0.42 }}
                 className="snap-start flex-shrink-0 w-[158px] lg:w-auto lg:flex-shrink"
               >
-                <Link href="/menu">
+                <Link href="/menu" className="cursor-pointer">
                   <motion.div
-                    whileHover={{ y: -5, scale: 1.02 }}
+                    whileHover={{ y: -6, scale: 1.02 }}
                     whileTap={{ scale: 0.97 }}
                     transition={{ type: 'spring', damping: 18, stiffness: 320 }}
                     className="glass-card rounded-[28px] overflow-hidden cursor-pointer"
                   >
                     <div className="relative h-[130px] lg:h-[260px] overflow-hidden">
-                      <Image src={item.image} alt={item.name} fill className="object-cover" sizes="(max-width: 1024px) 158px, 25vw" />
+                      <Image src={item.image} alt={item.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 1024px) 158px, 25vw" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                       <div
                         className="absolute top-2.5 left-2.5 text-[9px] tracking-widest uppercase px-2.5 py-1 rounded-full font-bold"
@@ -412,7 +463,7 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div className="p-4 lg:p-5">
-                      <p className="font-display text-[14px] lg:text-[20px] font-semibold text-plum leading-tight mb-2">{item.name}</p>
+                      <p className="font-display text-[14px] lg:text-[22px] font-semibold text-plum leading-tight mb-2 italic">{item.name}</p>
                       <div className="flex items-center justify-between">
                         <p className="text-[14px] lg:text-[18px] font-bold text-plum">{item.price}</p>
                         <div className="flex gap-0.5">
@@ -428,6 +479,160 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── HOW IT WORKS ─────────────────────────────────────────────── */}
+      <section className="bg-page-bg px-5 lg:px-20 py-16 lg:py-28 overflow-hidden">
+        <div className="max-w-[1440px] mx-auto">
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="text-center mb-12 lg:mb-20"
+          >
+            <p className="text-[9px] lg:text-[11px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">The Process</p>
+            <h2 className="font-display text-[28px] lg:text-[48px] font-bold text-plum italic">How It Works</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-16 relative">
+
+            {/* Connecting line — desktop */}
+            <div
+              className="hidden md:block absolute pointer-events-none"
+              style={{
+                top: 36,
+                left: '16.66%',
+                right: '16.66%',
+                height: 1,
+                background: 'linear-gradient(to right, rgba(201,116,143,0.20), rgba(212,149,106,0.25), rgba(155,126,188,0.20))',
+              }}
+            />
+
+            {HOW_IT_WORKS.map(({ step, Icon, title, desc, color }, i) => (
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12, duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-col items-center text-center relative"
+              >
+                {/* Step number + icon */}
+                <div className="relative mb-6">
+                  {/* Glow ring */}
+                  <div
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: `radial-gradient(ellipse, ${color}22 0%, transparent 70%)`,
+                      filter: 'blur(16px)',
+                      transform: 'scale(1.5)',
+                    }}
+                  />
+                  <motion.div
+                    whileHover={{ scale: 1.06, rotate: 4 }}
+                    transition={{ type: 'spring', damping: 16, stiffness: 280 }}
+                    className="relative w-16 h-16 rounded-[20px] flex items-center justify-center cursor-default"
+                    style={{
+                      background: `linear-gradient(135deg, #FFFFFF 0%, #FAF5EC 100%)`,
+                      border: `2px solid ${color}40`,
+                      boxShadow: `0 8px 28px ${color}28, 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,1)`,
+                    }}
+                  >
+                    <Icon size={22} strokeWidth={1.8} style={{ color }} />
+                  </motion.div>
+                  {/* Step number badge */}
+                  <div
+                    className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center"
+                    style={{
+                      background: `linear-gradient(135deg, ${color}, ${color}cc)`,
+                      fontSize: '9px',
+                      fontWeight: 800,
+                      color: 'white',
+                      letterSpacing: '0.04em',
+                      boxShadow: `0 2px 8px ${color}40`,
+                    }}
+                  >
+                    {i + 1}
+                  </div>
+                </div>
+
+                <h3
+                  className="font-display text-[20px] lg:text-[26px] font-bold text-plum italic mb-3 leading-tight"
+                >
+                  {title}
+                </h3>
+                <p className="text-[14px] lg:text-[16px] leading-relaxed text-muted font-medium" style={{ maxWidth: '280px' }}>
+                  {desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Bottom CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.45 }}
+            className="text-center mt-14 lg:mt-20"
+          >
+            <Link href="/customize" className="btn-primary rounded-[20px] inline-flex items-center gap-2.5 px-8 cursor-pointer" style={{ height: '56px', fontSize: '15px' }}>
+              Start Your Order
+              <ArrowRight size={15} strokeWidth={2.5} />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── GALLERY STRIP ────────────────────────────────────────────── */}
+      <section className="bg-page-bg pb-16 lg:pb-24">
+        <div className="max-w-[1440px] mx-auto px-5 lg:px-20 mb-7 lg:mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.45 }}
+            className="flex items-end justify-between"
+          >
+            <div>
+              <p className="text-[9px] lg:text-[11px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">Gallery</p>
+              <h2 className="font-display text-[28px] lg:text-[44px] font-bold text-plum italic">Made with Love</h2>
+            </div>
+            <Link href="/menu" className="text-[12px] lg:text-[14px] font-semibold text-muted hover:text-plum transition-colors flex items-center gap-1 cursor-pointer">
+              View Menu <ArrowRight size={12} />
+            </Link>
+          </motion.div>
+        </div>
+
+        <div className="flex gap-3 lg:gap-4 overflow-x-auto pb-2 px-5 lg:px-20 scrollbar-hide">
+          {GALLERY.map((src, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.06, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="gallery-card flex-shrink-0 relative overflow-hidden rounded-[24px] lg:rounded-[28px] cursor-pointer"
+              style={{
+                width: 'clamp(200px, 22vw, 300px)',
+                height: 'clamp(260px, 30vw, 400px)',
+                boxShadow: '0 6px 24px rgba(47,35,67,0.09)',
+              }}
+            >
+              <Image
+                src={src}
+                alt={`Gallery image ${i + 1}`}
+                fill
+                className="object-cover transition-transform duration-700 hover:scale-110"
+                sizes="300px"
+              />
+              <div
+                className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4"
+                style={{ background: 'linear-gradient(to top, rgba(47,35,67,0.55) 0%, transparent 60%)' }}
+              >
+                <Heart size={18} strokeWidth={2} style={{ color: 'rgba(255,255,255,0.85)' }} />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* ── CUSTOMER LOVE ────────────────────────────────────────────── */}
       <section className="bg-page-bg px-5 lg:px-20 py-10 lg:py-20">
         <div className="max-w-[1440px] mx-auto">
@@ -437,22 +642,70 @@ export default function HomePage() {
             className="mb-7 lg:mb-12"
           >
             <p className="text-[9px] lg:text-[11px] tracking-[0.18em] uppercase font-semibold mb-2 text-muted">Reviews</p>
-            <h2 className="font-display text-[26px] lg:text-[40px] font-bold text-plum italic">Customer Love</h2>
+            <h2 className="font-display text-[28px] lg:text-[44px] font-bold text-plum italic">Customer Love</h2>
           </motion.div>
 
           <div className="space-y-3 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-6">
             {TESTIMONIALS.map((t, i) => (
               <motion.div
                 key={t.name}
-                initial={{ opacity: 0, x: -14 }} whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.07, duration: 0.42 }}
-                className="glass-card rounded-[24px] p-5 lg:p-8"
+                initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.09, duration: 0.45 }}
+                className="glass-card rounded-[24px] p-5 lg:p-8 relative overflow-hidden"
               >
-                <div className="flex gap-0.5 mb-3">
-                  {[1,2,3,4,5].map(i => <Star key={i} size={11} fill="#D4956A" color="#D4956A" />)}
+                {/* Subtle gradient accent */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-[3px] rounded-t-[24px]"
+                  style={{ background: `linear-gradient(to right, #C9748F, #D4956A, #9B7EBC)` }}
+                />
+                <div className="flex gap-0.5 mb-4">
+                  {[1,2,3,4,5].map(i => <Star key={i} size={12} fill="#D4956A" color="#D4956A" />)}
                 </div>
-                <p className="text-[14px] lg:text-[17px] leading-relaxed text-plum/75 font-medium mb-3">"{t.text}"</p>
-                <p className="text-[11px] font-bold text-muted">{t.name}</p>
+                <p className="text-[15px] lg:text-[17px] leading-relaxed text-plum/75 font-medium mb-5 italic">"{t.text}"</p>
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-white"
+                    style={{ background: 'linear-gradient(135deg, #C9748F, #D4956A)' }}
+                  >
+                    {t.avatar}
+                  </div>
+                  <p className="text-[12px] font-bold text-plum/60">{t.name}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── STATS STRIP ──────────────────────────────────────────────── */}
+      <section className="bg-page-bg px-5 lg:px-20 py-10 lg:py-16">
+        <div className="max-w-[1440px] mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
+            {STATS.map(({ val, label, color }, i) => (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07, duration: 0.42 }}
+                className="glass-card rounded-[24px] p-5 lg:p-8 text-center relative overflow-hidden"
+              >
+                <div
+                  className="absolute top-0 inset-x-0 h-[2px]"
+                  style={{ background: `linear-gradient(to right, transparent, ${color}60, transparent)` }}
+                />
+                <p
+                  className="font-display text-[28px] lg:text-[42px] font-bold mb-1 italic"
+                  style={{
+                    background: `linear-gradient(135deg, ${color}, ${color}cc)`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  {val}
+                </p>
+                <p className="text-[11px] lg:text-[13px] font-semibold text-muted leading-tight">{label}</p>
               </motion.div>
             ))}
           </div>
@@ -464,27 +717,29 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.55 }}
-          className="max-w-sm mx-auto lg:max-w-[1440px] lg:grid lg:grid-cols-[1fr_auto] lg:gap-12 lg:items-start"
+          className="max-w-sm mx-auto lg:max-w-[1440px]"
         >
-          <div className="glass-card rounded-[28px] p-7 mb-4 lg:mb-0 lg:p-12">
-            <p className="text-[9px] lg:text-[11px] tracking-[0.18em] uppercase font-semibold mb-3 text-muted">Our Story</p>
-            <h2 className="font-display text-[28px] lg:text-[52px] italic font-bold text-plum mb-4 leading-tight">
-              Small batch.<br />Big love.
-            </h2>
-            <p className="text-[14px] lg:text-[19px] leading-relaxed text-plum/62" style={{ maxWidth: '540px' }}>
-              Every item is crafted using locally-sourced ingredients,
-              traditional techniques, and a whole lot of heart — in
-              Western Massachusetts.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-3 gap-3 lg:grid-cols-1 lg:gap-5 lg:min-w-[220px]">
-            {STATS.map(([val, label]) => (
-              <div key={label} className="glass-card rounded-[20px] p-4 lg:p-6 text-center">
-                <p className="font-display text-[18px] lg:text-[32px] font-bold text-shimmer mb-0.5">{val}</p>
-                <p className="text-[10px] lg:text-[12px] font-semibold text-muted leading-tight">{label}</p>
+          <div className="glass-card rounded-[28px] p-7 lg:p-12 relative overflow-hidden">
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: 'linear-gradient(135deg, rgba(247,196,216,0.10) 0%, rgba(243,198,157,0.08) 100%)' }}
+            />
+            <div className="relative z-10">
+              <p className="text-[9px] lg:text-[11px] tracking-[0.18em] uppercase font-semibold mb-3 text-muted">Our Story</p>
+              <h2 className="font-display text-[30px] lg:text-[56px] italic font-bold text-plum mb-4 lg:mb-6 leading-tight">
+                Small batch.<br />Big love.
+              </h2>
+              <p className="text-[14px] lg:text-[19px] leading-relaxed text-plum/62 mb-6" style={{ maxWidth: '580px' }}>
+                Every item is crafted using locally-sourced ingredients,
+                traditional techniques, and a whole lot of heart — in
+                Western Massachusetts. Because dessert should always feel
+                like something special.
+              </p>
+              <div className="flex items-center gap-3">
+                <Clock size={14} strokeWidth={2} style={{ color: '#D4956A' }} />
+                <span className="text-[13px] font-semibold text-muted">Order by Thursday for weekend pickup</span>
               </div>
-            ))}
+            </div>
           </div>
         </motion.div>
       </section>
@@ -510,11 +765,11 @@ export default function HomePage() {
               <ShoppingBag size={22} strokeWidth={2} className="text-plum lg:hidden" />
               <ShoppingBag size={30} strokeWidth={2} className="text-plum hidden lg:block" />
             </div>
-            <h3 className="font-display text-[24px] lg:text-[44px] italic font-bold text-plum mb-3">
+            <h3 className="font-display text-[26px] lg:text-[48px] italic font-bold text-plum mb-3">
               Build Your Dream Box
             </h3>
             <p
-              className="text-[14px] lg:text-[19px] leading-relaxed text-plum/60"
+              className="text-[14px] lg:text-[19px] leading-relaxed text-plum/60 font-medium"
               style={{ maxWidth: '480px', margin: '0 auto 2.5rem' }}
             >
               Choose your base, fillings, and finishes —<br />
@@ -522,7 +777,7 @@ export default function HomePage() {
             </p>
             <Link
               href="/customize"
-              className="btn-primary rounded-2xl inline-flex items-center gap-3"
+              className="btn-primary rounded-2xl inline-flex items-center gap-3 cursor-pointer"
               style={{ height: '64px', paddingLeft: '40px', paddingRight: '40px', fontSize: '17px' }}
             >
               Start Crafting
