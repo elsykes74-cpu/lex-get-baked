@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, Menu, X } from 'lucide-react';
 import clsx from 'clsx';
+import { useCart } from '@/lib/cart-context';
 
 const LINKS = [
   { href: '/',          label: 'Home'    },
@@ -18,6 +19,7 @@ export default function NavBar() {
   const pathname  = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open,     setOpen]     = useState(false);
+  const { count }               = useCart();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -87,12 +89,15 @@ export default function NavBar() {
             >
               <ShoppingBag size={13} strokeWidth={2.2} />
               <span className="hidden sm:block">Cart</span>
-              <span
+              <motion.span
+                key={count}
+                initial={{ scale: 1.4 }} animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 18 }}
                 className="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white leading-none"
-                style={{ background: '#C9748F' }}
+                style={{ background: count > 0 ? '#C9748F' : 'rgba(47,35,67,0.28)' }}
               >
-                0
-              </span>
+                {count > 9 ? '9+' : count}
+              </motion.span>
             </Link>
 
             <button

@@ -5,21 +5,29 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Star, X, Check, ShoppingBag, ArrowRight } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 import { MENU_ITEMS, CATEGORIES, type MenuItem } from '@/lib/menu-data';
+import { useCart } from '@/lib/cart-context';
 
 export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selected, setSelected]             = useState<MenuItem | null>(null);
   const [added, setAdded]                   = useState<number[]>([]);
+  const { addItem }                         = useCart();
 
   const filtered = activeCategory === 'All'
     ? MENU_ITEMS
     : MENU_ITEMS.filter(i => i.category === activeCategory);
 
-  function handleQuickAdd(e: React.MouseEvent, id: number) {
+  function handleQuickAdd(e: React.MouseEvent, item: MenuItem) {
     e.stopPropagation();
     e.preventDefault();
-    setAdded(prev => [...prev, id]);
-    setTimeout(() => setAdded(prev => prev.filter(x => x !== id)), 1800);
+    setAdded(prev => [...prev, item.id]);
+    addItem({ id: String(item.id), name: item.name, price: item.price, image: item.image });
+    setTimeout(() => setAdded(prev => prev.filter(x => x !== item.id)), 1800);
+  }
+
+  function handleAddToOrder(item: MenuItem) {
+    addItem({ id: String(item.id), name: item.name, price: item.price, image: item.image });
+    setSelected(null);
   }
 
   return (
@@ -117,7 +125,7 @@ export default function MenuPage() {
 
                       {/* Quick Add */}
                       <motion.button
-                        onClick={e => handleQuickAdd(e, item.id)}
+                        onClick={e => handleQuickAdd(e, item)}
                         className="absolute bottom-3 right-3 w-9 h-9 rounded-full flex items-center justify-center"
                         style={{
                           background: isAdded ? '#4CAF7D' : 'rgba(255,255,255,0.94)',
@@ -257,7 +265,10 @@ export default function MenuPage() {
 
                 <div className="divider mb-6" />
 
-                <button className="w-full btn-primary rounded-2xl h-14 text-[15px] flex items-center justify-center gap-2.5">
+                <button
+                  onClick={() => handleAddToOrder(selected)}
+                  className="w-full btn-primary rounded-2xl h-14 text-[15px] flex items-center justify-center gap-2.5"
+                >
                   <ShoppingBag size={17} strokeWidth={2.2} />
                   Add to Order — ${selected.price}
                 </button>

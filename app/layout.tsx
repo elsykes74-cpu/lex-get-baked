@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import BottomNav from '@/components/BottomNav';
+import { CartProvider } from '@/lib/cart-context';
 
 export const metadata: Metadata = {
   title: 'Lex Get Baked',
@@ -24,8 +25,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="pb-20 sm:pb-0">
-        {children}
-        <BottomNav />
+        <CartProvider>
+          {children}
+          <BottomNav />
+        </CartProvider>
       </body>
     </html>
   );

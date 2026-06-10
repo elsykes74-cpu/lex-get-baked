@@ -1,8 +1,9 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, ShoppingBag, Truck, Check, ArrowRight, Shield, Clock } from 'lucide-react';
 import NavBar from '@/components/NavBar';
+import { useCart } from '@/lib/cart-context';
 
 type Step = 'cart' | 'delivery' | 'confirm';
 
@@ -13,20 +14,31 @@ const DELIVERY_OPTIONS = [
   { id: 'quantum',  label: 'Rush',         eta: '2 hours',       price: 18, icon: '🚀', note: '+$18' },
 ];
 
-const SAMPLE_CART = [
-  { id: 1, name: 'Velvet Stuffed Cookie', size: 'Regular', price: 6,  qty: 2, emoji: '🍪' },
-  { id: 2, name: 'Rose Gold Mini Cake',   size: 'Single',  price: 12, qty: 1, emoji: '🎂' },
-];
+type CheckoutItem = { id: number; name: string; size: string; price: number; qty: number; emoji: string };
 
 const STEP_LABELS: Step[] = ['cart', 'delivery', 'confirm'];
 const STEP_NAMES = { cart: 'Cart', delivery: 'Delivery', confirm: 'Confirm' };
 
 export default function CheckoutPage() {
+  const { items: ctxItems, clearCart }  = useCart();
   const [step,     setStep]    = useState<Step>('cart');
   const [delivery, setDelivery]= useState('pickup');
-  const [cart,     setCart]    = useState(SAMPLE_CART);
+  const [cart,     setCart]    = useState<CheckoutItem[]>([]);
   const [form,     setForm]    = useState({ name: '', email: '', address: '', notes: '' });
   const [placed,   setPlaced]  = useState(false);
+
+  useEffect(() => {
+    if (ctxItems.length > 0) {
+      setCart(ctxItems.map((i, idx) => ({
+        id: idx + 1,
+        name: i.name,
+        size: i.size ?? 'Regular',
+        price: i.price,
+        qty: i.qty,
+        emoji: '🍪',
+      })));
+    }
+  }, []);
 
   const subtotal    = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const deliveryFee = DELIVERY_OPTIONS.find(d => d.id === delivery)?.price ?? 0;
@@ -108,8 +120,16 @@ export default function CheckoutPage() {
                 {cart.length === 0 ? (
                   <div className="glass-card rounded-[28px] p-12 text-center">
                     <ShoppingBag size={36} strokeWidth={1.4} className="mx-auto mb-4 text-plum/20" />
-                    <p className="text-[14px] font-semibold text-muted">Your cart is empty</p>
-                    <p className="text-[12px] text-plum/40 mt-1">Add something delicious from the menu</p>
+                    <p className="text-[14px] font-semibold text-muted mb-1">Your cart is empty</p>
+                    <p className="text-[12px] text-plum/40 mb-6">Add something delicious from the menu</p>
+                    <a
+                      href="/menu"
+                      className="btn-primary rounded-[14px] inline-flex items-center gap-2 px-5"
+                      style={{ height: '44px', fontSize: '13px' }}
+                    >
+                      Browse Menu
+                      <ArrowRight size={13} strokeWidth={2.5} />
+                    </a>
                   </div>
                 ) : (
                   <>
@@ -320,7 +340,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <button
-                  onClick={() => setPlaced(true)}
+                  onClick={() => { setPlaced(true); clearCart(); }}
                   className="w-full btn-primary rounded-[18px] h-14 text-[15px] font-bold flex items-center justify-center gap-2.5"
                 >
                   <Check size={17} strokeWidth={2.5} />
@@ -378,10 +398,19 @@ function OrderConfirmation({ total, eta }: { total: number; eta: string }) {
           </div>
         </div>
 
-        <p className="text-[12px] font-medium text-muted leading-relaxed">
+        <p className="text-[12px] font-medium text-muted leading-relaxed mb-6">
           You'll receive a confirmation email shortly from{' '}
           <span className="font-bold text-plum">hello@lexgetbaked.com</span>
         </p>
+
+        <a
+          href="/menu"
+          className="btn-ghost rounded-[16px] flex items-center justify-center gap-2 w-full"
+          style={{ height: '52px', fontSize: '14px' }}
+        >
+          <ShoppingBag size={15} strokeWidth={2} />
+          Keep Shopping
+        </a>
       </motion.div>
     </div>
   );
