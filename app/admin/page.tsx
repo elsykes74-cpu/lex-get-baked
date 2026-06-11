@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -8,6 +9,8 @@ import {
   Camera, Upload, Check, X, Loader2, ImageOff, Plus, Pencil,
   Trash2, ChevronDown, MapPin, MessageSquare, ShoppingBag,
 } from 'lucide-react';
+
+const AdminCharts = dynamic(() => import('@/components/AdminCharts'), { ssr: false });
 import { supabase, type DbOrder, type DbMenuItem } from '@/lib/supabase';
 
 const STATUS_META: Record<string, { label: string; color: string; bg: string }> = {
@@ -35,6 +38,7 @@ type ItemForm = { name: string; category: string; price: string; emoji: string; 
 
 export default function AdminPage() {
   const [tab,          setTab]          = useState<Tab>('orders');
+  const [allOrders,    setAllOrders]    = useState<DbOrder[]>([]);
   const [orders,       setOrders]       = useState<DbOrder[]>([]);
   const [menu,         setMenu]         = useState<DbMenuItem[]>([]);
   const [loading,      setLoading]      = useState(true);
@@ -64,15 +68,17 @@ export default function AdminPage() {
     setLoading(true);
     setError(null);
     try {
-      if (tab === 'orders') {
-        const { data, error: e } = await supabase
-          .from('orders')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(50);
-        if (e) throw e;
-        setOrders(data ?? []);
-      } else {
+      // Always fetch all orders for charts/stats
+      const { data: allData, error: allErr } = await supabase
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(200);
+      if (allErr) throw allErr;
+      setAllOrders(allData ?? []);
+      setOrders((allData ?? []).slice(0, 50));
+
+      if (tab === 'menu') {
         const { data, error: e } = await supabase
           .from('menu_items')
           .select('*')
@@ -363,6 +369,9 @@ export default function AdminPage() {
             </div>
           ))}
         </div>
+
+        {/* Charts */}
+        {!loading && <AdminCharts orders={allOrders} />}
 
         {/* Tabs */}
         <div className="flex items-center justify-between mb-5">
