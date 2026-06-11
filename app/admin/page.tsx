@@ -566,9 +566,9 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* ── Menu ── */}
+        {/* ── Menu Grid ── */}
         {!loading && tab === 'menu' && (
-          <div className="space-y-2">
+          <div>
             {menu.length === 0 && !error && (
               <div className="glass-card rounded-[28px] p-16 text-center">
                 <ChefHat size={32} strokeWidth={1.4} className="mx-auto mb-3 text-plum/20" />
@@ -589,121 +589,129 @@ export default function AdminPage() {
               }}
             />
 
-            {menu.map((item, i) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.025 }}
-                className="glass-card rounded-[18px] overflow-hidden"
-              >
-                {/* Main row */}
-                <div className="px-4 py-3 flex items-center gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {menu.map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.04 }}
+                  className="glass-card rounded-[20px] overflow-hidden flex flex-col"
+                >
+                  {/* Photo area */}
                   <div
-                    className="w-10 h-10 rounded-[12px] flex-shrink-0 overflow-hidden flex items-center justify-center text-lg"
-                    style={{ background: 'rgba(255,255,255,0.6)' }}
+                    className="relative w-full flex items-center justify-center overflow-hidden"
+                    style={{ height: 140, background: 'rgba(255,255,255,0.55)' }}
                   >
                     {item.image_url
                       ? <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
-                      : item.emoji}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-bold text-plum truncate">{item.name}</p>
-                    <p className="text-[11px] text-muted capitalize">{item.category} · ${item.price}</p>
-                  </div>
-                  <div className="flex items-center gap-1.5 flex-shrink-0">
-                    {/* Photo */}
-                    <button
-                      onClick={() => editingPhoto === item.id ? setEditingPhoto(null) : (setEditingPhoto(item.id), setSaved(null))}
-                      className="w-8 h-8 glass rounded-[10px] flex items-center justify-center transition-all"
-                      title="Photo"
-                      style={{ color: saved === item.id ? '#4CAF7D' : editingPhoto === item.id ? '#C9748F' : 'rgba(47,35,67,0.45)' }}
-                    >
-                      {saved === item.id ? <Check size={13} strokeWidth={2.5} /> : <Camera size={13} strokeWidth={2} />}
-                    </button>
-                    {/* Edit */}
-                    <button
-                      onClick={() => openEdit(item)}
-                      className="w-8 h-8 glass rounded-[10px] flex items-center justify-center text-plum/40 hover:text-plum transition-all"
-                      title="Edit item"
-                    >
-                      <Pencil size={12} strokeWidth={2} />
-                    </button>
-                    {/* Delete */}
-                    <button
-                      onClick={() => setConfirmDel(item.id)}
-                      className="w-8 h-8 glass rounded-[10px] flex items-center justify-center text-plum/30 hover:text-red-400 transition-all"
-                      title="Delete item"
-                    >
-                      <Trash2 size={12} strokeWidth={2} />
-                    </button>
-                    {/* Available toggle */}
-                    <button
-                      onClick={() => toggleAvailable(item.id, item.available)}
-                      className="flex items-center gap-1 text-[11px] font-bold transition-all px-2.5 py-1.5 rounded-full ml-0.5"
+                      : <span style={{ fontSize: 52 }}>{item.emoji}</span>
+                    }
+                    {/* Available badge */}
+                    <div
+                      className="absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-full"
                       style={{
-                        background: item.available ? 'rgba(76,175,125,0.12)' : 'rgba(224,92,92,0.10)',
-                        color: item.available ? '#4CAF7D' : '#E05C5C',
+                        background: item.available ? 'rgba(76,175,125,0.85)' : 'rgba(224,92,92,0.85)',
+                        color: 'white',
+                        backdropFilter: 'blur(4px)',
                       }}
                     >
-                      {item.available
-                        ? <><ToggleRight size={13} strokeWidth={2} /> <span className="hidden sm:inline">Available</span></>
-                        : <><ToggleLeft  size={13} strokeWidth={2} /> <span className="hidden sm:inline">Sold Out</span></>
-                      }
-                    </button>
+                      {item.available ? 'Available' : 'Sold Out'}
+                    </div>
+                    {/* Action icons overlay */}
+                    <div className="absolute top-2 right-2 flex flex-col gap-1">
+                      <button
+                        onClick={() => editingPhoto === item.id ? setEditingPhoto(null) : (setEditingPhoto(item.id), setSaved(null))}
+                        className="w-7 h-7 rounded-[8px] flex items-center justify-center transition-all"
+                        title="Photo"
+                        style={{
+                          background: 'rgba(255,255,255,0.88)',
+                          backdropFilter: 'blur(8px)',
+                          color: saved === item.id ? '#4CAF7D' : editingPhoto === item.id ? '#C9748F' : 'rgba(47,35,67,0.6)',
+                        }}
+                      >
+                        {saved === item.id ? <Check size={12} strokeWidth={2.5} /> : <Camera size={12} strokeWidth={2} />}
+                      </button>
+                      <button
+                        onClick={() => openEdit(item)}
+                        className="w-7 h-7 rounded-[8px] flex items-center justify-center transition-all"
+                        title="Edit"
+                        style={{ background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(8px)', color: 'rgba(47,35,67,0.6)' }}
+                      >
+                        <Pencil size={11} strokeWidth={2} />
+                      </button>
+                      <button
+                        onClick={() => setConfirmDel(item.id)}
+                        className="w-7 h-7 rounded-[8px] flex items-center justify-center transition-all"
+                        title="Delete"
+                        style={{ background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(8px)', color: 'rgba(224,92,92,0.7)' }}
+                      >
+                        <Trash2 size={11} strokeWidth={2} />
+                      </button>
+                    </div>
                   </div>
-                </div>
 
-                {/* Photo editor panel */}
-                <AnimatePresence>
-                  {editingPhoto === item.id && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                      style={{ overflow: 'hidden' }}
-                    >
-                      <div className="px-4 pb-4 pt-1" style={{ borderTop: '1px solid rgba(47,35,67,0.07)' }}>
-                        <p className="text-[10px] tracking-[0.14em] uppercase font-bold text-muted mb-3 mt-2">Photo</p>
-                        <div className="flex gap-3 items-start">
-                          <div
-                            className="w-20 h-20 rounded-[14px] flex-shrink-0 overflow-hidden flex flex-col items-center justify-center"
-                            style={{ background: 'rgba(255,255,255,0.7)', border: '1.5px dashed rgba(47,35,67,0.15)' }}
+                  {/* Info */}
+                  <div className="p-3 flex-1 flex flex-col justify-between">
+                    <div>
+                      <p className="text-[13px] font-bold text-plum leading-tight mb-0.5">{item.name}</p>
+                      <p className="text-[10px] text-muted capitalize">{item.category}</p>
+                    </div>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-[14px] font-bold text-plum">${item.price}</span>
+                      <button
+                        onClick={() => toggleAvailable(item.id, item.available)}
+                        className="flex items-center gap-1 text-[10px] font-bold transition-all px-2 py-1 rounded-full"
+                        style={{
+                          background: item.available ? 'rgba(76,175,125,0.12)' : 'rgba(224,92,92,0.10)',
+                          color: item.available ? '#4CAF7D' : '#E05C5C',
+                        }}
+                      >
+                        {item.available
+                          ? <ToggleRight size={12} strokeWidth={2} />
+                          : <ToggleLeft  size={12} strokeWidth={2} />
+                        }
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Photo upload panel */}
+                  <AnimatePresence>
+                    {editingPhoto === item.id && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        <div className="px-3 pb-3" style={{ borderTop: '1px solid rgba(47,35,67,0.07)' }}>
+                          <button
+                            onClick={() => fileRef.current?.click()}
+                            disabled={uploading}
+                            className="w-full btn-primary rounded-[10px] flex items-center justify-center gap-1.5 text-[11px] font-semibold mt-2 disabled:opacity-50"
+                            style={{ height: '36px' }}
                           >
-                            {item.image_url
-                              ? <img src={item.image_url} alt="" className="w-full h-full object-cover" />
-                              : <><ImageOff size={18} strokeWidth={1.5} style={{ color: 'rgba(47,35,67,0.25)' }} /><span className="text-[9px] text-plum/30 mt-1 font-medium">No photo</span></>
+                            {uploading
+                              ? <><Loader2 size={12} strokeWidth={2} className="animate-spin" /> Uploading…</>
+                              : <><Upload size={12} strokeWidth={2} /> {item.image_url ? 'Replace' : 'Upload photo'}</>
                             }
-                          </div>
-                          <div className="flex-1 space-y-2">
+                          </button>
+                          {item.image_url && (
                             <button
-                              onClick={() => fileRef.current?.click()}
-                              disabled={uploading}
-                              className="w-full btn-primary rounded-[12px] flex items-center justify-center gap-2 text-[12px] font-semibold transition-all disabled:opacity-50"
-                              style={{ height: '44px' }}
+                              onClick={() => saveImageUrl(item.id, '')}
+                              className="w-full text-center text-[10px] text-plum/35 hover:text-red-400 transition-colors mt-1.5 flex items-center justify-center gap-1"
                             >
-                              {uploading
-                                ? <><Loader2 size={14} strokeWidth={2} className="animate-spin" /> Uploading…</>
-                                : <><Upload size={14} strokeWidth={2} /> {item.image_url ? 'Replace photo' : 'Upload photo'}</>
-                              }
+                              <X size={9} strokeWidth={2} /> Remove photo
                             </button>
-                            {item.image_url && (
-                              <button
-                                onClick={() => saveImageUrl(item.id, '')}
-                                className="text-[11px] text-plum/35 hover:text-red-400 transition-colors flex items-center gap-1"
-                              >
-                                <X size={10} strokeWidth={2} /> Remove photo
-                              </button>
-                            )}
-                          </div>
+                          )}
                         </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              ))}
+            </div>
           </div>
         )}
       </div>
