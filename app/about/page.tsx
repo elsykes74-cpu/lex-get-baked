@@ -1,5 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Layers, Gift, Leaf, Sparkles, Heart, MapPin, Clock, AtSign } from 'lucide-react';
 import NavBar from '@/components/NavBar';
@@ -121,14 +122,17 @@ export default function AboutPage() {
             <div className="flex justify-center mb-6 lg:mb-0 lg:justify-start">
               <div className="ring-rosegold" style={{ width: 'fit-content' }}>
                 <div
-                  className="rounded-full flex items-center justify-center overflow-hidden"
-                  style={{
-                    width: 96,
-                    height: 96,
-                    background: 'linear-gradient(135deg, #EDE6F6 0%, #F7C4D8 50%, #F3C69D 100%)',
-                  }}
+                  className="rounded-full overflow-hidden"
+                  style={{ width: 96, height: 96 }}
                 >
-                  <span className="font-display text-[36px] font-bold text-plum/75 select-none">L</span>
+                  <Image
+                    src="/lex.jpg"
+                    alt="Lex — Founder & Head Baker"
+                    width={96}
+                    height={96}
+                    className="w-full h-full object-cover object-top"
+                    priority
+                  />
                 </div>
               </div>
             </div>
