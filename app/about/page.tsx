@@ -1,5 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Layers, Gift, Leaf, Sparkles, Heart, MapPin, Clock, AtSign } from 'lucide-react';
 import NavBar from '@/components/NavBar';
@@ -16,13 +17,6 @@ const VALUES = [
   { Icon: Gift,     title: 'Celebration Desserts', desc: 'From birthdays to proposals, we craft moments you\'ll remember forever. No occasion is too big or too small.', color: '#C9748F' },
   { Icon: Leaf,     title: 'Local Ingredients',    desc: 'Sourced from Western Massachusetts farms and artisan suppliers. Fresh, seasonal, always within 100 miles.', color: '#6B8C7A' },
   { Icon: Sparkles, title: 'Custom Everything',    desc: 'No order is too unique. Tell us your vision and we\'ll make it real — down to the exact color, flavor, and detail.', color: '#9B7EBC' },
-];
-
-const PRESS = [
-  'Western Mass News',
-  'The Daily Hampshire Gazette',
-  'Edible Pioneer Valley',
-  'Springfield Business Journal',
 ];
 
 export default function AboutPage() {
@@ -128,14 +122,17 @@ export default function AboutPage() {
             <div className="flex justify-center mb-6 lg:mb-0 lg:justify-start">
               <div className="ring-rosegold" style={{ width: 'fit-content' }}>
                 <div
-                  className="rounded-full flex items-center justify-center overflow-hidden"
-                  style={{
-                    width: 96,
-                    height: 96,
-                    background: 'linear-gradient(135deg, #EDE6F6 0%, #F7C4D8 50%, #F3C69D 100%)',
-                  }}
+                  className="rounded-full overflow-hidden"
+                  style={{ width: 96, height: 96 }}
                 >
-                  <span className="font-display text-[36px] font-bold text-plum/75 select-none">L</span>
+                  <Image
+                    src="/lex.jpg"
+                    alt="Lex — Founder & Head Baker"
+                    width={96}
+                    height={96}
+                    className="w-full h-full object-cover object-top"
+                    priority
+                  />
                 </div>
               </div>
             </div>
@@ -162,10 +159,10 @@ export default function AboutPage() {
               </div>
 
               <p className="text-[14px] lg:text-[16px] leading-relaxed text-plum/72 mb-4">
-                Hi, I'm Lex — a self-taught pastry obsessive who started baking custom cookies for friends' birthdays and couldn't stop. What began as a hobby in a 400 sq ft apartment turned into a full studio operation fueled by flour, butter, and an unreasonable dedication to getting the details exactly right.
+                Hi, I&apos;m Lex — a self-taught pastry obsessive who started baking custom cookies for friends&apos; birthdays and couldn&apos;t stop. What began as a hobby in a 400 sq ft apartment turned into a full studio operation fueled by flour, butter, and an unreasonable dedication to getting the details exactly right.
               </p>
               <p className="text-[14px] lg:text-[16px] leading-relaxed text-plum/72 mb-5">
-                Every order I take is personal. I want to know your occasion, your vibe, your color palette. I want your guests to pick up a cookie and immediately know it was made for <em>them</em>. That's not just a service — that's the whole point.
+                Every order I take is personal. I want to know your occasion, your vibe, your color palette. I want your guests to pick up a cookie and immediately know it was made for <em>them</em>. That&apos;s not just a service — that&apos;s the whole point.
               </p>
 
               <div className="flex items-center gap-3">

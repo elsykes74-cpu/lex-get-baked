@@ -65,10 +65,6 @@ body { padding-bottom: env(safe-area-inset-bottom); }
 }
 
 /* ── Buttons ─────────────────────────────────────────────────────────── */
-/*
-  All buttons share a porcelain-white + gold-ring 3D aesthetic:
-  white/cream convex surface, champagne gold border, floating drop shadow.
-*/
 
 /* PRIMARY */
 .btn-primary {
@@ -108,7 +104,7 @@ body { padding-bottom: env(safe-area-inset-bottom); }
     inset 0 3px 8px rgba(140,90,20,0.10);
 }
 
-/* IRIDESCENT (selected/accent state) — warm gold tint */
+/* IRIDESCENT */
 .btn-iridescent {
   position: relative;
   background: linear-gradient(160deg, #FFF8EE 0%, #FAF0DC 52%, #F5E6C8 100%);
@@ -145,7 +141,7 @@ body { padding-bottom: env(safe-area-inset-bottom); }
     inset 0 3px 8px rgba(140,90,20,0.12);
 }
 
-/* GHOST (secondary CTA) — lighter ring */
+/* GHOST */
 .btn-ghost {
   background: rgba(255,255,255,0.82);
   border: 2.5px solid rgba(201,169,110,0.55);
@@ -180,7 +176,7 @@ body { padding-bottom: env(safe-area-inset-bottom); }
     inset 0 2px 6px rgba(140,90,20,0.08);
 }
 
-/* BRAND — same as primary */
+/* BRAND */
 .btn-brand {
   background: linear-gradient(160deg, #FFFFFF 0%, #FAF5EC 52%, #F2E8D8 100%);
   border: 3px solid #C9A96E;
@@ -296,7 +292,6 @@ body { padding-bottom: env(safe-area-inset-bottom); }
   border-radius: 12px;
 }
 
-/* Nav icon wrapper */
 .nav-icon-wrap {
   width: 36px; height: 36px;
   display: flex; align-items: center; justify-content: center;
@@ -384,17 +379,7 @@ body { padding-bottom: env(safe-area-inset-bottom); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Process step connector ──────────────────────────────────────── */
-.step-connector {
-  position: absolute;
-  top: 28px;
-  left: calc(50% + 28px);
-  right: calc(-50% + 28px);
-  height: 1px;
-  background: linear-gradient(to right, rgba(212,149,106,0.30), rgba(201,116,143,0.22), transparent);
-}
-
-/* ── Gallery card tilt ───────────────────────────────────────────── */
+/* ── Gallery card hover ──────────────────────────────────────────── */
 .gallery-card {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
 }
