@@ -1,16 +1,4 @@
 {
-  "projectId": "prj_Vu1PWzsDA0KVUhvQbSfSbPOHk49W",
   "orgId": "team_Y8fHhuKUOpvZW0zAcZxaeUPX",
-  "projectName": "lex-get-baked",
-  "settings": {
-    "createdAt": 1779723534121,
-    "framework": "nextjs",
-    "devCommand": null,
-    "installCommand": null,
-    "buildCommand": null,
-    "outputDirectory": null,
-    "rootDirectory": null,
-    "directoryListing": false,
-    "nodeVersion": "24.x"
-  }
+  "projectId": "prj_Vu1PWzsDA0KVUhvQbSfSbPOHk49W"
 }
