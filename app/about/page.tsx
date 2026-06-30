@@ -6,17 +6,17 @@ import { ArrowRight, Layers, Gift, Leaf, Sparkles, Heart, MapPin, Clock, AtSign 
 import NavBar from '@/components/NavBar';
 
 const STATS = [
-  { val: '200+', label: 'Happy Customers', color: '#C9748F' },
-  { val: '100%', label: 'Scratch-Made',    color: '#D4956A' },
-  { val: '48hr', label: 'Max Lead Time',   color: '#9B7EBC' },
-  { val: 'Local', label: 'Ingredients',   color: '#6B8C7A' },
+  { val: '100%', label: 'Scratch-Made',    color: '#C9748F' },
+  { val: 'Small', label: 'Batch Always',  color: '#D4956A' },
+  { val: '1 wk',  label: 'Lead Time',     color: '#9B7EBC' },
+  { val: 'WMA',   label: 'Local Pickup',  color: '#6B8C7A' },
 ];
 
 const VALUES = [
-  { Icon: Layers,   title: 'Small Batch Quality',  desc: 'Every order is made fresh to order. We never mass-produce, stockpile, or freeze our desserts — ever.', color: '#D4956A' },
-  { Icon: Gift,     title: 'Celebration Desserts', desc: 'From birthdays to proposals, we craft moments you\'ll remember forever. No occasion is too big or too small.', color: '#C9748F' },
-  { Icon: Leaf,     title: 'Local Ingredients',    desc: 'Sourced from Western Massachusetts farms and artisan suppliers. Fresh, seasonal, always within 100 miles.', color: '#6B8C7A' },
-  { Icon: Sparkles, title: 'Custom Everything',    desc: 'No order is too unique. Tell us your vision and we\'ll make it real — down to the exact color, flavor, and detail.', color: '#9B7EBC' },
+  { Icon: Sparkles, title: 'Gourmet Stuffed Cookies', desc: 'Thick, pillowy cookies stuffed with gooey fillings — s\'mores, Oreo, M&M caramel, and more. Baked fresh in small batches.', color: '#C9748F' },
+  { Icon: Layers,   title: 'Classic Cookie Flavors',  desc: 'From Classic Chocolate Chip to Reese\'s Chocolate Chunk — every classic is made from scratch with quality ingredients and a whole lot of love.', color: '#D4956A' },
+  { Icon: Gift,     title: 'Build Your Own Mini Cake', desc: 'Personal cakes made to match your cravings. Pick your base, frosting, two toppings, and syrup. A whole dessert experience in one hand.', color: '#9B7EBC' },
+  { Icon: Leaf,     title: 'Dessert Catering & Events', desc: 'Birthdays, baby showers, weddings, corporate events, and farmers markets. Seasonal specialty drops throughout the year too.', color: '#6B8C7A' },
 ];
 
 export default function AboutPage() {
@@ -65,11 +65,11 @@ export default function AboutPage() {
 
             <div className="pb-2">
               <p className="text-[22px] leading-relaxed font-medium text-plum/65 mb-6" style={{ maxWidth: '520px' }}>
-                A Western Massachusetts small-batch dessert studio built around love, craft, and desserts that make people stop mid-bite to say <em>&ldquo;wait, what is this?&rdquo;</em>
+                A Westfield, Massachusetts small-batch dessert studio — gourmet stuffed cookies, classic cookies, build-your-own mini cakes, and dessert catering for every occasion.
               </p>
               <div className="h-px mb-6" style={{ background: 'linear-gradient(to right, transparent, rgba(212,149,106,0.22), transparent)' }} />
               <p className="font-display text-[24px] italic font-bold text-plum leading-snug" style={{ maxWidth: '460px' }}>
-                &ldquo;Every dessert is a tiny piece of art — and it should taste even better than it looks.&rdquo;
+                &ldquo;Everything is made from scratch in small batches using quality ingredients and a whole lot of love.&rdquo;
               </p>
             </div>
           </motion.div>
@@ -81,11 +81,11 @@ export default function AboutPage() {
             className="glass-card rounded-[28px] p-7 mb-5 lg:hidden"
           >
             <p className="text-[14px] leading-relaxed font-medium text-plum/70 mb-5">
-              A Western Massachusetts small-batch dessert studio built around love, craft, and desserts that make people stop mid-bite to say <em>&ldquo;wait, what is this?&rdquo;</em>
+              A Westfield, Massachusetts small-batch dessert studio — gourmet stuffed cookies, classic cookies, build-your-own mini cakes, and dessert catering for every occasion.
             </p>
             <div className="divider-rg mb-5" />
             <p className="font-display text-[18px] italic font-bold text-plum leading-relaxed">
-              &ldquo;Every dessert is a tiny piece of art — and it should taste even better than it looks.&rdquo;
+              &ldquo;Everything is made from scratch in small batches using quality ingredients and a whole lot of love.&rdquo;
             </p>
           </motion.div>
 
@@ -140,45 +140,45 @@ export default function AboutPage() {
             {/* Copy */}
             <div>
               <div className="flex items-center gap-3 mb-3">
-                <p className="font-display text-[22px] lg:text-[28px] italic font-bold text-plum">Lex</p>
+                <p className="font-display text-[22px] lg:text-[28px] italic font-bold text-plum">Alexa</p>
                 <span className="text-[10px] tracking-widest uppercase px-3 py-1 rounded-full font-bold"
                   style={{ background: 'rgba(201,116,143,0.10)', color: '#C9748F', border: '1px solid rgba(201,116,143,0.20)' }}>
-                  Founder & Head Baker
+                  Owner & Baker
                 </span>
               </div>
 
               <div className="flex items-center gap-4 mb-4 text-[12px] font-semibold text-muted">
                 <span className="flex items-center gap-1.5">
                   <MapPin size={11} strokeWidth={2} />
-                  Western Massachusetts
+                  Westfield, Massachusetts
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Clock size={11} strokeWidth={2} />
-                  Baking since 2019
+                  1 week lead time
                 </span>
               </div>
 
               <p className="text-[14px] lg:text-[16px] leading-relaxed text-plum/72 mb-4">
-                Hi, I&apos;m Lex — a self-taught pastry obsessive who started baking custom cookies for friends&apos; birthdays and couldn&apos;t stop. What began as a hobby in a 400 sq ft apartment turned into a full studio operation fueled by flour, butter, and an unreasonable dedication to getting the details exactly right.
+                Hi, I&apos;m Alexa — owner and baker behind Lex Get Baked. At Lex Get Baked, everything is made from scratch in small batches using quality ingredients and a whole lot of love. From gourmet stuffed cookies to build-your-own mini cakes, my goal is to create desserts that not only taste amazing but make every moment feel a little more special.
               </p>
               <p className="text-[14px] lg:text-[16px] leading-relaxed text-plum/72 mb-5">
-                Every order I take is personal. I want to know your occasion, your vibe, your color palette. I want your guests to pick up a cookie and immediately know it was made for <em>them</em>. That&apos;s not just a service — that&apos;s the whole point.
+                Thank you for being here and supporting my small business — it truly means everything. Pickup is available in Westfield, with local delivery to West Springfield, Holyoke, Chicopee, Springfield, and surrounding towns.
               </p>
 
               <div className="flex items-center gap-3">
                 <a
-                  href="https://instagram.com/lexgetbaked"
+                  href="https://bakesy.shop/b/lex-get-baked"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-ghost rounded-[14px] flex items-center gap-2 px-4 cursor-pointer"
                   style={{ height: '44px', fontSize: '13px' }}
                 >
                   <AtSign size={14} strokeWidth={2} />
-                  @lexgetbaked
+                  Lex Get Baked
                 </a>
                 <div className="flex items-center gap-1.5 text-[12px] font-semibold text-muted">
                   <Heart size={11} strokeWidth={2} style={{ color: '#C9748F' }} />
-                  200+ orders fulfilled
+                  Made with love
                 </div>
               </div>
             </div>
