@@ -11,7 +11,6 @@ import { submitOrder } from '@/lib/supabase';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const stripeAppearance = {
-  theme: 'none' as const,
   variables: {
     colorPrimary: '#C9748F',
     colorBackground: 'rgba(255,255,255,0.0)',
