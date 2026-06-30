@@ -118,18 +118,18 @@ export default function AboutPage() {
             viewport={{ once: true }} transition={{ duration: 0.55 }}
             className="glass-card rounded-[32px] p-6 lg:p-10 mb-8 lg:mb-14 lg:grid lg:grid-cols-[auto_1fr] lg:gap-10 lg:items-start"
           >
-            {/* Avatar */}
+            {/* Photo */}
             <div className="flex justify-center mb-6 lg:mb-0 lg:justify-start">
               <div className="ring-rosegold" style={{ width: 'fit-content' }}>
                 <div
-                  className="rounded-full overflow-hidden"
-                  style={{ width: 96, height: 96 }}
+                  className="rounded-[28px] overflow-hidden"
+                  style={{ width: 180, height: 220 }}
                 >
                   <Image
                     src="/lex.jpg"
                     alt="Lex — Founder & Head Baker"
-                    width={96}
-                    height={96}
+                    width={180}
+                    height={220}
                     className="w-full h-full object-cover object-top"
                     priority
                   />
