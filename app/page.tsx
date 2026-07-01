@@ -15,14 +15,14 @@ const FADE_UP = {
 const STAGGER = { show: { transition: { staggerChildren: 0.10 } } };
 
 const FEATURED = [
-  { name: 'Velvet Stuffed',   price: '$6',  tag: 'Signature',  color: '#C9748F',
-    image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&q=80' },
-  { name: 'Rose Gold Cake',   price: '$12', tag: 'Bestseller', color: '#D4956A',
-    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&q=80' },
-  { name: 'Lavender Brûlée',  price: '$9',  tag: 'Seasonal',   color: '#9B7EBC',
-    image: 'https://images.unsplash.com/photo-1470324161839-ce2bb6fa6bc3?w=400&q=80' },
-  { name: 'Salted Truffle',   price: '$4',  tag: 'Classic',    color: '#7A5840',
-    image: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?w=400&q=80' },
+  { name: 'Stuffed Cookie Box',  price: '$33', tag: 'Bestseller', color: '#6B4E8C',
+    image: '/products/gourmet-stuffed-box.png' },
+  { name: 'Classic Choc Chip',   price: '$4',  tag: 'Signature',  color: '#D4956A',
+    image: '/products/single-classic-choc-chip.png' },
+  { name: "Reese's Chunk",       price: '$4',  tag: 'Fan Fave',   color: '#D4956A',
+    image: '/products/single-reeses-chunk.png' },
+  { name: 'Build Your Mini Cake',price: '$8',  tag: 'Custom',     color: '#9B7EBC',
+    image: '/products/build-your-own-mini-cake.png' },
 ];
 
 const TESTIMONIALS = [
@@ -63,12 +63,12 @@ const HOW_IT_WORKS = [
 ];
 
 const GALLERY = [
-  'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=600&q=85',
-  'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&q=85',
-  'https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=600&q=85',
-  'https://images.unsplash.com/photo-1587668178277-295251f900ce?w=600&q=85',
-  'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=85',
-  'https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=600&q=85',
+  '/products/gourmet-stuffed-box.png',
+  '/products/single-classic-choc-chip.png',
+  '/products/single-double-chocolate.png',
+  '/products/single-birthday-cake.png',
+  '/products/single-mm-crunch.png',
+  '/products/single-reeses-chunk.png',
 ];
 
 const TRUST_ITEMS = [
@@ -168,7 +168,7 @@ export default function HomePage() {
           <div className="ring-rosegold" style={{ animation: 'float 7s ease-in-out infinite' }}>
             <div className="rounded-full overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=700&q=90"
+                src="/products/gourmet-stuffed-box.png"
                 alt=""
                 aria-hidden
                 className="w-full block"
@@ -296,7 +296,7 @@ export default function HomePage() {
               >
                 <div className="ring-rosegold" style={{ animation: 'float 7s ease-in-out infinite', position: 'relative', display: 'block' }}>
                   <div className="rounded-full overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=1400&q=90" alt="Signature luxury cookie" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', filter: 'contrast(1.02) saturate(0.97)', display: 'block' }} />
+                    <img src="/products/gourmet-stuffed-box.png" alt="Gourmet stuffed cookie" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', filter: 'contrast(1.02) saturate(0.97)', display: 'block' }} />
                   </div>
                   <div className="absolute inset-0 rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse at 28% 18%, rgba(255,252,248,0.30) 0%, transparent 55%)' }} />
                 </div>
