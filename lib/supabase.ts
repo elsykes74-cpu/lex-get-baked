@@ -1,7 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 
-const url  = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Fallback strings prevent "supabaseKey is required" throw at build time when env vars are absent.
+// At runtime the real env vars are always set; placeholder is only used during static prerendering
+// where no actual Supabase calls occur.
+const url     = process.env.NEXT_PUBLIC_SUPABASE_URL      ?? 'https://placeholder.supabase.co';
+const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'placeholder-anon-key';
 
 export const supabase = createClient(url, anonKey);
 

@@ -126,7 +126,7 @@ export default function AboutPage() {
                   style={{ width: 180, height: 220 }}
                 >
                   <Image
-                    src="/lex.jpg"
+                    src="/lex.png"
                     alt="Lex — Founder & Head Baker"
                     width={180}
                     height={220}
