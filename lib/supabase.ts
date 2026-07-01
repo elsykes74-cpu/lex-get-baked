@@ -1,22 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Lazy singleton — prevents build-time throw when env vars are absent (same pattern as Stripe fix)
-let _client: ReturnType<typeof createClient> | null = null;
+// Fallback strings prevent "supabaseKey is required" throw at build time when env vars are absent.
+// At runtime the real env vars are always set; placeholder is only used during static prerendering
+// where no actual Supabase calls occur.
+const url     = process.env.NEXT_PUBLIC_SUPABASE_URL      ?? 'https://placeholder.supabase.co';
+const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'placeholder-anon-key';
 
-function getClient() {
-  if (!_client) {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
-    _client = createClient(url || 'https://placeholder.supabase.co', key || 'placeholder-anon-key');
-  }
-  return _client;
-}
-
-export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
-  get(_: unknown, prop: string | symbol) {
-    return (getClient() as Record<string | symbol, unknown>)[prop];
-  },
-});
+export const supabase = createClient(url, anonKey);
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export type DbMenuItem = {
