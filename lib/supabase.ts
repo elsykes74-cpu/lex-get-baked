@@ -1,9 +1,22 @@
 import { createClient } from '@supabase/supabase-js';
 
-const url  = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Lazy singleton — prevents build-time throw when env vars are absent (same pattern as Stripe fix)
+let _client: ReturnType<typeof createClient> | null = null;
 
-export const supabase = createClient(url, anonKey);
+function getClient() {
+  if (!_client) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
+    _client = createClient(url || 'https://placeholder.supabase.co', key || 'placeholder-anon-key');
+  }
+  return _client;
+}
+
+export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
+  get(_: unknown, prop: string | symbol) {
+    return (getClient() as Record<string | symbol, unknown>)[prop];
+  },
+});
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export type DbMenuItem = {
