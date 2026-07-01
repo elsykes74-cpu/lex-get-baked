@@ -168,11 +168,11 @@ export default function HomePage() {
           <div className="ring-rosegold" style={{ animation: 'float 7s ease-in-out infinite' }}>
             <div className="rounded-full overflow-hidden">
               <img
-                src="/products/single-classic-choc-chip.png"
+                src="/products/stuffed-cookie-hero.png"
                 alt=""
                 aria-hidden
                 className="w-full block"
-                style={{ aspectRatio: '1/1', objectFit: 'cover', filter: 'contrast(1.02) saturate(0.97)' }}
+                style={{ aspectRatio: '1/1', objectFit: 'cover', objectPosition: 'center 30%', filter: 'contrast(1.02) saturate(0.97)' }}
               />
             </div>
             <div
@@ -296,7 +296,7 @@ export default function HomePage() {
               >
                 <div className="ring-rosegold" style={{ animation: 'float 7s ease-in-out infinite', position: 'relative', display: 'block' }}>
                   <div className="rounded-full overflow-hidden">
-                    <img src="/products/single-classic-choc-chip.png" alt="Gourmet stuffed cookie" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', filter: 'contrast(1.02) saturate(0.97)', display: 'block' }} />
+                    <img src="/products/stuffed-cookie-hero.png" alt="Gourmet stuffed cookie" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', objectPosition: 'center 30%', filter: 'contrast(1.02) saturate(0.97)', display: 'block' }} />
                   </div>
                   <div className="absolute inset-0 rounded-full pointer-events-none" style={{ background: 'radial-gradient(ellipse at 28% 18%, rgba(255,252,248,0.30) 0%, transparent 55%)' }} />
                 </div>
