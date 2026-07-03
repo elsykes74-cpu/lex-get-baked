@@ -80,7 +80,6 @@ export default function AdminCharts({ orders }: { orders: Order[] }) {
                 <Tooltip
                   cursor={{ fill: 'rgba(47,35,67,0.05)', radius: 6 }}
                   contentStyle={{ background: 'rgba(255,255,255,0.95)', border: '1px solid rgba(47,35,67,0.08)', borderRadius: 12, fontSize: 11, boxShadow: '0 4px 16px rgba(47,35,67,0.08)' }}
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   formatter={(v: any) => [`$${Number(v).toFixed(2)}`, 'Revenue']}
                 />
                 <Bar dataKey="revenue" shape={<CustomBar />} maxBarSize={28} />
@@ -111,7 +110,6 @@ export default function AdminCharts({ orders }: { orders: Order[] }) {
                   </Pie>
                   <Tooltip
                     contentStyle={{ background: 'rgba(255,255,255,0.95)', border: '1px solid rgba(47,35,67,0.08)', borderRadius: 12, fontSize: 11, boxShadow: '0 4px 16px rgba(47,35,67,0.08)' }}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     formatter={(v: any) => [v, '']}
                   />
                 </PieChart>
